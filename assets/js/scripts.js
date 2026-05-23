@@ -578,9 +578,9 @@ function addAuthPopup(login, msg, e) {
 	var formId;
 	var type;
 	var alert = msg.message || msg.title;
-	if (msg.isError || msg.status === 400){ 
+	if (msg.result.isError || msg.status === 400){ 
 		type = 'error'
-		// alert = msg.title;
+		 alert = msg.result.message;
 	}
 	else {
 		type = 'success'
