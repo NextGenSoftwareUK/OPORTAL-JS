@@ -602,7 +602,8 @@ function onLogin() {
 	submitBtn.innerHTML = 'logging in... <img width="20px" src="assets/img/loading.gif"/>'
 	submitBtn.disabled = true
 	let n = {
-		email: document.getElementById('login-email').value,
+		//email: document.getElementById('login-email').value,
+    username: document.getElementById('login-email').value,
 		password: document.getElementById('login-password').value,
 	};
 	(async () => {
