@@ -617,7 +617,7 @@ function addAuthPopup(login, msg, e) {
 
   console.log("divError=", divError);
 
-  if (divError) 
+  if (divError === null) 
   {
 	  login ? formId = 'login-form' : formId = 'signup-form'
 		// Create popup element
