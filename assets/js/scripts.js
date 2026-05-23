@@ -601,16 +601,16 @@ function addAuthPopup(login, msg, e) {
   document.getElementById('login-error').innerHTML = alert;
   document.getElementById('login-error').style.display = 'block';
 
-	// login ? formId = 'login-form' : formId = 'signup-form'
-	// 	// Create popup element
-	// 	let target = document.getElementById(formId)
-	// 	var div = document.createElement('div');
-	// 	div.classList.add('alert')
-	// 	div.classList.add(type)
-	// 	div.innerHTML = alert;
-	// 	//target.parentNode.insertBefore(div, target);
-  //   //target.insertAdjacentElement('afterend', div); 
-  //   target.appendChild(div);
+	login ? formId = 'login-form' : formId = 'signup-form'
+		// Create popup element
+		let target = document.getElementById(formId)
+		var div = document.createElement('div');
+		div.classList.add('alert')
+		div.classList.add(type)
+		div.innerHTML = alert;
+		//target.parentNode.insertBefore(div, target);
+    //target.insertAdjacentElement('afterend', div); 
+    target.appendChild(div);
 
 		//console.log(type)
 		//e.preventDefault()
