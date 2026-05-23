@@ -633,24 +633,30 @@ function onLogin() {
 }
 
 async function onLogout() {
-	const user = JSON.parse(localStorage.getItem('avatar'))
-	console.log(JSON.parse(localStorage.getItem('avatar')))
-	const body = {token: user.jwtToken}
-	const loading = document.getElementById('loading')
-	
-	loading.classList.add('modal')
-	loading.classList.add('is-visible')
-	loading.innerHTML = '<img src="assets/img/loading.gif"/>'
-	console.log(body)
+	const avatarRaw = localStorage.getItem('avatar');
 
-	const e = await fetch('https://api.oasisweb4.one/api/avatar/revoke-token', 
-	{
-		method: 'POST',
-		body: JSON.stringify(body),
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	})
+  if (avatarRaw && avatarRaw !== 'undefined') 
+  {
+      user = JSON.parse(avatarRaw);
+      console.log("user=", user);
+      const body = {token: user.jwtToken};
+      const loading = document.getElementById('loading');
+
+      loading.classList.add('modal')
+      loading.classList.add('is-visible')
+      loading.innerHTML = '<img src="assets/img/loading.gif"/>'
+      console.log(body)
+
+      const e = await fetch('https://api.oasisweb4.one/api/avatar/revoke-token', 
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+  }
+  
 	localStorage.removeItem('avatar')
 	localStorage.setItem('loggedIn', false)
 	window.location.reload()
