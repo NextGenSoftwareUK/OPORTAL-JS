@@ -713,11 +713,11 @@ else
     return;
   }
 
-console.log("signUpError=", signUpError);
+  //console.log("signUpError=", signUpError);
 
   if (signUpError != null)
   {
-    console.log("hiding error...");
+    //console.log("hiding error...");
     signUpError.style.display = 'none';
     signUpError.innerHTML = "";
   }
@@ -750,8 +750,8 @@ console.log("signUpError=", signUpError);
 		var t;
 		200 === e.status
 			? ((t = await e.json()), addAuthPopup(false, t, e))
-			: ((t = await e.json()), addAuthPopup(false, t, e)),
-			window.location.reload();
+			: ((t = await e.json()), addAuthPopup(false, t, e))//,
+			//window.location.reload();
 	})();
 }
 
