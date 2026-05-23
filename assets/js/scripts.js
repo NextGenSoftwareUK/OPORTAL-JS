@@ -614,7 +614,8 @@ function onLogin() {
     username: document.getElementById('login-email').value,
 		password: document.getElementById('login-password').value,
 	};
-	(async () => {
+	(async () => 
+  {
 		const e = await fetch(
 			'https://api.oasisweb4.one/api/avatar/authenticate',
 			{
@@ -629,8 +630,8 @@ function onLogin() {
 		var t;
 		200 === e.status
 			? ((t = await e.json()), addAuthPopup(true, t, e))
-			: ((submitBtn.classList.add('error')), (t = await e.json()), addAuthPopup(true, t, e)),
-			window.location.reload();
+			: ((submitBtn.classList.add('error')), (t = await e.json()), addAuthPopup(true, t, e))//,
+			//window.location.reload();
 	})();
 }
 
