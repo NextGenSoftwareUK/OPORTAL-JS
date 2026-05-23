@@ -592,6 +592,7 @@ function addAuthPopup(login, msg, e) {
 		//Reloads page after 5sec
 		//setTimeout(()=>window.location.reload(), 5000)
 	}
+  
 	login ? formId = 'login-form' : formId = 'signup-form'
 		// Create popup element
 		let target = document.getElementById(formId)
@@ -600,7 +601,8 @@ function addAuthPopup(login, msg, e) {
 		div.classList.add(type)
 		div.innerHTML = alert;
 		//target.parentNode.insertBefore(div, target);
-    target.insertAdjacentElement('afterend', div); 
+    //target.insertAdjacentElement('afterend', div); 
+    target.appendChild(div);
 		//console.log(type)
 		//e.preventDefault()
 }
