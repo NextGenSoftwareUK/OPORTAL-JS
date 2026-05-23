@@ -585,9 +585,9 @@ function addAuthPopup(login, msg, e) {
 	else {
 		type = 'success'
     console.log("msg=", msg);
-    console.log("msg.avatar=", msg.avatar);
-    console.log("msg.result.avatar=", msg.result.avatar);
-		localStorage.setItem('avatar', JSON.stringify(msg.result.avatar));
+    console.log("msg.result=", msg.result);
+    console.log("msg.result.result=", msg.result.result);
+		localStorage.setItem('avatar', JSON.stringify(msg.result.result));
 		localStorage.setItem('loggedIn', true)
 		//Reloads page after 5sec
 		setTimeout(()=>window.location.reload(), 5000)
