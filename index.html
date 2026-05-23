@@ -59,20 +59,27 @@
       <script type="text/javascript">
         function setup() {
           var user;
-          if (localStorage.getItem('avatar'))
-            user = JSON.parse(localStorage.getItem('avatar'))
+          const avatarRaw = localStorage.getItem('avatar');
+          if (avatarRaw && avatarRaw !== 'undefined') {
+              user = JSON.parse(avatarRaw);
+          }
+          
           var loginDiv = document.querySelector('[data-display="loggedIn"]')
           var avatarDiv = document.querySelector('.nav__item--account')
           var icon = document.getElementsByClassName('avatar')[0]
 
           /*if logged in, hide guest links*/
-          if (localStorage.getItem('loggedIn') === "true"){
-            var guest_links = document.getElementById('guest-links')
-            var username = document.getElementById("username")
-            guest_links.style.display = "none"
-            avatarDiv.classList.add('loggedin')
-            username.innerHTML = user.username
-            icon.src='assets/img/loggedin.png'
+          if (localStorage.getItem('loggedIn') === "true") 
+          {
+            var guest_links = document.getElementById('guest-links');
+            var username = document.getElementById("username");
+            guest_links.style.display = "none";
+            avatarDiv.classList.add('loggedin');
+            
+            if (user && user.username) {           // ← guard here
+                username.innerHTML = user.username;
+            }
+            icon.src = 'assets/img/loggedin.png';
           }
 
           /* Do not show drop down*/
