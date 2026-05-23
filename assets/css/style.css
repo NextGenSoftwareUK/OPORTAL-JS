@@ -1613,7 +1613,7 @@ form {
   }
 }
 
-.alert {
+/* .alert {
   position: absolute;
   padding: 0.1rem 0.3rem;
   font-size: 0.7rem;
@@ -1632,6 +1632,26 @@ form {
 }
 
 .alert.success{
+  background-color: var(--color-success);
+} */
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 500ms ease-in-out forwards;
+  border-radius: 10px;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.alert.error, .error {
+  background-color: var(--color-error);
+}
+
+.alert.success {
   background-color: var(--color-success);
 }
 

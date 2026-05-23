@@ -592,23 +592,32 @@ function addAuthPopup(login, msg, e) {
 		//Reloads page after 5sec
 		//setTimeout(()=>window.location.reload(), 5000)
 	}
-  
-	login ? formId = 'login-form' : formId = 'signup-form'
-		// Create popup element
-		let target = document.getElementById(formId)
-		var div = document.createElement('div');
-		div.classList.add('alert')
-		div.classList.add(type)
-		div.innerHTML = alert;
-		//target.parentNode.insertBefore(div, target);
-    //target.insertAdjacentElement('afterend', div); 
-    target.appendChild(div);
+
+  document.getElementById('login-error').innerHTML = alert;
+  document.getElementById('login-error').style.display = 'block';
+
+	// login ? formId = 'login-form' : formId = 'signup-form'
+	// 	// Create popup element
+	// 	let target = document.getElementById(formId)
+	// 	var div = document.createElement('div');
+	// 	div.classList.add('alert')
+	// 	div.classList.add(type)
+	// 	div.innerHTML = alert;
+	// 	//target.parentNode.insertBefore(div, target);
+  //   //target.insertAdjacentElement('afterend', div); 
+  //   target.appendChild(div);
+
 		//console.log(type)
 		//e.preventDefault()
 }
 
 function onLogin() {
 	// Get button and change it when pressed
+  console.log("login-error=", document.getElementById('login-error'));
+  console.log("login-error.style=", document.getElementById('login-error').style);
+  console.log("login-error.style.display=", document.getElementById('login-error').style.display);
+  document.getElementById('login-error').style.display = 'none';
+
 	const submitBtn = document.getElementById('login-submit')
 	submitBtn.innerHTML = 'logging in... <img width="20px" src="assets/img/loading.gif"/>'
 	submitBtn.disabled = true
