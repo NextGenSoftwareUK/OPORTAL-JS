@@ -712,8 +712,14 @@ else
     return;
   }
 
+console.log("signUpError=", signUpError);
+
   if (signUpError != null)
+  {
+    console.log("hiding error...");
     signUpError.style.display = 'none';
+    signUpError.innerHTML = "";
+  }
 
   const submitBtn = document.getElementById('signup-submit')
 	submitBtn.innerHTML = 'loading... <img width="20px" src="assets/img/loading.gif"/>'
