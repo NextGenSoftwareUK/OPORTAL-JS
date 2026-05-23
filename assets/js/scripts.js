@@ -619,10 +619,10 @@ function addAuthPopup(login, msg, e) {
 
 function onLogin() {
 	// Get button and change it when pressed
-  console.log("login-error=", document.getElementById('login-error'));
-  console.log("login-error.style=", document.getElementById('login-error').style);
-  console.log("login-error.style.display=", document.getElementById('login-error').style.display);
-  document.getElementById('login-error').style.display = 'none';
+  // console.log("login-error=", document.getElementById('login-error'));
+  // console.log("login-error.style=", document.getElementById('login-error').style);
+  // console.log("login-error.style.display=", document.getElementById('login-error').style.display);
+  // document.getElementById('login-error').style.display = 'none';
 
 	const submitBtn = document.getElementById('login-submit')
 	submitBtn.innerHTML = 'logging in... <img width="20px" src="assets/img/loading.gif"/>'
