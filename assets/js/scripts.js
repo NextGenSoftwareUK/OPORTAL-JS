@@ -726,7 +726,9 @@ else
 	submitBtn.innerHTML = 'loading... <img width="20px" src="assets/img/loading.gif"/>'
 	submitBtn.disabled = true
 	let n = {
-		username: document.getElementById('signup-email').value,
+		username: document.getElementById('signup-first-name').value,
+    username: document.getElementById('signup-last-name').value,
+    username: document.getElementById('signup-username').value,
     email: document.getElementById('signup-email').value,
 		password: document.getElementById('signup-password').value,
 		confirmPassword: document.getElementById('confirm-signup-password').value,
