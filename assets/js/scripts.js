@@ -585,7 +585,9 @@ function addAuthPopup(login, msg, e) {
 	else {
 		type = 'success'
     console.log("msg=", msg);
-		localStorage.setItem('avatar', JSON.stringify(msg.avatar));
+    console.log("msg.avatar=", msg.avatar);
+    console.log("msg.result.avatar=", msg.result.avatar);
+		localStorage.setItem('avatar', JSON.stringify(msg.result.avatar));
 		localStorage.setItem('loggedIn', true)
 		//Reloads page after 5sec
 		setTimeout(()=>window.location.reload(), 5000)
@@ -628,7 +630,7 @@ function onLogin() {
 		200 === e.status
 			? ((t = await e.json()), addAuthPopup(true, t, e))
 			: ((submitBtn.classList.add('error')), (t = await e.json()), addAuthPopup(true, t, e)),
-			window.location.reload();
+			//window.location.reload();
 	})();
 }
 
