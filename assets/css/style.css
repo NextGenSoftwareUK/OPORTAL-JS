@@ -57,6 +57,10 @@ ul {
   }
 }
 
+.modal__block[data-type="signup"] {
+    min-width: 560px;
+}
+
 button,
 input {
   margin: 0
