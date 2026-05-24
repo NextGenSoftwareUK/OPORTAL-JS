@@ -752,8 +752,8 @@ else
 	let n = {
 		firstName: document.getElementById('signup-first-name').value,
     lastName: document.getElementById('signup-last-name').value,
-    //username: document.getElementById('signup-username').value,
-    username: document.getElementById('signup-email').value,
+    username: document.getElementById('signup-username').value,
+    //username: document.getElementById('signup-email').value,
     email: document.getElementById('signup-email').value,
 		password: document.getElementById('signup-password').value,
 		confirmPassword: document.getElementById('confirm-signup-password').value,
