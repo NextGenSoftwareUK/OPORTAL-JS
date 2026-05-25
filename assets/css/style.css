@@ -1068,8 +1068,8 @@ body {
   height: var(--header-height);
   margin-right: var(--space-sm);
   margin-left: var(--space-sm);
-  border-radius: 999px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease
+  border-radius: 0;
+  transition: transform 0.2s ease, background-color 0.2s ease
 }
 
 @media (min-width: 48rem) {
@@ -1117,8 +1117,8 @@ body {
 
 .nav-trigger:hover,
 .nav-trigger:focus-visible {
-  box-shadow: 0 0 0 1px var(--interactive-glow-strong), 0 0 18px var(--interactive-glow);
-  background-color: rgba(155, 226, 255, 0.06);
+  box-shadow: none;
+  background-color: transparent;
   transform: translateY(-1px)
 }
 
@@ -1626,6 +1626,15 @@ form {
   color: #fff;
   text-shadow: 0 0 10px var(--interactive-glow-strong);
   filter: drop-shadow(0 0 10px var(--interactive-glow))
+}
+
+.side__list .side__item a:hover,
+.side__list .side__item a:focus-visible,
+.side__list .js-nav__login > a:hover,
+.side__list .js-nav__login > a:focus-visible {
+  color: #fff;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.85));
 }
 
 @media (min-width: 48rem) {
