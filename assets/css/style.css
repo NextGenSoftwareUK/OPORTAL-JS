@@ -182,7 +182,9 @@ svg {
   --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1)
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --interactive-glow: rgba(107, 208, 255, 0.22);
+  --interactive-glow-strong: rgba(155, 226, 255, 0.35)
 }
 
 :root {
@@ -686,6 +688,41 @@ a,
   color: var(--color-2)
 }
 
+a,
+.link,
+.btn,
+button,
+.nav-trigger,
+.password__btn,
+.nav__list .nav__item a,
+.nav__sub-list a,
+.side-nav a,
+.js-modal-trigger {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, color 0.2s ease, background-color 0.2s ease
+}
+
+a:hover,
+a:focus-visible,
+.link:hover,
+.link:focus-visible,
+.nav__list .nav__item a:hover,
+.nav__list .nav__item a:focus-visible,
+.nav__sub-list a:hover,
+.nav__sub-list a:focus-visible,
+.side-nav a:hover,
+.side-nav a:focus-visible,
+.js-modal-trigger:hover,
+.js-modal-trigger:focus-visible {
+  text-shadow: 0 0 10px var(--interactive-glow-strong);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
+}
+
+button:hover,
+button:focus-visible {
+  filter: drop-shadow(0 0 10px var(--interactive-glow));
+  transform: translateY(-1px)
+}
+
 *:focus {
   outline: 0
 }
@@ -712,18 +749,19 @@ a,
   cursor: pointer;
   padding: var(--space-xs) var(--space-sm);
   border-radius: 50em;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, -webkit-transform 0.2s;
-  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
-  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s, -webkit-transform 0.2s
+  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s, filter 0.2s, -webkit-transform 0.2s;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s, filter 0.2s;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s, filter 0.2s, -webkit-transform 0.2s
 }
 
 .btn:hover {
   cursor: pointer;
-  box-shadow: var(--shadow-sm)
+  box-shadow: 0 0 0 1px var(--interactive-glow-strong), 0 0 18px var(--interactive-glow), var(--shadow-sm);
+  filter: brightness(1.05)
 }
 
 .btn:focus {
-  box-shadow: 0px 0px 0px 2px hsla(var(--color-contrast-higher-h), var(--color-contrast-higher-s), var(--color-contrast-higher-l), 0.15)
+  box-shadow: 0px 0px 0px 2px hsla(var(--color-contrast-higher-h), var(--color-contrast-higher-s), var(--color-contrast-higher-l), 0.15), 0 0 18px var(--interactive-glow)
 }
 
 .btn:active {
@@ -738,11 +776,11 @@ a,
 
 .btn--primary:hover {
   background-color: var(--color-primary-dark);
-  box-shadow: 0 0 8px hsla(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l), 0.5)
+  box-shadow: 0 0 0 1px var(--interactive-glow-strong), 0 0 12px hsla(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l), 0.55), 0 0 24px var(--interactive-glow)
 }
 
 .btn--primary:focus {
-  box-shadow: 0px 0px 0px 2px hsla(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l), 0.2)
+  box-shadow: 0px 0px 0px 2px hsla(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l), 0.2), 0 0 18px var(--interactive-glow)
 }
 
 .btn--md {
@@ -937,7 +975,8 @@ body {
 
 .nav__list .nav__item a:hover {
   color: var(--color-2);
-  transition: all 0.2s ease
+  text-shadow: 0 0 10px var(--interactive-glow-strong);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
 }
 
 .nav__item--account {
@@ -985,6 +1024,8 @@ body {
 
 .nav__sub-list a:hover {
   color: #fff;
+  text-shadow: 0 0 10px var(--interactive-glow-strong);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
 }
 
 .nav__sub-list * {
@@ -1040,6 +1081,17 @@ body {
   transition: -webkit-transform .2s;
   transition: transform .2s;
   transition: transform .2s, -webkit-transform .2s
+}
+
+.nav-trigger:hover span,
+.nav-trigger:hover span::before,
+.nav-trigger:hover span::after,
+.nav-trigger:focus-visible span,
+.nav-trigger:focus-visible span::before,
+.nav-trigger:focus-visible span::after {
+  background: var(--color-2);
+  box-shadow: 0 0 12px var(--interactive-glow-strong);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
 }
 
 .nav-trigger span::before {
@@ -1219,7 +1271,13 @@ form {
 }
 
 .password__btn:focus {
-  color: var(--color-primary)
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
+}
+
+.password__btn:hover {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 10px var(--interactive-glow-strong))
 }
 
 .password__btn-label:last-child {
@@ -1537,7 +1595,9 @@ form {
 }
 
 .side-nav a:hover {
-  color: #fff
+  color: #fff;
+  text-shadow: 0 0 10px var(--interactive-glow-strong);
+  filter: drop-shadow(0 0 10px var(--interactive-glow))
 }
 
 @media (min-width: 48rem) {
