@@ -23,10 +23,15 @@
     if (!panel) return;
 
     var badgeClass = state ? 'status-card status-card--' + state : 'status-card';
+    var messageHtml = escapeHtml(message || '');
+    if (state === 'loading') {
+      messageHtml +=
+        ' <span class="status-spinner" aria-hidden="true"></span>';
+    }
     panel.className = badgeClass;
     panel.innerHTML =
       '<h2>' + escapeHtml(title || '') + '</h2>' +
-      '<p>' + escapeHtml(message || '') + '</p>';
+      '<p>' + messageHtml + '</p>';
   }
 
   async function readResponse(response) {
