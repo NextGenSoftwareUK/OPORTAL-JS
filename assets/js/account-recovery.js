@@ -158,11 +158,8 @@
           statusPanel,
           'success',
           'Password updated',
-          getMessage(data) || 'Your password has been reset. You can return to the portal and sign in again.'
+          getMessage(data) || 'Password updated successfully. Click Return to portal when you are ready.'
         );
-        window.setTimeout(function () {
-          window.location.href = '/';
-        }, 5000);
       } else {
         setPanel(statusPanel, 'error', 'Reset failed', getMessage(data) || 'Something went wrong.');
       }
@@ -193,11 +190,8 @@
         panel,
         'success',
         'Email verified',
-        getMessage(data) || 'Your email address has been verified. Redirecting you back to the portal.'
+        getMessage(data) || 'Email verified successfully. Click Return to portal when you are ready.'
       );
-      window.setTimeout(function () {
-        window.location.href = '/';
-      }, 4000);
     } else {
       setPanel(panel, 'error', 'Verification failed', getMessage(data) || 'Something went wrong.');
     }
