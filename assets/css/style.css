@@ -1011,12 +1011,13 @@ body {
   padding: auto 0;
   text-align: center;
   filter: brightness(0) invert(1);
-  width: 2em
+  width: 2em;
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease
 }
 
 .top-nav .nav__item--account > a:hover img,
 .top-nav .nav__item--account > a:focus-visible img {
-  filter: brightness(0) invert(1) drop-shadow(0 0 10px var(--interactive-glow-strong));
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 12px rgba(155, 226, 255, 0.7)) drop-shadow(0 0 18px rgba(107, 208, 255, 0.45));
 }
 
 .nav__item--account.loggedin:hover .nav__sub-list {
