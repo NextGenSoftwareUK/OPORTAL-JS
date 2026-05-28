@@ -1728,6 +1728,49 @@ form {
   border-color: rgba(255, 141, 141, 0.35);
 }
 
+.menu-message {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  width: min(92vw, 420px);
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(107, 208, 255, 0.24);
+  background: rgba(7, 15, 26, 0.94);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(155, 226, 255, 0.08), 0 0 30px rgba(107, 208, 255, 0.16);
+  color: var(--color-white);
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.menu-message h3 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+
+.menu-message p {
+  margin: 0;
+  color: var(--color-contrast-medium);
+  line-height: 1.55;
+}
+
+.menu-message--show {
+  display: block !important;
+  animation: menu-message-in 160ms ease-out;
+}
+
+@keyframes menu-message-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 @media (min-width: 48rem) {
   .side-nav {
     width: var(--sidebar-width);

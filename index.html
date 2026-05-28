@@ -103,10 +103,46 @@
           }
           showCheckAPIMessage();
         }
+
+        function showMenuMessage(title, message) {
+          var panel = document.getElementById('menu-message');
+          if (!panel) return;
+
+          panel.innerHTML = '<h3>' + title + '</h3><p>' + message + '</p>';
+          panel.hidden = false;
+          panel.classList.add('menu-message--show');
+
+          clearTimeout(window.__menuMessageTimer);
+          window.__menuMessageTimer = setTimeout(function () {
+            panel.classList.remove('menu-message--show');
+            panel.hidden = true;
+          }, 2800);
+        }
+
+        function showCheckAPIMessage() {
+          if (localStorage.getItem('loggedIn') === "true") {
+            showMenuMessage('Check API', 'This area is available after sign in. Select a linked action from the menu to continue.');
+          } else {
+            showMenuMessage('Sign in required', 'Please log in first to use this area.');
+          }
+        }
+
+        function showComingSoonMessage() {
+          showMenuMessage('Coming soon', 'This feature is planned for a future update.');
+        }
+
+        function showSTARMessage() {
+          showMenuMessage('STAR / OApp tools', 'These developer tools are part of the WEB5 STAR stack and will be opened from the Developer menu.');
+        }
+
+        function showOurWorldMessage() {
+          showMenuMessage('Our World', 'This section is tied to the Our World / map experience and will open there when the flow is ready.');
+        }
       </script>
     </header>
     <main class="main-content">
       <div id="loading"></div>
+      <div id="menu-message" class="menu-message" hidden aria-live="polite"></div>
       <nav class="side-nav js-side-nav">
         <ul class="side__list js-side__list ">
           <!-- <li class="side__item">
