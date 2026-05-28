@@ -994,9 +994,9 @@ body {
 
 .top-nav .nav__list .nav__item a:hover,
 .top-nav .nav__list .nav__item a:focus-visible {
-  color: var(--color-2);
-  text-shadow: 0 0 6px rgba(107, 208, 255, 0.95), 0 0 14px rgba(107, 208, 255, 0.9), 0 0 28px rgba(69, 175, 255, 0.7);
-  filter: drop-shadow(0 0 12px rgba(107, 208, 255, 0.95)) drop-shadow(0 0 20px rgba(69, 175, 255, 0.65));
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 1), 0 0 14px rgba(155, 226, 255, 1), 0 0 28px rgba(107, 208, 255, 0.85);
+  filter: drop-shadow(0 0 12px rgba(155, 226, 255, 0.95)) drop-shadow(0 0 20px rgba(107, 208, 255, 0.65));
   transform: none
 }
 
@@ -1649,8 +1649,8 @@ form {
 .modal__block .js-modal-trigger:hover,
 .modal__block .js-modal-trigger:focus-visible {
   color: var(--color-2);
-  text-shadow: 0 0 6px rgba(107, 208, 255, 0.95), 0 0 14px rgba(107, 208, 255, 0.9), 0 0 28px rgba(69, 175, 255, 0.7);
-  filter: drop-shadow(0 0 12px rgba(107, 208, 255, 0.95)) drop-shadow(0 0 20px rgba(69, 175, 255, 0.65));
+  text-shadow: 0 0 3px rgba(107, 208, 255, 0.6), 0 0 8px rgba(107, 208, 255, 0.35), 0 0 14px rgba(69, 175, 255, 0.18);
+  filter: drop-shadow(0 0 4px rgba(107, 208, 255, 0.35)) drop-shadow(0 0 8px rgba(69, 175, 255, 0.2));
 }
 
 #signup-form a[href="#0"]:hover,
@@ -1658,8 +1658,8 @@ form {
 #login-form a[href="#0"]:hover,
 #login-form a[href="#0"]:focus-visible {
   color: var(--color-2);
-  text-shadow: 0 0 6px rgba(107, 208, 255, 0.95), 0 0 14px rgba(107, 208, 255, 0.9), 0 0 28px rgba(69, 175, 255, 0.7);
-  filter: drop-shadow(0 0 12px rgba(107, 208, 255, 0.95)) drop-shadow(0 0 20px rgba(69, 175, 255, 0.65));
+  text-shadow: 0 0 3px rgba(107, 208, 255, 0.6), 0 0 8px rgba(107, 208, 255, 0.35), 0 0 14px rgba(69, 175, 255, 0.18);
+  filter: drop-shadow(0 0 4px rgba(107, 208, 255, 0.35)) drop-shadow(0 0 8px rgba(69, 175, 255, 0.2));
 }
 
 @media (min-width: 48rem) {
