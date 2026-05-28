@@ -1632,18 +1632,16 @@ form {
 }
 
 .side-nav a:hover {
-  color: #fff;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 1), 0 0 14px rgba(255, 255, 255, 0.95), 0 0 26px rgba(255, 255, 255, 0.55);
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 18px rgba(255, 255, 255, 0.55))
+  color: #00e5ff;
+  filter:drop-shadow(0 0 8px rgba(0,229,255,1)) drop-shadow(0 0 20px rgba(0,229,255,.8)) drop-shadow(0 0 40px rgba(0,229,255,.4))
 }
 
 .side__list .side__item a:hover,
 .side__list .side__item a:focus-visible,
 .side__list .js-nav__login > a:hover,
 .side__list .js-nav__login > a:focus-visible {
-  color: #fff;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 1), 0 0 14px rgba(255, 255, 255, 0.95), 0 0 28px rgba(255, 255, 255, 0.65);
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+  color: #00e5ff;
+  filter:drop-shadow(0 0 8px rgba(0,229,255,1)) drop-shadow(0 0 20px rgba(0,229,255,.8)) drop-shadow(0 0 40px rgba(0,229,255,.4))
 }
 
 .modal__block .js-modal-trigger:hover,
