@@ -1649,8 +1649,8 @@ form {
 .modal__block .js-modal-trigger:hover,
 .modal__block .js-modal-trigger:focus-visible {
   color: var(--color-2);
-  text-shadow: 0 0 3px rgba(107, 208, 255, 0.6), 0 0 8px rgba(107, 208, 255, 0.35), 0 0 14px rgba(69, 175, 255, 0.18);
-  filter: drop-shadow(0 0 4px rgba(107, 208, 255, 0.35)) drop-shadow(0 0 8px rgba(69, 175, 255, 0.2));
+  text-shadow: 0 0 2px rgba(107, 208, 255, 0.55), 0 0 6px rgba(69, 175, 255, 0.2);
+  filter: none;
 }
 
 #signup-form a[href="#0"]:hover,
@@ -1658,8 +1658,8 @@ form {
 #login-form a[href="#0"]:hover,
 #login-form a[href="#0"]:focus-visible {
   color: var(--color-2);
-  text-shadow: 0 0 3px rgba(107, 208, 255, 0.6), 0 0 8px rgba(107, 208, 255, 0.35), 0 0 14px rgba(69, 175, 255, 0.18);
-  filter: drop-shadow(0 0 4px rgba(107, 208, 255, 0.35)) drop-shadow(0 0 8px rgba(69, 175, 255, 0.2));
+  text-shadow: 0 0 2px rgba(107, 208, 255, 0.55), 0 0 6px rgba(69, 175, 255, 0.2);
+  filter: none;
 }
 
 @media (min-width: 48rem) {
