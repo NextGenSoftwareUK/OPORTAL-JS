@@ -94,6 +94,15 @@
           }
         }
         setup()
+
+        function goToAvatar(event) {
+          if (event) event.preventDefault();
+          if (localStorage.getItem('loggedIn') === "true") {
+            window.location.href = event && event.currentTarget ? event.currentTarget.getAttribute('data-avatar-route') : '/avatar/';
+            return;
+          }
+          showCheckAPIMessage();
+        }
       </script>
     </header>
     <main class="main-content">
@@ -129,8 +138,8 @@
           <li class="side__item item--has-children js-item--has-children">
             <a href="#0">Avatar</a>
             <ul class="sub-menu">
-              <li><a href="/avatar/">View Avatar</a></li>
-              <li><a href="/avatar/#edit">Edit Avatar</a></li>
+              <li><a href="#0" onclick="goToAvatar(event)" data-avatar-route="/avatar/">View Avatar</a></li>
+              <li><a href="#0" onclick="goToAvatar(event)" data-avatar-route="/avatar/#edit">Edit Avatar</a></li>
               <li><a onclick="showCheckAPIMessage();" href="#">Search Avatars</a></li>
               <li><a onclick="showCheckAPIMessage();" href="#">Account Details</a></li>
             </ul>
@@ -250,25 +259,19 @@
             </ul>
           </li>
           <li class="side__item item--has-children js-item--has-children">
-            <a href="#0">WEB4 / WEB5 API</a>
+            <a href="#0">Developer</a>
             <ul class="sub-menu">
-              <li><a target="_blank" href="https://api.oasisweb4.one">WEB4 OASIS API Live</a></li>
+              <li><a target="_blank" href="https://api.oasisweb4.one">WEB4 OASIS API</a></li>
               <li><a target="_blank" href="https://staging.api.oasisweb4.one">WEB4 OASIS API Staging</a></li>
-              <li><a target="_blank" href="https://oasisweb4.one">WEB4 API UI Live</a></li>
+              <li><a target="_blank" href="https://oasisweb4.one">WEB4 API UI</a></li>
               <li><a target="_blank" href="https://staging.oasisweb4.one">WEB4 API UI Staging</a></li>
               <li><a onclick="showSTARMessage();" href="#">WEB5 STAR API</a></li>
               <li><a onclick="showSTARMessage();" href="#">STAR ODK</a></li>
-              <li><a target="_blank" href="postman/OASIS_API.postman_collection.json">Postman Collection</a></li>
-              <li><a target="_blank" href="postman/OASIS_API_DEV.postman_environment.json">Dev Environment</a></li>
-              <li><a target="_blank" href="postman/OASIS_API_STAGING.postman_environment.json">Staging Environment</a></li>
-              <li><a target="_blank" href="postman/OASIS_API_LIVE.postman_environment.json">Live Environment</a></li>
-              <li><a target="_blank" href="https://github.com/NextGenSoftwareUK/Our-World-OASIS-API-HoloNET-HoloUnity-And-.NET-HDK">Code / Documentation</a></li>
-            </ul>
-          </li>
-          <li class="side__item item--has-children js-item--has-children">
-            <a href="#0">Developer</a>
-            <ul class="sub-menu">
-              <li><a target="_blank" href="https://github.com/NextGenSoftwareUK/Our-World-OASIS-API-HoloNET-HoloUnity-And-.NET-HDK">GitHub Repo</a></li>
+              <li><a target="_blank" href="postman/OASIS_API.postman_collection.json">API Docs / Postman</a></li>
+              <li><a target="_blank" href="postman/OASIS_API_DEV.postman_environment.json">Postman Dev Env</a></li>
+              <li><a target="_blank" href="postman/OASIS_API_STAGING.postman_environment.json">Postman Staging Env</a></li>
+              <li><a target="_blank" href="postman/OASIS_API_LIVE.postman_environment.json">Postman Live Env</a></li>
+              <li><a target="_blank" href="https://github.com/NextGenSoftwareUK/Our-World-OASIS-API-HoloNET-HoloUnity-And-.NET-HDK">GitHub / Documentation</a></li>
               <li><a target="_blank" href="https://www.thejusticeleagueaccademy.icu/">The Justice League Academy</a></li>
             </ul>
           </li>

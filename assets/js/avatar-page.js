@@ -202,8 +202,7 @@
     var loggedIn = localStorage.getItem('loggedIn') === 'true';
 
     if (!profile || !loggedIn) {
-      setStatus('error', 'Sign in required', 'Please sign in to view and edit your avatar.');
-      setMode('view');
+      window.location.replace('/');
       return;
     }
 
