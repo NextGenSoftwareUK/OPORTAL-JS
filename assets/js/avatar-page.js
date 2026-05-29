@@ -140,6 +140,8 @@
     var lastName = pickValue(normalized, ['lastName', 'LastName']);
     var address = pickValue(normalized, ['address', 'Address']);
 
+    username = username + ' (77)';  //TODO: Need to get real level by loading avatar detail. (same as XP, Karma, address etc)
+
     var avatarImage = getById('avatar-image');
     if (avatarImage) {
       avatarImage.src = localStorage.getItem('loggedIn') === 'true' ? '../assets/img/loggedin.png' : '../assets/img/loggedout.png';
