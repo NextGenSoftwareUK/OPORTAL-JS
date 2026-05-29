@@ -839,6 +839,16 @@ button:focus-visible {
   outline: none
 }
 
+.form-control.form-control--error {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 2px hsla(var(--color-error-h), var(--color-error-s), var(--color-error-l), 0.22);
+}
+
+.form-control.form-control--error:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 2px hsla(var(--color-error-h), var(--color-error-s), var(--color-error-l), 0.28);
+}
+
 .form-label {
   color: var(--color-contrast-medium);
   font-family: var(--font-primary);

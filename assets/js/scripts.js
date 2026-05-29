@@ -714,43 +714,109 @@ async function onLogout() {
 	window.location.reload()
 }
 
+function setSignupError(message) {
+  var signUpError = document.getElementById("signup-error");
+  if (signUpError == null) {
+    var target = document.getElementById('signup-form');
+    if (!target) return;
+    var div = document.createElement('div');
+    div.id = "signup-error";
+    div.classList.add('alert');
+    div.classList.add('error');
+    div.style.marginTop = '10px';
+    div.innerHTML = message;
+    target.appendChild(div);
+    return;
+  }
+
+  signUpError.style.display = 'block';
+  signUpError.innerHTML = message;
+}
+
+function clearSignupError() {
+  var signUpError = document.getElementById("signup-error");
+  if (signUpError != null) {
+    signUpError.style.display = 'none';
+    signUpError.innerHTML = "";
+  }
+}
+
+function validateSignupPasswords(showOnMismatch) {
+  var passwordEl = document.getElementById("signup-password");
+  var confirmPasswordEl = document.getElementById("confirm-signup-password");
+
+  if (!passwordEl || !confirmPasswordEl) {
+    return true;
+  }
+
+  var password = passwordEl.value;
+  var confirmPassword = confirmPasswordEl.value;
+
+  if (!password || !confirmPassword) {
+    confirmPasswordEl.classList.remove('form-control--error');
+    confirmPasswordEl.removeAttribute('aria-invalid');
+    clearSignupError();
+    return true;
+  }
+
+  if (password !== confirmPassword) {
+    confirmPasswordEl.classList.add('form-control--error');
+    confirmPasswordEl.setAttribute('aria-invalid', 'true');
+    if (showOnMismatch) {
+      setSignupError("Passwords do not match.");
+    } else {
+      clearSignupError();
+    }
+    return false;
+  }
+
+  confirmPasswordEl.classList.remove('form-control--error');
+  confirmPasswordEl.removeAttribute('aria-invalid');
+  clearSignupError();
+  return true;
+}
+
+function initSignupPasswordValidation() {
+  var passwordEl = document.getElementById("signup-password");
+  var confirmPasswordEl = document.getElementById("confirm-signup-password");
+
+  if (!passwordEl || !confirmPasswordEl) {
+    return;
+  }
+
+  var handleSignupPasswordInput = function () {
+    validateSignupPasswords(false);
+  };
+
+  passwordEl.addEventListener('input', handleSignupPasswordInput);
+  confirmPasswordEl.addEventListener('input', handleSignupPasswordInput);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSignupPasswordValidation);
+} else {
+  initSignupPasswordValidation();
+}
+
 function onSignup() {
 	// Get button and change it when pressed
 
   var acceptTerms = document.getElementById("acceptTerms");
-  var signUpError = document.getElementById("signup-error");
 
   if (acceptTerms && !acceptTerms.checked) 
   { 
-    if (signUpError == null)
-    {
-      var formId = 'signup-form';
-      // Create popup element
-      let target = document.getElementById(formId)
-      var div = document.createElement('div');
-      div.id = "signup-error";
-      div.classList.add('alert')
-      div.classList.add('error')
-      div.style.marginTop = '10px'
-      div.innerHTML = "You must accept the terms and conditions.";
-      //target.parentNode.insertBefore(div, target);
-      //target.insertAdjacentElement('afterend', div); 
-      target.appendChild(div);
-    }
-else
-  signUpError.innerHTML = "You must accept the terms and conditions.";
+    setSignupError("You must accept the terms and conditions.");
 
     return;
   }
 
-  //console.log("signUpError=", signUpError);
+  if (!validateSignupPasswords(true)) {
 
-  if (signUpError != null)
-  {
-    //console.log("hiding error...");
-    signUpError.style.display = 'none';
-    signUpError.innerHTML = "";
+    document.getElementById("confirm-signup-password").focus();
+    return;
   }
+
+  clearSignupError();
 
   const submitBtn = document.getElementById('signup-submit')
 	submitBtn.innerHTML = 'Loading... <img width="20px" style="margin-left: 5px;" src="assets/img/loading.gif"/>'
