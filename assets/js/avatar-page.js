@@ -78,6 +78,13 @@
     return '';
   }
 
+  function normalizeAvatarType(profile) {
+    var value = pickValue(profile, ['avatarType', 'AvatarType', 'type', 'Type', 'avatarTypeName', 'AvatarTypeName', 'role', 'Role']);
+    if (!value) return 'User';
+    if (/^\d+$/.test(value)) return 'User';
+    return value;
+  }
+
   function setFieldText(selector, value) {
     var nodes = document.querySelectorAll(selector);
     if (!nodes.length) return;
@@ -126,8 +133,8 @@
     var normalized = profile || {};
     var displayName = getDisplayName(normalized);
     var username = pickValue(normalized, ['username', 'userName', 'UserName']);
-    var email = pickValue(normalized, ['email', 'Email']);
-    var avatarType = pickValue(normalized, ['avatarType', 'AvatarType']) || 'User';
+    var email = pickValue(normalized, ['email', 'Email', 'emailAddress', 'EmailAddress']);
+    var avatarType = normalizeAvatarType(normalized);
     var title = pickValue(normalized, ['title', 'Title']);
     var firstName = pickValue(normalized, ['firstName', 'FirstName']);
     var lastName = pickValue(normalized, ['lastName', 'LastName']);
