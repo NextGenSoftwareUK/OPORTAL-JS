@@ -717,6 +717,13 @@ a:focus-visible,
   filter: drop-shadow(0 0 10px rgba(155, 226, 255, 0.85)) drop-shadow(0 0 16px rgba(107, 208, 255, 0.55))
 }
 
+.nav__sub-link--glow:hover,
+.nav__sub-link--glow:focus-visible {
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.95), 0 0 12px rgba(155, 226, 255, 0.95), 0 0 22px rgba(107, 208, 255, 0.7);
+  filter: drop-shadow(0 0 10px rgba(155, 226, 255, 0.85)) drop-shadow(0 0 16px rgba(107, 208, 255, 0.55));
+}
+
 button:hover,
 button:focus-visible {
   filter: drop-shadow(0 0 10px var(--interactive-glow));
