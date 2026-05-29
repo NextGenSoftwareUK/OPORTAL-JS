@@ -1,4 +1,10 @@
 // File: util.js
+//var apiUrl = "https://api.oasisweb4.one";
+var apiUrl = "https://oasisapionode-hseudrexdvbhenhv.canadacentral-01.azurewebsites.net";
+//var apiUrl = "https://api.oasisomniverse.one";
+//var apiUrl = "https://star.oasisomniverse.one";
+//var apiUrl = "https://api.web4.oasisomniverse.one";
+//var apiUrl = "https://api.web5.oasisomniverse.one";
 
 function Util() {};
 
@@ -660,7 +666,7 @@ function onLogin() {
 	(async () => 
   {
 		const e = await fetch(
-			'https://api.oasisweb4.one/api/avatar/authenticate',
+			`${apiUrl}/api/avatar/authenticate`,
 			{
 				method: 'POST',
 				body: JSON.stringify(n),
@@ -693,7 +699,7 @@ async function onLogout() {
       loading.innerHTML = '<img src="assets/img/loading.gif"/>'
       console.log(body)
 
-      const e = await fetch('https://api.oasisweb4.one/api/avatar/revoke-token', 
+      const e = await fetch(`${apiUrl}/api/avatar/revoke-token`, 
       {
         method: 'POST',
         body: JSON.stringify(body),
@@ -762,7 +768,7 @@ else
 	};
 	(async () => {
 		const e = await fetch(
-			'https://api.oasisweb4.one/api/avatar/register',
+			`${apiUrl}/api/avatar/register`,
 			{
 				method: 'POST',
 				body: JSON.stringify(n),
