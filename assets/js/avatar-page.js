@@ -79,9 +79,11 @@
   }
 
   function setFieldText(selector, value) {
-    var el = document.querySelector(selector);
-    if (!el) return;
-    el.textContent = value || 'Not set';
+    var nodes = document.querySelectorAll(selector);
+    if (!nodes.length) return;
+    nodes.forEach(function (el) {
+      el.textContent = value || 'Not set';
+    });
   }
 
   function setStatus(state, title, message) {
