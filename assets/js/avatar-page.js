@@ -1,5 +1,5 @@
 (function () {
-  var API_BASE = 'https://api.oasisweb4.one';
+  var API_BASE = window.apiUrl;
   var storageKey = 'avatar';
 
   function getById(id) {
