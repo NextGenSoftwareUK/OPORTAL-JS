@@ -1,107 +1,74 @@
 <div class="modal__block js-modal-block avatar-modal-block" data-type="avatar" id="avatar-modal-block">
-  <section class="avatar-modal-shell" aria-label="Avatar details">
+  <section class="avatar-modal-shell" aria-label="Avatar profile">
     <div class="avatar-modal-card">
+
       <div class="avatar-modal-top">
         <div class="avatar-modal-brand">
           <div>
-            <h1 id="avatar-modal-title">View Avatar</h1>
-            <p class="avatar-modal-lead" id="avatar-modal-subtitle">Your current avatar profile and account information.</p>
+            <h1 id="avatar-modal-title">My Avatar</h1>
+            <p class="avatar-modal-lead" id="avatar-modal-subtitle">Your OASIS avatar profile.</p>
           </div>
         </div>
         <div class="avatar-modal-actions">
           <button id="avatar-modal-close-btn" class="button button--ghost" type="button">Close</button>
-          <button id="avatar-modal-edit-btn" class="button" type="button">Edit avatar</button>
-          <button id="avatar-modal-cancel-btn" class="button button--ghost" type="button" hidden>Cancel</button>
-          <button id="avatar-modal-save-btn" class="button" type="button" hidden>Save changes</button>
         </div>
       </div>
 
-      <div id="avatar-modal-view">
-        <div class="avatar-modal-grid">
-          <aside class="avatar-modal-panel avatar-modal-summary">
-            <div class="avatar-modal-summary-avatar">
-              <img id="avatar-modal-image-large" src="assets/img/loggedin.png" alt="Avatar" />
-            </div>
-            <div class="summary-name">
-              <h2 data-avatar-modal-field="username">Avatar</h2>
-            </div>
-            <div class="summary-name">
-              <p data-avatar-modal-field="karma"><b>Karma: 777</b></p>
-              <p data-avatar-modal-field="xp">XP: 777</p>
-            </div>
-          </aside>
+      <div id="avatar-modal-status" class="avatar-inline-status" hidden></div>
 
-          <div class="avatar-modal-panel">
-            <div class="detail-list avatar-modal-detail-list">
-              <div class="detail-row">
-                <div class="detail-label">Title</div>
-                <div class="detail-value" data-avatar-modal-field="title">Not set</div>
-              </div>
-              <div class="detail-row">
-                <div class="detail-label">First Name</div>
-                <div class="detail-value" data-avatar-modal-field="firstName">Not set</div>
-              </div>
-              <div class="detail-row">
-                <div class="detail-label">Last Name</div>
-                <div class="detail-value" data-avatar-modal-field="lastName">Not set</div>
-              </div>
-              <div class="detail-row">
-                <div class="detail-label">Email</div>
-                <div class="detail-value" data-avatar-modal-field="email">Not set</div>
-              </div>
-              <div class="detail-row">
-                <div class="detail-label">Address</div>
-                <div class="detail-value" data-avatar-modal-field="address">Not set</div>
-              </div>
-            </div>
+      <div class="avatar-modal-unified">
+
+        <!-- Left: summary panel -->
+        <aside class="avatar-modal-summary">
+          <div class="avatar-modal-summary-avatar">
+            <img id="avatar-modal-image-large" src="assets/img/loggedin.png" alt="Avatar" />
           </div>
-        </div>
-      </div>
+          <div class="avatar-summary-name" id="avatar-summary-display-name">Avatar</div>
+          <div class="avatar-summary-meta">
+            <span class="avatar-summary-badge avatar-summary-badge--karma" id="avatar-summary-karma">Karma: —</span>
+            <span class="avatar-summary-badge avatar-summary-badge--xp" id="avatar-summary-xp">XP: —</span>
+          </div>
+          <div class="avatar-summary-badge avatar-summary-badge--type" id="avatar-summary-type">User</div>
+        </aside>
 
-      <div id="avatar-modal-edit" hidden>
-        <div class="avatar-modal-panel">
-          <div class="mode-head">
-            <div>
-              <h2>Edit your avatar</h2>
-              <p>Update your profile fields and save the changes back to OASIS.</p>
-            </div>
+        <!-- Right: inline-editable fields -->
+        <div class="avatar-modal-fields">
+          <div class="avatar-field-section-label">PROFILE</div>
+
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-title">Title</label>
+            <input class="avatar-field-input" id="av-title" type="text" autocomplete="honorific-prefix" placeholder="Dr, Mr, Ms…" data-av-field="title" />
+          </div>
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-firstName">First Name</label>
+            <input class="avatar-field-input" id="av-firstName" type="text" autocomplete="given-name" placeholder="First name" data-av-field="firstName" />
+          </div>
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-lastName">Last Name</label>
+            <input class="avatar-field-input" id="av-lastName" type="text" autocomplete="family-name" placeholder="Last name" data-av-field="lastName" />
+          </div>
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-username">Username</label>
+            <input class="avatar-field-input" id="av-username" type="text" autocomplete="username" placeholder="Username" data-av-field="username" />
           </div>
 
-          <form class="edit-form" onsubmit="return false">
-            <div class="field-grid">
-              <div class="field">
-                <label for="avatar-modal-title-input">Title</label>
-                <input id="avatar-modal-title-input" type="text" autocomplete="honorific-prefix" placeholder="Dr" />
-              </div>
-              <div class="field">
-                <label for="avatar-modal-firstName">First Name</label>
-                <input id="avatar-modal-firstName" type="text" autocomplete="given-name" placeholder="John" />
-              </div>
-            </div>
+          <div class="avatar-field-section-label" style="margin-top:20px">CONTACT</div>
 
-            <div class="field-grid">
-              <div class="field">
-                <label for="avatar-modal-lastName">Last Name</label>
-                <input id="avatar-modal-lastName" type="text" autocomplete="family-name" placeholder="Doe" />
-              </div>
-              <div class="field">
-                <label for="avatar-modal-username">Username</label>
-                <input id="avatar-modal-username" type="text" autocomplete="username" placeholder="johndoe" />
-              </div>
-            </div>
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-email">Email</label>
+            <input class="avatar-field-input" id="av-email" type="email" autocomplete="email" placeholder="name@example.com" data-av-field="email" />
+          </div>
+          <div class="avatar-field-row">
+            <label class="avatar-field-label" for="av-address">Address</label>
+            <input class="avatar-field-input" id="av-address" type="text" placeholder="Optional" data-av-field="address" />
+          </div>
 
-            <div class="field-grid">
-              <div class="field">
-                <label for="avatar-modal-email">Email</label>
-                <input id="avatar-modal-email" type="email" autocomplete="email" placeholder="name@example.com" />
-              </div>
-              <div class="field">
-                <label for="avatar-modal-address">Address</label>
-                <input id="avatar-modal-address" type="text" placeholder="Optional" />
-              </div>
-            </div>
-          </form>
+          <div class="avatar-field-footer">
+            <button id="avatar-modal-save-btn" class="button avatar-save-btn" type="button" hidden>Save Changes</button>
+            <button id="avatar-modal-discard-btn" class="button button--ghost" type="button" hidden>Discard</button>
+          </div>
         </div>
+
       </div>
 
     </div>
