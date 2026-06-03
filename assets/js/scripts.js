@@ -611,9 +611,20 @@ function addAuthPopup(login, msg, e) {
       localStorage.setItem('loggedIn', true)
       user = avatarProfile;
       window.user = avatarProfile;
-
-      //Reloads page after 5sec
-      //setTimeout(()=>window.location.reload(), 5000)
+      if (typeof setup === 'function') {
+        setup();
+      }
+      alert = 'Beam In Successful';
+      setTimeout(function () {
+        var activeModal = document.querySelector('.js-modal.is-visible');
+        if (activeModal) {
+          removeClass(activeModal, 'is-visible');
+        }
+        var selectedBlocks = document.querySelectorAll('.js-modal-block.is-selected');
+        selectedBlocks.forEach(function (block) {
+          removeClass(block, 'is-selected');
+        });
+      }, 900);
     }
     else
         alert = msg.result.message;
