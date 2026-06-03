@@ -1,0 +1,19 @@
+<div class="modal__block js-modal-block" data-type="forgot">
+  <form id="forgot-form" class="margin-bottom-sm" role="alertdialog" method="POST" onsubmit="return false">
+    <div class="text-component text-center margin-bottom-lg">
+      <h1 class="font-normal">Forgot Password?</h1>
+      <p class="color-contrast-medium">Enter the email address associated with your OASIS account and we will send a reset link if the account exists.</p>
+    </div>
+    <div class="margin-bottom-lg">
+      <label class="form-label" for="forgot-email">Email</label>
+      <input aria-label="Email" class="form-control width-100%" type="email" name="email" id="forgot-email" placeholder="name@example.com" autocomplete="email" required>
+    </div>
+    <div class="flex flex-center margin-y-md">
+      <button aria-label="Submit" id="forgot-submit" class="btn btn--md btn--primary width-50%" type="submit" form="forgot-form">Submit</button>
+    </div>
+  </form>
+  <div id="forgot-status" class="status-card" aria-live="polite">
+    <h2>Ready to send</h2>
+    <p>We will let you know once the reset request is processed.</p>
+  </div>
+</div>

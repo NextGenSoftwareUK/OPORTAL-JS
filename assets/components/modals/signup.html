@@ -1,0 +1,54 @@
+<div class="modal__block js-modal-block" data-type="signup">
+  <form id="signup-form" class="margin-bottom-sm" role="alertdialog" method="POST" onsubmit="return false">
+    <div class="text-component text-center margin-bottom-lg">
+      <h2 class="font-normal">Sign Up</h2>
+      <p class="color-contrast-medium">Already have an account? <a class="js-modal-trigger" data-signin="login" href="#0">Beam In!</a></p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+      <div>
+        <label class="form-label required" for="signup-first-name">First Name</label>
+        <input aria-label="First Name" class="form-control width-100%" type="text" name="signup-first-name" id="signup-first-name" placeholder="John" required>
+      </div>
+      <div>
+        <label class="form-label required" for="signup-last-name">Last Name</label>
+        <input aria-label="Last Name" class="form-control width-100%" type="text" name="signup-last-name" id="signup-last-name" placeholder="Doe" required>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+      <div>
+        <label class="form-label required" for="signup-username">Username</label>
+        <input aria-label="Username" class="form-control width-100%" type="text" name="signup-username" id="signup-username" placeholder="johndoe" required>
+      </div>
+      <div>
+        <label class="form-label required" for="signup-email">Email</label>
+        <input aria-label="Email" class="form-control width-100%" type="email" name="signup-email" id="signup-email" placeholder="name@example.com" required>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+      <div>
+        <label class="form-label required" for="signup-password">Password</label>
+        <input aria-label="Password" class="form-control width-100%" type="password" name="signup-password" id="signup-password" placeholder="" minlength="6" required>
+        <p class="color-contrast-medium" style="margin-top:5px; font-size:11px;">minimum 6 characters</p>
+      </div>
+      <div>
+        <label class="form-label required" for="confirm-signup-password" style="white-space:nowrap;">Confirm Password</label>
+        <input aria-label="Confirm password" class="form-control width-100%" type="password" name="confirm-signup-password" id="confirm-signup-password" placeholder="" minlength="6" required>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+      <input aria-label="Accept terms" class="checkbox" type="checkbox" value="true" name="acceptTerms" id="acceptTerms">
+      <label class="color-contrast-medium" for="acceptTerms">
+        I have read and accept the <a href="TermsOfService.html" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+      </label>
+    </div>
+
+    <div class="flex flex-center">
+      <input type="hidden" value="User" name="AvatarType" id="AvatarType">
+      <button aria-label="Submit" id="signup-submit" class="btn btn--md btn--primary width-50%" type="submit" form="signup-form" onclick="onSignup()">Submit</button>
+    </div>
+  </form>
+</div>

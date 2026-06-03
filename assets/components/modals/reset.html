@@ -1,0 +1,23 @@
+<div class="modal__block js-modal-block" data-type="reset">
+  <form id="reset-form" class="margin-bottom-sm" role="alertdialog">
+    <div class="text-component text-center margin-bottom-lg">
+      <h1 class="font-normal">Reset Password?</h1>
+      <p class="color-contrast-medium"> </p>
+    </div>
+    <div class="margin-bottom-xl">
+      <label class="form-label padding-top-sm" for="newPassword">New Password</label>
+      <input aria-label="New Password" class="form-control width-100%" type="password" name="newPasword" id="newPassword" placeholder=" ">
+      <div class="margin-bottom-xl">
+        <label class="form-label padding-top-sm" for="confirmNewPassword">Retype Password</label>
+        <input aria-label="Confirm Password" class="form-control width-100%" type="password" name="confirmNewPasword" id="confirmNewPassword" placeholder=" ">
+      </div>
+    </div>
+    <div class="flex flex-center margin-y-md">
+      <button class="btn btn--md btn--primary width-50%">Reset Password</button>
+    </div>
+  </form>
+  <div id="reset-status" class="status-card" aria-live="polite">
+    <h2>Ready to reset</h2>
+    <p>We will keep you posted once the password change is processed.</p>
+  </div>
+</div>

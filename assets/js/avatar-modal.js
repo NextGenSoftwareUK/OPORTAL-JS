@@ -408,6 +408,13 @@
   }
 
   function bind() {
+    var avatarBlock = getById('avatar-modal-block');
+    if (avatarBlock && avatarBlock.dataset.avatarModalBound === 'true') {
+      window.openAvatarModal = openAvatarModal;
+      window.closeAvatarModal = closeAvatarModal;
+      return;
+    }
+
     var editBtn = getById('avatar-modal-edit-btn');
     var cancelBtn = getById('avatar-modal-cancel-btn');
     var saveBtn = getById('avatar-modal-save-btn');
@@ -442,8 +449,16 @@
       });
     }
 
+    if (avatarBlock) {
+      avatarBlock.dataset.avatarModalBound = 'true';
+    }
+
     window.openAvatarModal = openAvatarModal;
     window.closeAvatarModal = closeAvatarModal;
+  }
+
+  function initWhenReady() {
+    bind();
   }
 
   if (document.readyState === 'loading') {
@@ -451,4 +466,6 @@
   } else {
     bind();
   }
+
+  window.addEventListener('portal-components-ready', initWhenReady);
 })();

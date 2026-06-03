@@ -412,10 +412,21 @@ function putCursorAtEnd(el) {
 		toggleClass(input.nextElementSibling, 'modal__error--is-visible', bool);
 	};
 
-	var signinModal = document.getElementsByClassName('js-modal')[0];
-	if (signinModal) {
-		new ModalSignin(signinModal);
+	function initSigninModal() {
+		var signinModal = document.getElementsByClassName('js-modal')[0];
+		if (signinModal && signinModal.dataset.modalInit !== 'true') {
+			signinModal.dataset.modalInit = 'true';
+			new ModalSignin(signinModal);
+		}
 	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initSigninModal);
+	} else {
+		initSigninModal();
+	}
+
+	window.addEventListener('portal-components-ready', initSigninModal);
 
 //class manipulations - needed if classList is not supported
 function hasClass(el, className) {
