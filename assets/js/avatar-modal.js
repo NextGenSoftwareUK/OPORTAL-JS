@@ -262,7 +262,10 @@
         }
 
         var data = await response.json();
+
+        console.log("token:", token);
         console.log('Fetched avatar details:', data);
+        
         var fullAvatar = data && typeof data === 'object'
           ? (data.avatar || (data.result && data.result.result) || (data.result && data.result.avatar) || data.result || data.data || data)
           : null;
