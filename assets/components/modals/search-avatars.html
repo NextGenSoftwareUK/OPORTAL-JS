@@ -1,0 +1,56 @@
+<div class="modal__block js-modal-block search-modal-block" data-type="search-avatars" id="search-modal-block">
+  <section class="search-modal-shell" aria-label="Search Avatars">
+    <div class="search-modal-card">
+
+      <div class="search-modal-top">
+        <div>
+          <h1 class="search-modal-title">Search Avatars</h1>
+          <p class="search-modal-lead">Find other OASIS avatars by name, username or email.</p>
+        </div>
+        <button id="search-modal-close-btn" class="button button--ghost" type="button">Close</button>
+      </div>
+
+      <!-- Search bar -->
+      <form id="search-avatar-form" class="search-avatar-form" onsubmit="return false">
+        <div class="search-avatar-input-wrap">
+          <input
+            id="search-avatar-input"
+            class="search-avatar-input"
+            type="search"
+            placeholder="Enter name, username or email…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="search-avatar-btn" class="search-avatar-submit button" type="submit">Search</button>
+        </div>
+        <label class="search-avatar-option">
+          <input type="checkbox" id="search-all-providers" checked />
+          <span>Search all providers</span>
+        </label>
+      </form>
+
+      <!-- Status -->
+      <div id="search-modal-status" class="search-status" hidden></div>
+
+      <!-- Results -->
+      <div id="search-results-wrap" hidden>
+        <div class="search-results-header">
+          <span class="search-results-count" id="search-results-count"></span>
+        </div>
+        <div id="search-results-grid" class="search-results-grid"></div>
+      </div>
+
+      <!-- Browse all (initial state) -->
+      <div id="search-browse-wrap">
+        <div class="search-browse-label">RECENT / ALL AVATARS</div>
+        <div id="search-browse-grid" class="search-results-grid">
+          <div class="search-empty">
+            <div class="search-empty-icon">👥</div>
+            <p>Type a name above to search, or wait while we load recent avatars.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

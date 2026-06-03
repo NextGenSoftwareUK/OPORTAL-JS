@@ -1,0 +1,176 @@
+<div class="modal__block js-modal-block settings-modal-block" data-type="settings" id="settings-modal-block">
+  <section class="settings-modal-shell" aria-label="Account Settings">
+    <div class="settings-modal-card">
+
+      <div class="settings-modal-top">
+        <div>
+          <h1 class="settings-modal-title">Account &amp; Settings</h1>
+          <p class="settings-modal-lead">Manage your account details, preferences and subscription.</p>
+        </div>
+        <button id="settings-modal-close-btn" class="button button--ghost" type="button">Close</button>
+      </div>
+
+      <div id="settings-modal-status" class="settings-status" hidden></div>
+
+      <div class="settings-layout">
+
+        <!-- Sidebar tabs -->
+        <nav class="settings-tabs">
+          <button class="settings-tab is-active" data-tab="account">Account</button>
+          <button class="settings-tab" data-tab="security">Security</button>
+          <button class="settings-tab" data-tab="preferences">Preferences</button>
+          <button class="settings-tab" data-tab="subscription">Subscription</button>
+        </nav>
+
+        <!-- Panels -->
+        <div class="settings-panels">
+
+          <!-- Account -->
+          <div class="settings-panel" id="settings-tab-account">
+            <div class="settings-section-label">ACCOUNT DETAILS</div>
+            <div class="settings-info-grid">
+              <div class="settings-info-row">
+                <span class="settings-info-label">Avatar ID</span>
+                <span class="settings-info-value settings-monospace" id="settings-avatar-id">—</span>
+              </div>
+              <div class="settings-info-row">
+                <span class="settings-info-label">Username</span>
+                <span class="settings-info-value" id="settings-username">—</span>
+              </div>
+              <div class="settings-info-row">
+                <span class="settings-info-label">Email</span>
+                <span class="settings-info-value" id="settings-email">—</span>
+              </div>
+              <div class="settings-info-row">
+                <span class="settings-info-label">Avatar Type</span>
+                <span class="settings-info-value" id="settings-avatar-type">—</span>
+              </div>
+              <div class="settings-info-row">
+                <span class="settings-info-label">Member Since</span>
+                <span class="settings-info-value" id="settings-created">—</span>
+              </div>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">LINKED PROVIDERS</div>
+            <div id="settings-providers-list" class="settings-providers-list">
+              <p class="settings-dim">No linked providers found.</p>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">LEGAL</div>
+            <div class="settings-link-row">
+              <a class="settings-ext-link" href="/TermsOfService.html" target="_blank" rel="noopener">Terms of Service</a>
+              <a class="settings-ext-link" href="mailto:enquiries@nextgenworld.co.uk">Contact Support</a>
+              <a class="settings-ext-link" href="https://www.nextgenworld.co.uk/" target="_blank" rel="noopener">NextGen Software</a>
+            </div>
+          </div>
+
+          <!-- Security -->
+          <div class="settings-panel" id="settings-tab-security" hidden>
+            <div class="settings-section-label">PASSWORD</div>
+            <div class="settings-block">
+              <p class="settings-dim">Change your account password. You'll receive a reset link at your registered email address.</p>
+              <button class="button button--ghost settings-action-btn" onclick="showComingSoonMessage()">Send Password Reset Email</button>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">TWO-FACTOR AUTHENTICATION</div>
+            <div class="settings-block">
+              <p class="settings-dim">Add an extra layer of security to your account.</p>
+              <button class="button button--ghost settings-action-btn" onclick="showComingSoonMessage()">Enable 2FA <span class="settings-badge settings-badge--soon">Coming Soon</span></button>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">SESSIONS</div>
+            <div class="settings-block">
+              <p class="settings-dim">Sign out from all other devices and sessions.</p>
+              <button class="button button--ghost settings-action-btn" onclick="showComingSoonMessage()">Sign Out All Sessions <span class="settings-badge settings-badge--soon">Coming Soon</span></button>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">DANGER ZONE</div>
+            <div class="settings-block settings-block--danger">
+              <p class="settings-dim">Permanently delete your avatar and all associated data. This cannot be undone.</p>
+              <button class="button settings-action-btn settings-action-btn--danger" onclick="showComingSoonMessage()">Delete Account <span class="settings-badge settings-badge--soon">Coming Soon</span></button>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-panel" id="settings-tab-preferences" hidden>
+            <div class="settings-section-label">PROVIDER SETTINGS</div>
+            <div class="settings-block">
+              <div class="settings-pref-row">
+                <div>
+                  <div class="settings-pref-label">Default Storage Provider</div>
+                  <div class="settings-dim">Which provider OASIS uses for data by default.</div>
+                </div>
+                <select class="settings-select" id="settings-default-provider" onchange="showComingSoonMessage()">
+                  <option>MongoDB</option>
+                  <option>SQLite</option>
+                  <option>IPFS</option>
+                  <option>Holochain</option>
+                  <option>Ethereum</option>
+                  <option>Solana</option>
+                  <option>EOSIO</option>
+                </select>
+              </div>
+              <div class="settings-pref-row" style="margin-top:16px">
+                <div>
+                  <div class="settings-pref-label">Auto Fail-Over</div>
+                  <div class="settings-dim">Automatically switch provider if the primary goes offline.</div>
+                </div>
+                <label class="settings-toggle">
+                  <input type="checkbox" id="settings-auto-failover" onchange="showComingSoonMessage()" />
+                  <span class="settings-toggle-track"></span>
+                </label>
+              </div>
+              <div class="settings-pref-row" style="margin-top:16px">
+                <div>
+                  <div class="settings-pref-label">Auto Replication</div>
+                  <div class="settings-dim">Replicate your data across multiple providers automatically.</div>
+                </div>
+                <label class="settings-toggle">
+                  <input type="checkbox" id="settings-auto-replication" onchange="showComingSoonMessage()" />
+                  <span class="settings-toggle-track"></span>
+                </label>
+              </div>
+              <div class="settings-pref-row" style="margin-top:16px">
+                <div>
+                  <div class="settings-pref-label">Load Balancing</div>
+                  <div class="settings-dim">Distribute load across providers for better performance.</div>
+                </div>
+                <label class="settings-toggle">
+                  <input type="checkbox" id="settings-load-balancing" onchange="showComingSoonMessage()" />
+                  <span class="settings-toggle-track"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">NOTIFICATIONS <span class="settings-badge settings-badge--soon">Coming Soon</span></div>
+            <div class="settings-block">
+              <p class="settings-dim">Email and in-app notification preferences will be available here.</p>
+            </div>
+          </div>
+
+          <!-- Subscription -->
+          <div class="settings-panel" id="settings-tab-subscription" hidden>
+            <div class="settings-section-label">CURRENT PLAN</div>
+            <div class="settings-plan-card">
+              <div class="settings-plan-name">Free Tier</div>
+              <div class="settings-plan-desc">Access to core OASIS APIs, avatar management and basic provider storage.</div>
+              <button class="button settings-action-btn" style="margin-top:16px" onclick="showComingSoonMessage()">Upgrade Plan <span class="settings-badge settings-badge--soon">Coming Soon</span></button>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">BILLING <span class="settings-badge settings-badge--soon">Coming Soon</span></div>
+            <div class="settings-block">
+              <p class="settings-dim">Payment methods, invoices and billing history will appear here once billing is enabled.</p>
+            </div>
+
+            <div class="settings-section-label" style="margin-top:24px">API USAGE <span class="settings-badge settings-badge--soon">Coming Soon</span></div>
+            <div class="settings-block">
+              <p class="settings-dim">Request counts, rate limits and quota usage across providers will be shown here.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
