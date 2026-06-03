@@ -123,6 +123,8 @@
     var firstName = pickValue(normalized, ['firstName', 'FirstName']);
     var lastName = pickValue(normalized, ['lastName', 'LastName']);
     var address = pickValue(normalized, ['address', 'Address']);
+    var karma = pickValue(normalized, ['karma', 'Karma', 'karmaWeighting', 'KarmaWeighting', 'karmaPoints', 'KarmaPoints']);
+    var xp = pickValue(normalized, ['xp', 'XP', 'experiencePoints', 'ExperiencePoints', 'experience', 'Experience']);
     var avatarImage = getById('avatar-modal-image');
     var avatarImageLarge = getById('avatar-modal-image-large');
 
@@ -135,7 +137,6 @@
       avatarImageLarge.alt = displayName;
     }
 
-    setText('[data-avatar-modal-field="displayName"]', displayName || 'Avatar');
     setText('[data-avatar-modal-field="username"]', username);
     setText('[data-avatar-modal-field="email"]', email);
     setText('[data-avatar-modal-field="avatarType"]', avatarType);
@@ -143,6 +144,8 @@
     setText('[data-avatar-modal-field="firstName"]', firstName);
     setText('[data-avatar-modal-field="lastName"]', lastName);
     setText('[data-avatar-modal-field="address"]', address);
+    setText('[data-avatar-modal-field="karma"]', karma ? 'Karma: ' + karma : 'Karma: 777');
+    setText('[data-avatar-modal-field="xp"]', xp ? 'XP: ' + xp : 'XP: 777');
 
     var fields = ['title', 'firstName', 'lastName', 'username', 'email', 'address'];
     fields.forEach(function (field) {

@@ -1941,6 +1941,22 @@ form {
   gap: 14px;
 }
 
+.avatar-modal-summary .summary-name {
+  text-align: center;
+}
+
+.avatar-modal-summary .summary-name h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  color: var(--color-white);
+}
+
+.avatar-modal-summary .summary-name p {
+  margin: 0;
+  color: var(--color-contrast-medium);
+  line-height: 1.5;
+}
+
 .avatar-modal-summary-avatar {
   display: grid;
   place-items: center;
@@ -1960,8 +1976,49 @@ form {
   gap: 14px;
 }
 
-.avatar-modal-status {
-  margin-top: 22px;
+.avatar-modal-block .mode-head {
+  margin-bottom: 22px;
+}
+
+.avatar-modal-block .edit-form {
+  display: grid;
+  gap: 18px;
+}
+
+.avatar-modal-block .field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.avatar-modal-block .field {
+  display: grid;
+  gap: 8px;
+}
+
+.avatar-modal-block .field label {
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.avatar-modal-block .field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-white);
+  font: inherit;
+}
+
+.avatar-modal-block .field input::placeholder {
+  color: var(--color-contrast-medium);
+}
+
+.avatar-modal-block .field input:focus {
+  outline: 2px solid rgba(107, 208, 255, 0.4);
+  outline-offset: 2px;
 }
 
 @media (max-width: 860px) {
@@ -1971,6 +2028,10 @@ form {
 
   .avatar-modal-actions {
     justify-content: flex-start;
+  }
+
+  .avatar-modal-block .field-grid {
+    grid-template-columns: 1fr;
   }
 }
 
