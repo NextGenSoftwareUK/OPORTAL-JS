@@ -4712,9 +4712,171 @@ select option {
 @media (max-width: 700px) {
   .wallet-stats-bar, .onet-stats-bar, .onode-stats-bar { grid-template-columns: repeat(2,1fr); }
   .wallet-grid, .map-location-grid { grid-template-columns: 1fr; }
-  .wallet-form-row, .msg-send-row { grid-template-columns: 1fr; }
-  .wallet-form-label, .msg-send-label { text-align: left; padding-top: 0; }
+  .wallet-form-row, .msg-send-row, .messaging-form-row { grid-template-columns: 1fr; }
+  .wallet-form-label, .msg-send-label, .messaging-form-label { text-align: left; padding-top: 0; }
   .wallet-form-submit, .msg-send-submit { margin-left: 0; }
   .map-controls-grid { grid-template-columns: 1fr; }
   .onode-info-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* ── AGENT CLASS ALIASES (agents used -modal- prefix variants) ── */
+
+/* Shells */
+.wallet-modal-shell, .messaging-modal-shell, .onet-modal-shell, .onode-modal-shell, .map-modal-shell {
+  width: 100%; padding: 0;
+}
+
+/* Cards */
+.wallet-modal-card, .messaging-modal-card, .onet-modal-card, .onode-modal-card, .map-modal-card {
+  width: 100%; border-radius: 30px;
+  border: 1px solid rgba(134,215,255,0.16);
+  background: rgba(8,18,29,0.92);
+  box-shadow: 0 28px 100px rgba(0,0,0,0.46);
+  backdrop-filter: blur(18px); padding: 34px;
+}
+
+/* Tops */
+.wallet-modal-top, .messaging-modal-top, .onet-modal-top, .onode-modal-top, .map-modal-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 20px; margin-bottom: 22px;
+}
+
+/* Titles */
+.wallet-modal-title, .messaging-modal-title, .onet-modal-title, .onode-modal-title, .map-modal-title {
+  margin: 0 0 6px;
+  font-family: 'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  font-size: clamp(1.8rem,3.5vw,2.6rem);
+  line-height: 1.1; font-weight: 600; color: var(--color-white);
+}
+
+/* Leads */
+.wallet-modal-lead, .messaging-modal-lead, .onet-modal-lead, .onode-modal-lead, .map-modal-lead {
+  margin: 0; color: var(--color-contrast-medium); font-size: 0.95rem; line-height: 1.6;
+}
+
+/* Stats bar item aliases (-stat-block → same as -stat) */
+.wallet-stat-block, .onet-stat-block, .onode-stat-block, .map-stat-block {
+  border-radius: 16px; border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03); padding: 14px 12px; text-align: center;
+}
+
+/* Messaging uses messaging-stat (not msg-stat) */
+.messaging-stat {
+  border-radius: 16px; border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03); padding: 14px 12px; text-align: center;
+}
+.messaging-stat-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-contrast-medium); margin-bottom: 7px;
+}
+.messaging-stat-value { font-size: 0.95rem; font-weight: 700; color: var(--color-white); }
+
+/* Tab panels — block by default, hidden when [hidden] */
+.wallet-tab-panel, .messaging-tab-panel, .onet-tab-panel, .onode-tab-panel, .map-tab-panel {
+  display: block;
+}
+.wallet-tab-panel[hidden], .messaging-tab-panel[hidden],
+.onet-tab-panel[hidden], .onode-tab-panel[hidden], .map-tab-panel[hidden] {
+  display: none;
+}
+
+/* Panel action bars */
+.wallet-panel-actions, .messaging-panel-actions {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+}
+
+/* Messaging empty states */
+.messaging-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 36px 20px; border-radius: 18px;
+  border: 1px dashed rgba(255,255,255,0.1);
+  color: var(--color-contrast-medium); text-align: center; font-size: 0.88rem; line-height: 1.6;
+}
+.messaging-empty-icon { font-size: 2rem; }
+
+/* Messaging send form */
+.messaging-form { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
+.messaging-form-row { display: grid; grid-template-columns: 110px minmax(0,1fr); align-items: start; gap: 14px; }
+.messaging-form-label {
+  font-size: 0.78rem; font-weight: 600; color: var(--color-contrast-medium);
+  text-transform: uppercase; letter-spacing: 0.08em; text-align: right; padding-top: 11px;
+}
+.messaging-form-input, .messaging-form-textarea {
+  padding: 10px 14px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--color-white); font: inherit; font-size: 0.9rem; width: 100%;
+}
+.messaging-form-input { min-height: 44px; padding: 0 14px; }
+.messaging-form-textarea { min-height: 100px; resize: vertical; }
+.messaging-form-input::placeholder, .messaging-form-textarea::placeholder { color: rgba(255,255,255,0.25); }
+.messaging-form-input:focus, .messaging-form-textarea:focus { outline: none; border-color: rgba(107,208,255,0.45); }
+
+/* Chat session header */
+.msg-chat-session-header {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  border-radius: 14px; border: 1px solid rgba(72,220,130,0.2);
+  background: rgba(72,220,130,0.04); margin-bottom: 14px; flex-wrap: wrap;
+}
+.msg-chat-session-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #48dc82; }
+.msg-chat-session-id { font-family: monospace; font-size: 0.75rem; color: var(--color-contrast-medium); }
+
+/* Chat input textarea */
+.msg-chat-input-textarea {
+  flex: 1; min-height: 44px; max-height: 120px; padding: 10px 14px;
+  border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04); color: var(--color-white);
+  font: inherit; font-size: 0.9rem; resize: none;
+}
+.msg-chat-input-textarea:focus { outline: none; border-color: rgba(107,208,255,0.45); }
+
+/* HyperDrive banner reused by ONET/ONODE — left side flex fix */
+.hd-mode-banner-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+
+/* Map utilities */
+.map-search-form { display: flex; gap: 10px; margin-bottom: 16px; }
+.map-nearby-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.map-controls-info { margin-bottom: 16px; }
+.map-dim { font-size: 0.85rem; color: var(--color-contrast-medium); line-height: 1.6; margin: 0; }
+.map-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-2); margin-bottom: 10px; margin-top: 4px;
+}
+.map-ctrl-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.map-ctrl-input--wide { flex: 1; min-width: 180px; }
+
+/* ONET utilities */
+.onet-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-2); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.onet-action-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.onet-health-bars { display: flex; flex-direction: column; gap: 10px; }
+.onet-preformatted {
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 16px; font-family: 'Share Tech Mono','Courier New',monospace;
+  font-size: 0.75rem; color: rgba(200,230,255,0.85); line-height: 1.6;
+  max-height: 360px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+  margin: 0;
+}
+.onet-textarea {
+  width: 100%; min-height: 80px; padding: 12px 14px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--color-white); font: inherit; font-size: 0.9rem; resize: vertical;
+  display: block; margin-bottom: 12px; box-sizing: border-box;
+}
+.onet-textarea:focus { outline: none; border-color: rgba(107,208,255,0.45); }
+
+/* ONODE utilities */
+.onode-preformatted {
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 16px; font-family: 'Share Tech Mono','Courier New',monospace;
+  font-size: 0.75rem; color: rgba(200,230,255,0.85); line-height: 1.6;
+  max-height: 360px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+  margin: 0;
+}
+.onode-logs-toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+.onode-controls {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding-top: 18px; margin-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
