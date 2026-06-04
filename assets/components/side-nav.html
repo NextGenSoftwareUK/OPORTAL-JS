@@ -1,118 +1,109 @@
 <nav class="side-nav js-side-nav">
   <ul class="side__list js-side__list">
 
-    <!-- ── AVATAR ─────────────────────────────────────── -->
-    <li class="side__item side__item--section-label">Account</li>
-    <li class="side__item">
-      <a href="#0" onclick="return openAvatarModal()">My Avatar</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openWalletModal()">Wallet</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openNftModal()">NFT Wallet</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openKarmaModal()">Karma</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openMessagingModal()">Messages &amp; Chat</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openSearchModal()">Search Avatars</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openSettingsModal()">Settings</a>
+    <!-- ── ACCOUNT ────────────────────────────────────── -->
+    <li class="side__item side__item--section-label item--has-children js-item--has-children">
+      <a href="#0">Account</a>
+      <ul class="sub-menu">
+        <li><a href="#0" onclick="return openAvatarModal()">My Avatar</a></li>
+        <li><a href="#0" onclick="return openWalletModal()">Wallet</a></li>
+        <li><a href="#0" onclick="return openNftModal()">NFT Wallet</a></li>
+        <li><a href="#0" onclick="return openKarmaModal()">Karma</a></li>
+        <li><a href="#0" onclick="return openMessagingModal()">Messages &amp; Chat</a></li>
+        <li><a href="#0" onclick="return openSearchModal()">Search Avatars</a></li>
+        <li><a href="#0" onclick="return openSettingsModal()">Settings</a></li>
+      </ul>
     </li>
 
     <!-- ── WORLD ──────────────────────────────────────── -->
-    <li class="side__item side__item--section-label">World</li>
-    <li class="side__item">
-      <a href="#0" onclick="return openMapModal()">Map</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openDataModal()">Data</a>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">OApps</a>
+    <li class="side__item side__item--section-label item--has-children js-item--has-children">
+      <a href="#0">World</a>
       <ul class="sub-menu">
-        <li><a onclick="showSTARMessage();" href="#">Installed OApps</a></li>
-        <li><a onclick="showSTARMessage();" href="#">Manage OApps</a></li>
-        <li><a onclick="showSTARMessage();" href="#">Create OApp</a></li>
-        <li><a onclick="showSTARMessage();" href="#">Deploy OApp</a></li>
-        <li><a onclick="showSTARMessage();" href="#">Launch OApp</a></li>
-        <li><a onclick="showSTARMessage();" href="#">Search OApps</a></li>
-      </ul>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">Quests</a>
-      <ul class="sub-menu">
-        <li><a onclick="showComingSoonMessage();" href="#">View Quests</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Manage Quests</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Search Quests</a></li>
-      </ul>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">Missions</a>
-      <ul class="sub-menu">
-        <li><a onclick="showComingSoonMessage();" href="#">View Missions</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Manage Missions</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Search Missions</a></li>
-      </ul>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">Eggs</a>
-      <ul class="sub-menu">
-        <li><a onclick="showComingSoonMessage();" href="#">View Eggs</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Hatch Egg</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Discover Eggs</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Egg Leaderboard</a></li>
-      </ul>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">Game</a>
-      <ul class="sub-menu">
-        <li><a onclick="showComingSoonMessage();" href="#">StarCraft 2 Leagues</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">StarCraft 2 Tournaments</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">StarCraft 2 Achievements</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Search SC2 Profiles</a></li>
+        <li><a href="#0" onclick="return openMapModal()">Map</a></li>
+        <li><a href="#0" onclick="return openDataModal()">Data</a></li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">OApps</a>
+          <ul class="sub-menu">
+            <li><a onclick="showSTARMessage();" href="#">Installed OApps</a></li>
+            <li><a onclick="showSTARMessage();" href="#">Manage OApps</a></li>
+            <li><a onclick="showSTARMessage();" href="#">Create OApp</a></li>
+            <li><a onclick="showSTARMessage();" href="#">Deploy OApp</a></li>
+            <li><a onclick="showSTARMessage();" href="#">Launch OApp</a></li>
+            <li><a onclick="showSTARMessage();" href="#">Search OApps</a></li>
+          </ul>
+        </li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">Quests</a>
+          <ul class="sub-menu">
+            <li><a onclick="showComingSoonMessage();" href="#">View Quests</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Manage Quests</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Search Quests</a></li>
+          </ul>
+        </li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">Missions</a>
+          <ul class="sub-menu">
+            <li><a onclick="showComingSoonMessage();" href="#">View Missions</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Manage Missions</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Search Missions</a></li>
+          </ul>
+        </li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">Eggs</a>
+          <ul class="sub-menu">
+            <li><a onclick="showComingSoonMessage();" href="#">View Eggs</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Hatch Egg</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Discover Eggs</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Egg Leaderboard</a></li>
+          </ul>
+        </li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">Game</a>
+          <ul class="sub-menu">
+            <li><a onclick="showComingSoonMessage();" href="#">ODOOM</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">OQUAKE</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Our World</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">StarCraft 2</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
 
     <!-- ── NETWORK ────────────────────────────────────── -->
-    <li class="side__item side__item--section-label">Network</li>
-    <li class="side__item">
-      <a href="#0" onclick="return openHyperdriveModal()">HyperDrive</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openONETModal()">ONET</a>
-    </li>
-    <li class="side__item">
-      <a href="#0" onclick="return openONODEModal()">ONODE</a>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">Providers</a>
+    <li class="side__item side__item--section-label item--has-children js-item--has-children">
+      <a href="#0">Network</a>
       <ul class="sub-menu">
-        <li><a onclick="showCheckAPIMessage();" href="#">View Providers</a></li>
-        <li><a onclick="return openHyperdriveModal();" href="#">Manage Auto-Replication</a></li>
-        <li><a onclick="return openHyperdriveModal();" href="#">Manage Auto-Fail-Over</a></li>
-        <li><a onclick="return openHyperdriveModal();" href="#">Manage Load Balancing</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Compare Provider Speeds</a></li>
+        <li><a href="#0" onclick="return openHyperdriveModal()">HyperDrive</a></li>
+        <li><a href="#0" onclick="return openONETModal()">ONET</a></li>
+        <li><a href="#0" onclick="return openONODEModal()">ONODE</a></li>
+        <!-- Providers – hidden until API is ready -->
+        <!-- <li class="item--has-children js-item--has-children">
+          <a href="#0">Providers</a>
+          <ul class="sub-menu">
+            <li><a onclick="showCheckAPIMessage();" href="#">View Providers</a></li>
+            <li><a onclick="return openHyperdriveModal();" href="#">Manage Auto-Replication</a></li>
+            <li><a onclick="return openHyperdriveModal();" href="#">Manage Auto-Fail-Over</a></li>
+            <li><a onclick="return openHyperdriveModal();" href="#">Manage Load Balancing</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Compare Provider Speeds</a></li>
+          </ul>
+        </li> -->
       </ul>
     </li>
 
     <!-- ── DEVELOPER ──────────────────────────────────── -->
-    <li class="side__item side__item--section-label">Developer</li>
-    <li class="side__item">
-      <a href="#0" onclick="return openDevPortalModal()">Developer Portal</a>
-    </li>
-    <li class="side__item item--has-children js-item--has-children">
-      <a href="#0">OASIS Platform</a>
+    <li class="side__item side__item--section-label item--has-children js-item--has-children">
+      <a href="#0">Developer</a>
       <ul class="sub-menu">
-        <li><a onclick="showComingSoonMessage();" href="#">Overview</a></li>
-        <li><a target="_blank" href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/Devs/GETTING_STARTED_INDEX.md">Documentation</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Architecture</a></li>
-        <li><a onclick="showComingSoonMessage();" href="#">Roadmap</a></li>
+        <li><a href="#0" onclick="return openDevPortalModal()">Developer Portal</a></li>
+        <li class="item--has-children js-item--has-children">
+          <a href="#0">OASIS Platform</a>
+          <ul class="sub-menu">
+            <li><a onclick="showComingSoonMessage();" href="#">Overview</a></li>
+            <li><a target="_blank" href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/Devs/GETTING_STARTED_INDEX.md">Documentation</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Architecture</a></li>
+            <li><a onclick="showComingSoonMessage();" href="#">Roadmap</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
 

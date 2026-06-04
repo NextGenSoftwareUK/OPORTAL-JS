@@ -4259,6 +4259,74 @@ select option {
 }
 .side__item--section-label:first-child { border-top: none; margin-top: 0; }
 
+/* Collapsible section labels — override pointer-events and style the toggle */
+.side__item--section-label.item--has-children {
+  pointer-events: auto;
+  padding: 0;
+}
+.side__item--section-label.item--has-children > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 16px 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0, 229, 255, 0.45);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.side__item--section-label.item--has-children > a::after {
+  content: '▸';
+  font-size: 8px;
+  opacity: 0.5;
+  transition: transform 0.25s ease, opacity 0.2s;
+  transform: rotate(0deg);
+}
+.side__item--section-label.item--has-children > a.submenu-open {
+  color: rgba(0, 229, 255, 0.75);
+}
+.side__item--section-label.item--has-children > a.submenu-open::after {
+  transform: rotate(90deg);
+  opacity: 0.9;
+}
+.side__item--section-label.item--has-children > .sub-menu {
+  margin-top: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 0 8px;
+}
+/* First-level items inside a section get normal nav-item brightness */
+.side__item--section-label.item--has-children > .sub-menu > li > a {
+  color: rgba(180, 220, 255, 0.92) !important;
+  font-size: 0.9rem;
+  padding: 5px 16px 5px 20px;
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+.side__item--section-label.item--has-children > .sub-menu > li > a:hover {
+  color: #fff !important;
+}
+/* Sub-section toggles (OApps, Quests, etc.) inside a section */
+.side__item--section-label.item--has-children > .sub-menu > li.item--has-children > a {
+  color: rgba(0, 229, 255, 0.6) !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.side__item--section-label.item--has-children > .sub-menu > li.item--has-children > a:hover,
+.side__item--section-label.item--has-children > .sub-menu > li.item--has-children > a.submenu-open {
+  color: rgba(0, 229, 255, 0.9) !important;
+}
+/* Deep items (OApps > Installed OApps, etc.) stay dimmed */
+.side__item--section-label.item--has-children > .sub-menu .sub-menu li a {
+  padding-left: 30px;
+  font-size: 0.82rem;
+}
+
 /* ── SHARED MODAL SHELL (reused across wallet/messaging/onet/onode/map) ── */
 .modal__block.wallet-modal-block,
 .modal__block.messaging-modal-block,
