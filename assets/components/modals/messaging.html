@@ -1,0 +1,107 @@
+<div class="modal__block js-modal-block messaging-modal-block" data-type="messaging" id="messaging-modal-block">
+  <section class="messaging-modal-shell" aria-label="Messages &amp; Chat">
+    <div class="messaging-modal-card">
+
+      <div class="messaging-modal-top">
+        <div>
+          <h1 class="messaging-modal-title">Messages &amp; Chat</h1>
+          <p class="messaging-modal-lead">Send messages, view conversations and manage notifications.</p>
+        </div>
+        <button id="messaging-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div id="messaging-modal-status" class="messaging-status" hidden></div>
+
+      <!-- Stats bar -->
+      <div class="messaging-stats-bar">
+        <div class="messaging-stat">
+          <div class="messaging-stat-label">Unread Messages</div>
+          <div class="messaging-stat-value" id="msg-stat-unread">—</div>
+        </div>
+        <div class="messaging-stat">
+          <div class="messaging-stat-label">Notifications</div>
+          <div class="messaging-stat-value" id="msg-stat-notifs">—</div>
+        </div>
+        <div class="messaging-stat">
+          <div class="messaging-stat-label">Active Chats</div>
+          <div class="messaging-stat-value" id="msg-stat-chats">—</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="messaging-tabs">
+        <button class="messaging-tab is-active" data-tab="conversations">Conversations</button>
+        <button class="messaging-tab" data-tab="send">Send Message</button>
+        <button class="messaging-tab" data-tab="notifications">Notifications</button>
+        <button class="messaging-tab" data-tab="chat">Live Chat</button>
+      </div>
+
+      <!-- Conversations -->
+      <div id="messaging-tab-conversations" class="messaging-tab-panel">
+        <div class="messaging-panel-actions">
+          <button id="msg-refresh-btn" class="nft-refresh-btn" title="Refresh Conversations">&#8635;</button>
+        </div>
+        <div id="msg-conversations-list" class="msg-conversations-list">
+          <div class="messaging-empty">
+            <div class="messaging-empty-icon">💬</div>
+            <p>No conversations yet.<br>Send a message to start a conversation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Send Message -->
+      <div id="messaging-tab-send" class="messaging-tab-panel" hidden>
+        <form id="msg-send-form" class="messaging-form" onsubmit="return false">
+          <div class="messaging-form-row">
+            <label class="messaging-form-label" for="msg-to-avatar">To Avatar ID</label>
+            <input class="messaging-form-input" id="msg-to-avatar" type="text" placeholder="Recipient avatar ID…" autocomplete="off" />
+          </div>
+          <div class="messaging-form-row">
+            <label class="messaging-form-label" for="msg-body">Message</label>
+            <textarea class="messaging-form-textarea" id="msg-body" rows="5" placeholder="Type your message…"></textarea>
+          </div>
+          <button id="msg-send-btn" class="button" type="submit">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Notifications -->
+      <div id="messaging-tab-notifications" class="messaging-tab-panel" hidden>
+        <div class="messaging-panel-actions">
+          <button id="msg-mark-read-btn" class="button button--ghost">Mark All Read</button>
+        </div>
+        <div id="msg-notifications-list" class="msg-notifications-list">
+          <div class="messaging-empty">
+            <div class="messaging-empty-icon">🔔</div>
+            <p>No notifications found.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Chat -->
+      <div id="messaging-tab-chat" class="messaging-tab-panel" hidden>
+
+        <!-- Active session -->
+        <div id="msg-chat-session-wrap" hidden>
+          <div class="msg-chat-session-header">
+            <span class="msg-chat-session-label">Session: <span id="msg-chat-session-id" class="msg-chat-session-id">—</span></span>
+            <button id="msg-end-session-btn" class="button button--ghost">End Session</button>
+          </div>
+          <div id="msg-chat-messages" class="msg-chat-messages"></div>
+          <div class="msg-chat-input-row">
+            <textarea class="msg-chat-input-textarea" id="msg-chat-input" rows="2" placeholder="Type a message…"></textarea>
+            <button id="msg-chat-send-btn" class="button">Send</button>
+          </div>
+        </div>
+
+        <!-- No active session -->
+        <div id="msg-no-session" class="msg-no-session">
+          <div class="messaging-empty-icon">🗨️</div>
+          <p>No active chat session.<br>Start a new session to begin live chatting.</p>
+          <button id="msg-start-session-btn" class="button">Start Chat Session</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>

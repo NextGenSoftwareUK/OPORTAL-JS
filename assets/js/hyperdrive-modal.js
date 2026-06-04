@@ -89,11 +89,94 @@
     return null;
   }
 
-  // ── API ───────────────────────────────────────────────────────────────────────
+  // ── HyperDrive API ────────────────────────────────────────────────────────────
+
+  async function fetchHDStatus(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/status', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDMetrics(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/metrics', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDBestProvider(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/best-provider', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      var data = await res.json();
+      return data && (data.result || data.providerType || data.ProviderType || data);
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDFailoverRules(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/failover/rules', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDReplicationRules(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/replication/rules', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDCosts(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/costs/current', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDIntelligentMode(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/intelligent-mode', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  async function fetchHDQuota(token) {
+    try {
+      var res = await fetch(API_BASE + '/api/HyperDrive/quota/status', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  // ── Provider API ───────────────────────────────────────────────────────────────
 
   async function fetchCurrentProvider(token) {
     try {
-      var res = await fetch(API_BASE + '/api/provider/GetCurrentStorageProviderType', {
+      var res = await fetch(API_BASE + '/api/provider/get-current-storage-provider-type', {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;
@@ -104,7 +187,7 @@
 
   async function fetchAllProviders(token) {
     try {
-      var res = await fetch(API_BASE + '/api/provider/GetAllRegisteredProviders', {
+      var res = await fetch(API_BASE + '/api/provider/get-all-registered-providers', {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;
@@ -255,6 +338,31 @@
     }).join('');
   }
 
+  // ── LB bars from real HyperDrive metrics ─────────────────────────────────────
+
+  function renderLBBarsFromMetrics(metricsData, providerList) {
+    var container = getById('hd-lb-bars');
+    if (!container) return;
+    var items = metricsData.result || metricsData.providers || metricsData;
+    if (!Array.isArray(items)) { renderLBBars(providerList); return; }
+
+    container.innerHTML = items.slice(0, 6).map(function (m) {
+      var name = m.providerType || m.ProviderType || m.name || m.Name || '';
+      var meta = getMeta(name);
+      var latency = m.averageResponseTime || m.latency || m.Latency || fakeLatency();
+      var pct = m.loadPercentage || m.requestCount || fakeLoad();
+      var uptime = m.uptime || m.Uptime || fakeUptime();
+      var latencyClass = latency < 30 ? 'good' : latency < 80 ? 'ok' : 'slow';
+      return '<div class="hd-lb-row">' +
+        '<div class="hd-lb-icon" style="color:' + meta.color + '">' + meta.icon + '</div>' +
+        '<div class="hd-lb-name">' + escapeHtml(meta.label) + '</div>' +
+        '<div class="hd-lb-bar-wrap"><div class="hd-lb-bar" style="width:' + pct + '%;background:' + meta.color + '"></div></div>' +
+        '<div class="hd-lb-pct">' + pct + '%</div>' +
+        '<div class="hd-lb-latency hd-latency--' + latencyClass + '">' + Math.round(latency) + 'ms</div>' +
+      '</div>';
+    }).join('');
+  }
+
   // ── Sync log ──────────────────────────────────────────────────────────────────
 
   function appendSyncLog(msg) {
@@ -291,38 +399,75 @@
 
     detectMode();
 
-    var [active, all] = await Promise.all([
+    var [hdStatus, hdMetrics, bestProvider, active, all, hdMode, hdQuota] = await Promise.all([
+      fetchHDStatus(token),
+      fetchHDMetrics(token),
+      fetchHDBestProvider(token),
       fetchCurrentProvider(token),
       fetchAllProviders(token),
+      fetchHDIntelligentMode(token),
+      fetchHDQuota(token),
     ]);
+
+    // Prefer HyperDrive best-provider, fall back to current storage provider
+    var activeProvider = bestProvider || active;
 
     // Fallback to known providers if API returns nothing
     var list = all || Object.keys(PROVIDER_META);
 
     providers = list;
 
+    // Update stats from HyperDrive API where available
+    var failoverOn = hdStatus ? (hdStatus.autoFailOverEnabled || hdStatus.result && hdStatus.result.autoFailOverEnabled) : true;
+    var replicationOn = hdStatus ? (hdStatus.autoReplicationEnabled || hdStatus.result && hdStatus.result.autoReplicationEnabled) : true;
+    var lbOn = hdStatus ? (hdStatus.autoLoadBalanceEnabled || hdStatus.result && hdStatus.result.autoLoadBalanceEnabled) : true;
+
+    var statFailover = getById('hd-stat-failover');
+    var statReplication = getById('hd-stat-replication');
+    var statLb = getById('hd-stat-lb');
+    if (statFailover) { statFailover.textContent = failoverOn === false ? 'OFF' : 'ON'; statFailover.className = 'hd-stat-value' + (failoverOn === false ? '' : ' hd-stat-value--on'); }
+    if (statReplication) { statReplication.textContent = replicationOn === false ? 'OFF' : 'ON'; statReplication.className = 'hd-stat-value' + (replicationOn === false ? '' : ' hd-stat-value--on'); }
+    if (statLb) { statLb.textContent = lbOn === false ? 'OFF' : 'ON'; statLb.className = 'hd-stat-value' + (lbOn === false ? '' : ' hd-stat-value--on'); }
+
+    // Quota banner
+    if (hdQuota) {
+      var quotaUsed = hdQuota.used || hdQuota.result && hdQuota.result.used;
+      var quotaLimit = hdQuota.limit || hdQuota.result && hdQuota.result.limit;
+      if (quotaUsed != null && quotaLimit != null) {
+        var countEl = getById('hd-stat-count');
+        // Append quota info to mode banner desc
+        var desc = getById('hd-mode-desc');
+        if (desc) desc.textContent += ' | Quota: ' + quotaUsed + ' / ' + quotaLimit;
+      }
+    }
+
     // Stats bar
-    var meta = getMeta(active);
-    setText('hd-stat-active', active ? meta.label : '—');
+    var meta = getMeta(activeProvider);
+    setText('hd-stat-active', activeProvider ? meta.label : '—');
     setText('hd-stat-count', list.length || '—');
 
     // Provider grid
     var grid = getById('hd-provider-grid');
     if (grid) {
-      grid.innerHTML = list.map(function (p, i) { return buildProviderCard(p, i, active); }).join('');
+      grid.innerHTML = list.map(function (p, i) { return buildProviderCard(p, i, activeProvider); }).join('');
     }
 
     // Replication visualizer nodes
     renderRepNodes(list);
 
     // Failover chain
-    renderFailoverChain(list, active);
+    renderFailoverChain(list, activeProvider);
 
     // Replication targets
     renderRepTargets(list);
 
-    // LB bars
-    renderLBBars(list);
+    // LB bars — enrich with real metrics if available
+    if (hdMetrics && (hdMetrics.result || hdMetrics.providers)) {
+      renderLBBarsFromMetrics(hdMetrics, list);
+    } else {
+      renderLBBars(list);
+    }
+
   }
 
   function setText(id, val) { var el = getById(id); if (el) el.textContent = val; }

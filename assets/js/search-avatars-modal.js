@@ -87,7 +87,7 @@
     if (btn) btn.disabled = true;
 
     try {
-      var res = await fetch(API_BASE + '/api/avatar/search', {
+      var res = await fetch(API_BASE + '/api/Avatar/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ SearchQuery: query, SearchAllProviders: !!searchAllProviders })
@@ -120,7 +120,7 @@
     if (!token) return;
 
     try {
-      var res = await fetch(API_BASE + '/api/avatar/get-all-avatars', {
+      var res = await fetch(API_BASE + '/api/Avatar/get-all-avatars', {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return;

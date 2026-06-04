@@ -150,9 +150,9 @@
     var email = p && (p.email || p.Email || p.emailAddress || p.EmailAddress);
     var username = p && (p.username || p.userName || p.UserName);
     var id = p && (p.id || p.Id || p.avatarId || p.AvatarId);
-    if (email) urls.push(API_BASE + '/api/avatar/get-avatar-detail-by-email/' + encodeURIComponent(email));
-    if (username) urls.push(API_BASE + '/api/avatar/get-avatar-detail-by-username/' + encodeURIComponent(username));
-    if (id) urls.push(API_BASE + '/api/avatar/get-avatar-detail-by-id/' + encodeURIComponent(id));
+    if (email) urls.push(API_BASE + '/api/Avatar/get-avatar-detail-by-email/' + encodeURIComponent(email));
+    if (username) urls.push(API_BASE + '/api/Avatar/get-avatar-detail-by-username/' + encodeURIComponent(username));
+    if (id) urls.push(API_BASE + '/api/Avatar/get-avatar-detail-by-id/' + encodeURIComponent(id));
     return urls.filter(function (u, i, a) { return u && a.indexOf(u) === i; });
   }
 
@@ -192,8 +192,8 @@
   function getUpdateUrl(profile) {
     var email = profile && (profile.email || profile.Email);
     var username = profile && (profile.username || profile.userName || profile.UserName);
-    if (email) return API_BASE + '/api/avatar/update-avatar-detail-by-email/' + encodeURIComponent(email);
-    if (username) return API_BASE + '/api/avatar/update-avatar-detail-by-username/' + encodeURIComponent(username);
+    if (email) return API_BASE + '/api/Avatar/update-avatar-detail-by-email/' + encodeURIComponent(email);
+    if (username) return API_BASE + '/api/Avatar/update-avatar-detail-by-username/' + encodeURIComponent(username);
     return '';
   }
 

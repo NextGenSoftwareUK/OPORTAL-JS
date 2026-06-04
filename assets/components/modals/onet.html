@@ -1,0 +1,103 @@
+<div class="modal__block js-modal-block onet-modal-block" data-type="onet" id="onet-modal-block">
+  <section class="onet-modal-shell" aria-label="ONET">
+    <div class="onet-modal-card">
+
+      <div class="onet-modal-top">
+        <div>
+          <h1 class="onet-modal-title">ONET — The OASIS Network</h1>
+          <p class="onet-modal-lead">Monitor and manage the global OASIS Network (ONET) of ONODEs.</p>
+        </div>
+        <button id="onet-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <!-- Network status banner -->
+      <div id="onet-status-banner" class="hd-mode-banner hd-mode-banner--offline">
+        <div class="hd-mode-banner-left">
+          <div id="onet-status-dot" class="hd-mode-dot hd-mode-dot--offline"></div>
+          <div>
+            <div id="onet-status-label" class="hd-mode-label">UNKNOWN</div>
+            <div id="onet-status-desc" class="hd-mode-desc">Fetching network status…</div>
+          </div>
+        </div>
+        <button id="onet-refresh-btn" class="hd-pill-btn" type="button">⟳ Refresh</button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="onet-stats-bar">
+        <div class="onet-stat-block">
+          <div class="onet-stat-label">Total Nodes</div>
+          <div class="onet-stat-value" id="onet-stat-nodes">—</div>
+        </div>
+        <div class="onet-stat-block">
+          <div class="onet-stat-label">Active Connections</div>
+          <div class="onet-stat-value" id="onet-stat-connections">—</div>
+        </div>
+        <div class="onet-stat-block">
+          <div class="onet-stat-label">Network Load</div>
+          <div class="onet-stat-value" id="onet-stat-load">—</div>
+        </div>
+        <div class="onet-stat-block">
+          <div class="onet-stat-label">Uptime</div>
+          <div class="onet-stat-value" id="onet-stat-uptime">—</div>
+        </div>
+      </div>
+
+      <div id="onet-modal-status" class="onet-status" hidden></div>
+
+      <!-- Tabs -->
+      <div class="onet-tabs">
+        <button class="onet-tab is-active" data-tab="overview">Overview</button>
+        <button class="onet-tab" data-tab="nodes">Nodes</button>
+        <button class="onet-tab" data-tab="topology">Topology</button>
+        <button class="onet-tab" data-tab="oasisdna">OASISDNA</button>
+        <button class="onet-tab" data-tab="actions">Actions</button>
+      </div>
+
+      <!-- Overview -->
+      <div id="onet-tab-overview" class="onet-tab-panel">
+        <div class="onet-stats-grid" id="onet-stats-grid">
+          <div class="onet-empty"><div class="onet-empty-icon">🌐</div><p>Loading network overview…</p></div>
+        </div>
+        <div class="onet-section-label" style="margin-top:20px">NETWORK HEALTH</div>
+        <div id="onet-health-bars" class="onet-health-bars">
+          <div class="onet-empty"><p>No health data available.</p></div>
+        </div>
+      </div>
+
+      <!-- Nodes -->
+      <div id="onet-tab-nodes" class="onet-tab-panel" hidden>
+        <div id="onet-nodes-list" class="onet-nodes-list">
+          <div class="onet-empty"><div class="onet-empty-icon">🌐</div><p>No nodes found on the network.</p></div>
+        </div>
+      </div>
+
+      <!-- Topology -->
+      <div id="onet-tab-topology" class="onet-tab-panel" hidden>
+        <pre id="onet-topology" class="onet-preformatted">Loading topology…</pre>
+      </div>
+
+      <!-- OASISDNA -->
+      <div id="onet-tab-oasisdna" class="onet-tab-panel" hidden>
+        <pre id="onet-oasisdna" class="onet-preformatted onet-preformatted--scroll">Loading OASIS DNA…</pre>
+      </div>
+
+      <!-- Actions -->
+      <div id="onet-tab-actions" class="onet-tab-panel" hidden>
+        <div class="onet-section-label">NETWORK CONTROLS</div>
+        <div class="onet-action-row">
+          <button id="onet-connect-btn" class="button button--ghost onet-action-btn" type="button">Connect</button>
+          <button id="onet-disconnect-btn" class="button button--ghost onet-action-btn" type="button">Disconnect</button>
+          <button id="onet-start-btn" class="button button--ghost onet-action-btn" type="button">Start</button>
+          <button id="onet-stop-btn" class="button button--ghost onet-action-btn" type="button">Stop</button>
+        </div>
+
+        <div class="onet-section-label" style="margin-top:24px">BROADCAST MESSAGE</div>
+        <div class="onet-broadcast-form">
+          <textarea id="onet-broadcast-msg" class="onet-textarea" rows="4" placeholder="Enter message to broadcast to the ONET…"></textarea>
+          <button id="onet-broadcast-btn" class="button" type="button">Broadcast</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

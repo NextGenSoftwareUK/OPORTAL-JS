@@ -1,0 +1,118 @@
+<div class="modal__block js-modal-block map-modal-block" data-type="map" id="map-modal-block">
+  <section class="map-modal-shell" aria-label="Map">
+    <div class="map-modal-card">
+
+      <div class="map-modal-top">
+        <div>
+          <h1 class="map-modal-title">Map</h1>
+          <p class="map-modal-lead">Explore the OASIS world map, nearby locations and your visit history.</p>
+        </div>
+        <button id="map-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="map-stats-bar">
+        <div class="map-stat-block">
+          <div class="map-stat-label">Nearby Locations</div>
+          <div class="map-stat-value" id="map-stat-nearby">—</div>
+        </div>
+        <div class="map-stat-block">
+          <div class="map-stat-label">Visits</div>
+          <div class="map-stat-value" id="map-stat-visits">—</div>
+        </div>
+        <div class="map-stat-block">
+          <div class="map-stat-label">Holons on Map</div>
+          <div class="map-stat-value" id="map-stat-holons">—</div>
+        </div>
+      </div>
+
+      <div id="map-modal-status" class="map-status" hidden></div>
+
+      <!-- Tabs -->
+      <div class="map-tabs">
+        <button class="map-tab is-active" data-tab="nearby">Nearby</button>
+        <button class="map-tab" data-tab="search">Search</button>
+        <button class="map-tab" data-tab="history">Visit History</button>
+        <button class="map-tab" data-tab="controls">Map Controls</button>
+        <button class="map-tab" data-tab="stats">Stats</button>
+      </div>
+
+      <!-- Nearby -->
+      <div id="map-tab-nearby" class="map-tab-panel">
+        <div class="map-nearby-toolbar">
+          <button id="map-refresh-btn" class="button button--ghost" type="button" style="font-size:0.85rem;padding:5px 14px;">⟳ Refresh</button>
+        </div>
+        <div id="map-nearby-grid" class="map-location-grid">
+          <div class="map-empty"><div class="map-empty-icon">📍</div><p>No nearby locations found.</p></div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div id="map-tab-search" class="map-tab-panel" hidden>
+        <div class="map-search-form">
+          <input id="map-search-input" class="map-search-input" type="text" placeholder="Search locations…" />
+          <button id="map-search-btn" class="button" type="button">Search</button>
+        </div>
+        <div id="map-search-results" class="map-location-grid">
+          <div class="map-empty"><p>Enter a search query above.</p></div>
+        </div>
+      </div>
+
+      <!-- Visit History -->
+      <div id="map-tab-history" class="map-tab-panel" hidden>
+        <div id="map-history-list" class="map-history-list">
+          <div class="map-empty"><div class="map-empty-icon">🗺️</div><p>No visit history yet.</p></div>
+        </div>
+      </div>
+
+      <!-- Map Controls -->
+      <div id="map-tab-controls" class="map-tab-panel" hidden>
+        <div class="map-controls-info">
+          <p class="map-dim">These controls interact with the Our World 3D game map in real-time.</p>
+        </div>
+
+        <div class="map-section-label">ZOOM</div>
+        <div class="map-ctrl-row">
+          <input id="map-zoom-value" class="map-ctrl-input" type="number" value="1" min="1" max="20" />
+          <button id="map-zoom-in-btn" class="button button--ghost map-ctrl-btn" type="button">Zoom In</button>
+          <button id="map-zoom-out-btn" class="button button--ghost map-ctrl-btn" type="button">Zoom Out</button>
+        </div>
+
+        <div class="map-section-label" style="margin-top:16px">PAN</div>
+        <div class="map-ctrl-row">
+          <input id="map-pan-value" class="map-ctrl-input" type="number" value="10" min="1" />
+          <button id="map-pan-up-btn" class="button button--ghost map-ctrl-btn" type="button">↑ Up</button>
+          <button id="map-pan-down-btn" class="button button--ghost map-ctrl-btn" type="button">↓ Down</button>
+          <button id="map-pan-left-btn" class="button button--ghost map-ctrl-btn" type="button">← Left</button>
+          <button id="map-pan-right-btn" class="button button--ghost map-ctrl-btn" type="button">→ Right</button>
+        </div>
+
+        <div class="map-section-label" style="margin-top:16px">SELECT HOLON</div>
+        <div class="map-ctrl-row">
+          <input id="map-select-holon" class="map-ctrl-input map-ctrl-input--wide" type="text" placeholder="Holon ID or name…" />
+          <button id="map-select-holon-btn" class="button button--ghost map-ctrl-btn" type="button">Select</button>
+        </div>
+
+        <div class="map-section-label" style="margin-top:16px">ZOOM TO HOLON</div>
+        <div class="map-ctrl-row">
+          <input id="map-zoom-holon" class="map-ctrl-input map-ctrl-input--wide" type="text" placeholder="Holon ID or name…" />
+          <button id="map-zoom-holon-btn" class="button button--ghost map-ctrl-btn" type="button">Zoom To</button>
+        </div>
+
+        <div class="map-section-label" style="margin-top:16px">HIGHLIGHT BUILDING</div>
+        <div class="map-ctrl-row">
+          <input id="map-highlight-building" class="map-ctrl-input map-ctrl-input--wide" type="text" placeholder="Building ID or name…" />
+          <button id="map-highlight-building-btn" class="button button--ghost map-ctrl-btn" type="button">Highlight</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div id="map-tab-stats" class="map-tab-panel" hidden>
+        <div id="map-stats-grid" class="map-stats-grid">
+          <div class="map-empty"><p>Loading map statistics…</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

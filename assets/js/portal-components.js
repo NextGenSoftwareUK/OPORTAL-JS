@@ -17,6 +17,11 @@
     'assets/components/modals/karma.html',
     'assets/components/modals/data.html',
     'assets/components/modals/hyperdrive.html',
+    'assets/components/modals/wallet.html',
+    'assets/components/modals/messaging.html',
+    'assets/components/modals/onet.html',
+    'assets/components/modals/onode.html',
+    'assets/components/modals/map.html',
   ];
 
   function getRoot() {

@@ -140,7 +140,7 @@
     var token = getToken(profile);
     if (!avatarId || !token) return null;
 
-    var url = API_BASE + '/api/nft/load-all-nfts-for_avatar/' + encodeURIComponent(avatarId) + '/' + encodeURIComponent(currentProvider);
+    var url = API_BASE + '/api/Nft/load-all-nfts-for_avatar/' + encodeURIComponent(avatarId) + '/' + encodeURIComponent(currentProvider);
     try {
       var res = await fetch(url, {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
@@ -156,7 +156,7 @@
     var token = getToken(profile);
     if (!avatarId || !token) return null;
 
-    var url = API_BASE + '/api/nft/load-all-geo-nfts-for_avatar/' + encodeURIComponent(avatarId) + '/' + encodeURIComponent(currentProvider);
+    var url = API_BASE + '/api/Nft/load-all-geo-nfts-for-avatar/' + encodeURIComponent(avatarId) + '/' + encodeURIComponent(currentProvider);
     try {
       var res = await fetch(url, {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
@@ -169,7 +169,7 @@
 
   async function fetchOlandPrice(token) {
     try {
-      var res = await fetch(API_BASE + '/api/oland/get-oland-price', {
+      var res = await fetch(API_BASE + '/api/OLand/get-oland-price', {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;
@@ -180,7 +180,7 @@
 
   async function fetchOland(token) {
     try {
-      var res = await fetch(API_BASE + '/api/oland/load-all-oland', {
+      var res = await fetch(API_BASE + '/api/OLand/load-all-olands', {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;

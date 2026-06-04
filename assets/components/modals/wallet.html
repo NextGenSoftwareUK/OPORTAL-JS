@@ -1,0 +1,123 @@
+<div class="modal__block js-modal-block wallet-modal-block" data-type="wallet" id="wallet-modal-block">
+  <section class="wallet-modal-shell" aria-label="Wallet">
+    <div class="wallet-modal-card">
+
+      <div class="wallet-modal-top">
+        <div>
+          <h1 class="wallet-modal-title">Wallet</h1>
+          <p class="wallet-modal-lead">Your OASIS wallets, portfolio and cross-chain asset management.</p>
+        </div>
+        <button id="wallet-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div id="wallet-modal-status" class="wallet-status" hidden></div>
+
+      <!-- Stats bar -->
+      <div class="wallet-stats-bar">
+        <div class="wallet-stat">
+          <div class="wallet-stat-label">Total Wallets</div>
+          <div class="wallet-stat-value" id="wallet-stat-wallets">—</div>
+        </div>
+        <div class="wallet-stat">
+          <div class="wallet-stat-label">Portfolio Value</div>
+          <div class="wallet-stat-value" id="wallet-stat-portfolio">—</div>
+        </div>
+        <div class="wallet-stat">
+          <div class="wallet-stat-label">Supported Chains</div>
+          <div class="wallet-stat-value" id="wallet-stat-chains">—</div>
+        </div>
+        <div class="wallet-stat">
+          <div class="wallet-stat-label">Default Wallet</div>
+          <div class="wallet-stat-value" id="wallet-stat-default">—</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="wallet-tabs">
+        <button class="wallet-tab is-active" data-tab="wallets">My Wallets</button>
+        <button class="wallet-tab" data-tab="portfolio">Portfolio</button>
+        <button class="wallet-tab" data-tab="transfer">Transfer</button>
+        <button class="wallet-tab" data-tab="chains">Chains</button>
+      </div>
+
+      <!-- My Wallets -->
+      <div id="wallet-tab-wallets" class="wallet-tab-panel">
+        <div class="wallet-panel-actions">
+          <button id="wallet-refresh-btn" class="nft-refresh-btn" title="Refresh Wallets">&#8635;</button>
+          <button id="wallet-create-btn" class="button button--ghost">+ Create Wallet</button>
+        </div>
+        <div id="wallet-grid" class="wallet-grid">
+          <div class="wallet-empty" id="wallet-grid-empty">
+            <div class="wallet-empty-icon">👛</div>
+            <p>No wallets found.<br>Create your first OASIS wallet to get started.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio -->
+      <div id="wallet-tab-portfolio" class="wallet-tab-panel" hidden>
+        <div class="wallet-portfolio-summary" id="wallet-portfolio-value">
+          <div class="wallet-portfolio-label">Total Portfolio Value</div>
+          <div class="wallet-portfolio-amount">—</div>
+        </div>
+        <div id="wallet-tokens-grid" class="wallet-tokens-grid">
+          <div class="wallet-empty">
+            <div class="wallet-empty-icon">🪙</div>
+            <p>No tokens found for your wallets.</p>
+          </div>
+        </div>
+        <div id="wallet-analytics" class="wallet-analytics"></div>
+      </div>
+
+      <!-- Transfer -->
+      <div id="wallet-tab-transfer" class="wallet-tab-panel" hidden>
+        <form id="wallet-transfer-form" class="wallet-form" onsubmit="return false">
+          <div class="wallet-form-row">
+            <label class="wallet-form-label" for="wallet-to-address">To Address</label>
+            <input class="wallet-form-input" id="wallet-to-address" type="text" placeholder="Recipient wallet address…" autocomplete="off" />
+          </div>
+          <div class="wallet-form-row">
+            <label class="wallet-form-label" for="wallet-amount">Amount</label>
+            <input class="wallet-form-input" id="wallet-amount" type="number" min="0" step="any" placeholder="0.00" />
+          </div>
+          <div class="wallet-form-row">
+            <label class="wallet-form-label" for="wallet-from-wallet">From Wallet</label>
+            <select class="wallet-form-select" id="wallet-from-wallet">
+              <option value="">Select a wallet…</option>
+            </select>
+          </div>
+          <div class="wallet-form-row">
+            <label class="wallet-form-label" for="wallet-chain">Chain</label>
+            <select class="wallet-form-select" id="wallet-chain">
+              <option value="Ethereum">Ethereum</option>
+              <option value="Solana">Solana</option>
+              <option value="Polygon">Polygon</option>
+              <option value="Binance">Binance Smart Chain</option>
+              <option value="Avalanche">Avalanche</option>
+              <option value="Arbitrum">Arbitrum</option>
+              <option value="Optimism">Optimism</option>
+              <option value="EOS">EOS</option>
+              <option value="Holochain">Holochain</option>
+            </select>
+          </div>
+          <div class="wallet-form-row">
+            <label class="wallet-form-label" for="wallet-memo">Memo (optional)</label>
+            <input class="wallet-form-input" id="wallet-memo" type="text" placeholder="Optional memo…" />
+          </div>
+          <button id="wallet-transfer-btn" class="button" type="submit">Send Transfer</button>
+        </form>
+      </div>
+
+      <!-- Chains -->
+      <div id="wallet-tab-chains" class="wallet-tab-panel" hidden>
+        <div id="wallet-chains-grid" class="wallet-chains-grid">
+          <div class="wallet-empty">
+            <div class="wallet-empty-icon">🔗</div>
+            <p>No supported chains found.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

@@ -123,13 +123,39 @@
     if (!grid) return;
     grid.innerHTML = KARMA_WEIGHTINGS.map(function (w) {
       var isPositive = w.points >= 0;
-      return '<div class="karma-weighting-card">' +
+      return '<div class="karma-weighting-card" data-action="' + escapeHtml(w.action) + '" data-points="' + w.points + '" style="cursor:pointer">' +
         '<div class="karma-weighting-action">' + escapeHtml(w.action) + '</div>' +
         '<div class="karma-weighting-points ' + (isPositive ? 'karma-positive' : 'karma-negative') + '">' +
           (isPositive ? '+' : '') + w.points +
         '</div>' +
       '</div>';
     }).join('');
+
+    grid.querySelectorAll('.karma-weighting-card').forEach(function (card) {
+      card.addEventListener('click', function () { voteOnWeighting(card.dataset.action, card.dataset.points); });
+    });
+  }
+
+  async function voteOnWeighting(karmaType, weighting) {
+    if (!confirm('Vote for "' + karmaType + '" with weighting ' + weighting + '?')) return;
+    var profile = readAvatar();
+    var token = getToken(profile);
+    if (!token) { showStatus('warn', 'Please log in to vote on karma weightings.'); return; }
+    showStatus('loading', 'Submitting vote…');
+    try {
+      var res = await fetch(API_BASE + '/api/karma/vote-for-positive-karma-weighting/' +
+        encodeURIComponent(karmaType) + '/' + encodeURIComponent(weighting), {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (res.ok) {
+        showStatus('success', 'Vote submitted for "' + karmaType + '"!');
+        setTimeout(hideStatus, 3000);
+      } else {
+        showStatus('error', 'Vote failed (HTTP ' + res.status + ').');
+      }
+    } catch (e) {
+      showStatus('error', 'Vote failed: ' + String(e));
+    }
   }
 
   // ── API ───────────────────────────────────────────────────────────────────────
@@ -139,7 +165,7 @@
     var token = getToken(profile);
     if (!id || !token) return null;
     try {
-      var res = await fetch(API_BASE + '/api/karma/GetKarmaForAvatar/' + encodeURIComponent(id), {
+      var res = await fetch(API_BASE + '/api/karma/get-karma-for-avatar/' + encodeURIComponent(id), {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;
@@ -153,31 +179,89 @@
     var token = getToken(profile);
     if (!id || !token) return null;
     try {
-      var res = await fetch(API_BASE + '/api/karma/GetKarmaAkashicRecordsForAvatar/' + encodeURIComponent(id), {
+      var res = await fetch(API_BASE + '/api/karma/get-karma-akashic-records-for-avatar/' + encodeURIComponent(id), {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (res.ok) {
+        var data = await res.json();
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data.result)) return data.result;
+        if (data.result && Array.isArray(data.result.result)) return data.result.result;
+        if (Array.isArray(data.data)) return data.data;
+      }
+    } catch (e) { /* fall through to history fallback */ }
+    // Fallback: try karma history endpoint
+    try {
+      var res2 = await fetch(API_BASE + '/api/karma/get-karma-history/' + encodeURIComponent(id), {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res2.ok) return null;
+      var data2 = await res2.json();
+      if (Array.isArray(data2)) return data2;
+      if (Array.isArray(data2.result)) return data2.result;
+      if (Array.isArray(data2.data)) return data2.data;
+      return null;
+    } catch (e2) { return null; }
+  }
+
+  async function fetchKarmaStats(profile) {
+    var id = getAvatarId(profile);
+    var token = getToken(profile);
+    if (!id || !token) return null;
+    try {
+      var res = await fetch(API_BASE + '/api/karma/get-karma-stats/' + encodeURIComponent(id), {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) return null;
-      var data = await res.json();
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data.result)) return data.result;
-      if (data.result && Array.isArray(data.result.result)) return data.result.result;
-      if (Array.isArray(data.data)) return data.data;
-      return null;
+      return await res.json();
     } catch (e) { return null; }
+  }
+
+  function renderKarmaStats(statsData) {
+    var grid = getById('karma-stats-grid');
+    if (!grid) return;
+    var s = statsData && (statsData.result || statsData);
+    if (!s || typeof s !== 'object') {
+      grid.innerHTML = '<div class="karma-empty"><div class="karma-empty-icon">📊</div><p>No karma stats available.</p></div>';
+      return;
+    }
+
+    var STAT_FIELDS = [
+      ['totalKarmaEarned', 'Total Karma Earned'], ['TotalKarmaEarned', 'Total Karma Earned'],
+      ['totalKarmaRemoved', 'Total Karma Removed'], ['TotalKarmaRemoved', 'Total Karma Removed'],
+      ['netKarma', 'Net Karma'], ['NetKarma', 'Net Karma'],
+      ['totalTransactions', 'Total Transactions'], ['TotalTransactions', 'Total Transactions'],
+    ];
+    var seen = new Set();
+    var cards = '';
+    STAT_FIELDS.forEach(function (f) {
+      if (seen.has(f[1])) return;
+      var v = s[f[0]];
+      if (v == null) return;
+      seen.add(f[1]);
+      var isNeg = f[1].includes('Removed') || (typeof v === 'number' && v < 0);
+      cards += '<div class="karma-stat-card">' +
+        '<div class="karma-stat-card-label">' + escapeHtml(f[1]) + '</div>' +
+        '<div class="karma-stat-card-value ' + (isNeg ? 'karma-negative' : 'karma-positive') + '">' + escapeHtml(String(v)) + '</div>' +
+        '</div>';
+    });
+    grid.innerHTML = cards || '<div class="karma-empty"><div class="karma-empty-icon">📊</div><p>No karma stats available.</p></div>';
   }
 
   async function loadAll() {
     var profile = readAvatar();
     showStatus('loading', 'Loading karma data…');
 
-    var [score, records] = await Promise.all([
+    var [score, records, stats] = await Promise.all([
       fetchKarmaScore(profile),
       fetchAkashicRecords(profile),
+      fetchKarmaStats(profile),
     ]);
 
     hideStatus();
     populateBanner(profile, score);
     renderRecords(records);
+    renderKarmaStats(stats);
 
     if (score == null && !records) {
       showStatus('warn', 'Could not load karma data from the API — showing cached profile data.');
