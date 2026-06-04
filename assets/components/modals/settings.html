@@ -116,7 +116,7 @@
                   <div class="settings-dim">Automatically switch provider if the primary goes offline.</div>
                 </div>
                 <label class="settings-toggle">
-                  <input type="checkbox" id="settings-auto-failover" onchange="showComingSoonMessage()" />
+                  <input type="checkbox" id="settings-auto-failover" checked />
                   <span class="settings-toggle-track"></span>
                 </label>
               </div>
@@ -126,7 +126,7 @@
                   <div class="settings-dim">Replicate your data across multiple providers automatically.</div>
                 </div>
                 <label class="settings-toggle">
-                  <input type="checkbox" id="settings-auto-replication" onchange="showComingSoonMessage()" />
+                  <input type="checkbox" id="settings-auto-replication" checked />
                   <span class="settings-toggle-track"></span>
                 </label>
               </div>
@@ -136,7 +136,7 @@
                   <div class="settings-dim">Distribute load across providers for better performance.</div>
                 </div>
                 <label class="settings-toggle">
-                  <input type="checkbox" id="settings-load-balancing" onchange="showComingSoonMessage()" />
+                  <input type="checkbox" id="settings-load-balancing" checked />
                   <span class="settings-toggle-track"></span>
                 </label>
               </div>
@@ -154,7 +154,10 @@
             <div class="settings-plan-card">
               <div class="settings-plan-name">Free Tier</div>
               <div class="settings-plan-desc">Access to core OASIS APIs, avatar management and basic provider storage.</div>
-              <button class="button settings-action-btn" style="margin-top:16px" onclick="showComingSoonMessage()">Upgrade Plan <span class="settings-badge settings-badge--soon">Coming Soon</span></button>
+              <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
+                <button class="button settings-action-btn" onclick="showComingSoonMessage()">Upgrade Plan</button>
+                <span class="settings-badge settings-badge--soon">Coming Soon</span>
+              </div>
             </div>
 
             <div class="settings-section-label" style="margin-top:24px">BILLING <span class="settings-badge settings-badge--soon">Coming Soon</span></div>
