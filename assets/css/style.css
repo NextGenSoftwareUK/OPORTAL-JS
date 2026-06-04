@@ -4269,18 +4269,18 @@ select option {
   align-items: center;
   justify-content: space-between;
   padding: 18px 16px 6px;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 800;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(0, 229, 255, 0.45);
+  color: rgba(0, 229, 255, 0.65);
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s;
 }
 .side__item--section-label.item--has-children > a::after {
   content: '▸';
-  font-size: 8px;
+  font-size: 11px;
   opacity: 0.5;
   transition: transform 0.25s ease, opacity 0.2s;
   transform: rotate(0deg);
