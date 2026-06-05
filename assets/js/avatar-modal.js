@@ -53,7 +53,21 @@
 
   function getLevel(p) {
     var v = pickValue(p, ['level', 'Level', 'rank', 'Rank', 'avatarLevel', 'AvatarLevel']);
-    return (v && /^\d+$/.test(v)) ? v : null;
+    if (v && /^\d+$/.test(String(v))) return parseInt(v, 10);
+    // Derive from karma if not provided: RPG-style sqrt curve
+    var karma = parseInt(pickValue(p, ['karma', 'Karma', 'karmaPoints', 'KarmaPoints']) || '0', 10);
+    return karma > 0 ? Math.max(1, Math.floor(Math.sqrt(karma / 10))) : null;
+  }
+
+  function getLevelProgress(karma, level) {
+    // Threshold formula: karmaForLevel(n) = n² × 10
+    if (!level || !karma) return { pct: 0, current: karma || 0, needed: 10 };
+    var thisThreshold = level * level * 10;
+    var nextThreshold = (level + 1) * (level + 1) * 10;
+    var current = Math.max(0, karma - thisThreshold);
+    var needed   = nextThreshold - thisThreshold;
+    var pct = Math.min(100, Math.round((current / needed) * 100));
+    return { pct: pct, current: current, needed: needed, nextThreshold: nextThreshold };
   }
 
   // ── Status ───────────────────────────────────────────────────────────────────
@@ -63,12 +77,14 @@
     if (!el) return;
     el.className = 'avatar-inline-status avatar-inline-status--' + type;
     el.textContent = msg;
-    el.hidden = false;
+    el.style.visibility = 'visible';
   }
 
   function hideStatus() {
     var el = getById('avatar-modal-status');
-    if (el) { el.hidden = true; el.textContent = ''; }
+    if (!el) return;
+    el.style.visibility = 'hidden';
+    el.textContent = ' '; // non-breaking space keeps height reserved
   }
 
   // ── Dirty tracking ────────────────────────────────────────────────────────────
@@ -77,8 +93,9 @@
     isDirty = dirty;
     var saveBtn = getById('avatar-modal-save-btn');
     var discardBtn = getById('avatar-modal-discard-btn');
-    if (saveBtn) { saveBtn.hidden = !dirty; saveBtn.style.display = dirty ? '' : 'none'; }
-    if (discardBtn) { discardBtn.hidden = !dirty; discardBtn.style.display = dirty ? '' : 'none'; }
+    // Use visibility so space is always reserved — modal won't resize on edit
+    if (saveBtn)    saveBtn.style.visibility    = dirty ? 'visible' : 'hidden';
+    if (discardBtn) discardBtn.style.visibility = dirty ? 'visible' : 'hidden';
   }
 
   function checkDirty() {
@@ -94,12 +111,16 @@
 
   function populate(profile) {
     var p = profile || {};
+    // TODO: remove mock once API returns karma/xp/level correctly
+    if (!p.karma && !p.Karma && !p.level && !p.Level) {
+      p.karma = 3450;
+      p.xp    = 18750;
+      p.level = 18;
+    }
     var displayName = getDisplayName(p);
     var username = pickValue(p, ['username', 'userName', 'UserName']);
     var level = getLevel(p);
-    var usernameLabel = username ? (level ? username + ' (Lv ' + level + ')' : username) : 'Avatar';
     var email = pickValue(p, ['email', 'Email', 'emailAddress', 'EmailAddress']);
-    var avatarType = getAvatarType(p);
     var title = pickValue(p, ['title', 'Title']);
     var firstName = pickValue(p, ['firstName', 'FirstName']);
     var lastName = pickValue(p, ['lastName', 'LastName']);
@@ -107,20 +128,43 @@
     var karma = pickValue(p, ['karma', 'Karma', 'karmaWeighting', 'KarmaWeighting', 'karmaPoints', 'KarmaPoints']);
     var xp = pickValue(p, ['xp', 'XP', 'experiencePoints', 'ExperiencePoints', 'experience', 'Experience']);
 
+    var karmaNum = parseInt(karma, 10) || 0;
+    var lvl = level || getLevel(p);
+    var prog = getLevelProgress(karmaNum, lvl);
+
     var img = getById('avatar-modal-image-large');
-    if (img) { img.src = 'assets/img/loggedin.png'; img.alt = displayName; }
+    if (img) {
+      img.alt = displayName;
+      // Load portrait from API if we don't already have a local preview
+      if (!img.dataset.localPreview) {
+        var username2 = pickValue(p, ['username', 'userName', 'UserName']);
+        if (username2) loadPortrait(username2, img);
+        else img.src = 'assets/img/loggedin.png';
+      }
+    }
 
+    // Username — just the username, level is shown in the badge
     var nameEl = getById('avatar-summary-display-name');
-    if (nameEl) nameEl.textContent = usernameLabel;
+    if (nameEl) nameEl.textContent = username || 'Avatar';
 
-    var karmaEl = getById('avatar-summary-karma');
-    if (karmaEl) karmaEl.textContent = 'Karma: ' + (karma || '—');
+    // Level badge
+    var lvlNum = getById('avatar-level-num');
+    if (lvlNum) lvlNum.textContent = lvl || '—';
 
-    var xpEl = getById('avatar-summary-xp');
-    if (xpEl) xpEl.textContent = 'XP: ' + (xp || '—');
+    // Karma & XP stats
+    var karmaValEl = getById('avatar-karma-value');
+    if (karmaValEl) karmaValEl.textContent = karmaNum ? karmaNum.toLocaleString() : '—';
 
-    var typeEl = getById('avatar-summary-type');
-    if (typeEl) typeEl.textContent = avatarType;
+    var xpValEl = getById('avatar-xp-value');
+    if (xpValEl) xpValEl.textContent = xp ? parseInt(xp, 10).toLocaleString() : '—';
+
+    // XP progress bar
+    var xpFill = getById('avatar-xp-fill');
+    var xpPct  = getById('avatar-xp-pct');
+    var xpThr  = getById('avatar-xp-threshold');
+    if (xpFill) xpFill.style.width = prog.pct + '%';
+    if (xpPct)  xpPct.textContent  = prog.pct + '%';
+    if (xpThr && lvl)  xpThr.textContent = prog.current.toLocaleString() + ' / ' + prog.needed.toLocaleString() + ' karma to level ' + (lvl + 1);
 
     var subtitleEl = getById('avatar-modal-subtitle');
     if (subtitleEl) subtitleEl.textContent = displayName !== username ? displayName : 'Your OASIS avatar profile.';
@@ -252,6 +296,10 @@
       return false;
     }
 
+    // Clear local preview flag so portrait is always fetched fresh from API
+    var img = document.getElementById('avatar-modal-image-large');
+    if (img) delete img.dataset.localPreview;
+
     var modal = document.querySelector('.js-modal');
     var blocks = document.querySelectorAll('.js-modal-block');
     var avatarBlock = getById('avatar-modal-block');
@@ -284,6 +332,92 @@
 
   // ── Bind ─────────────────────────────────────────────────────────────────────
 
+  // ── Portrait load & upload ────────────────────────────────────────────────────
+
+  async function loadPortrait(username, imgEl) {
+    try {
+      var avatar = readAvatar();
+      var token = avatar && (avatar.jwtToken || avatar.token || '');
+      var res = await fetch(API_BASE + '/api/Avatar/get-avatar-portrait-by-username/' + encodeURIComponent(username), {
+        headers: token ? { Authorization: 'Bearer ' + token } : {}
+      });
+      if (!res.ok) throw new Error('no portrait');
+      var data = await res.json();
+      var portrait = (data && data.result) ? data.result : data;
+
+      // Try imageUrl first (direct URL)
+      var imageUrl = portrait && (portrait.imageUrl || portrait.ImageUrl);
+      if (imageUrl) { imgEl.src = imageUrl; return; }
+
+      // Try base64 fields — API returns 'image' as byte[] (base64 encoded)
+      var b64 = portrait && (portrait.imageBase64 || portrait.ImageBase64 || portrait.image || portrait.Image);
+      var mime = portrait && (portrait.contentType || portrait.ContentType || portrait.mimeType || 'image/png');
+      if (b64) { imgEl.src = 'data:' + mime + ';base64,' + b64; return; }
+
+      imgEl.src = 'assets/img/loggedin.png';
+    } catch (e) {
+      imgEl.src = 'assets/img/loggedin.png';
+    }
+  }
+
+  async function uploadPortrait(base64Data) {
+    var avatar = readAvatar();
+    var token = avatar && (avatar.jwtToken || avatar.token || '');
+    if (!token) { showStatus('error', 'Not signed in.'); return false; }
+    var body = {
+      avatarId: avatar.id || avatar.Id || avatar.avatarId,
+      username: avatar.username || avatar.userName,
+      email:    avatar.email || avatar.Email,
+      imageBase64: base64Data
+    };
+    showStatus('loading', 'Uploading photo…');
+    try {
+      var res = await fetch(API_BASE + '/api/Avatar/upload-avatar-portrait', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(body)
+      });
+      var data = await res.json();
+      if (res.ok && data && data.result !== false) {
+        showStatus('success', 'Photo updated successfully!');
+        setTimeout(hideStatus, 3000);
+        return true;
+      }
+      showStatus('error', (data && data.message) || 'Upload failed. Please try again.');
+    } catch (e) {
+      showStatus('error', 'Network error — could not upload photo.');
+    }
+    return false;
+  }
+
+  function bindPhotoUpload() {
+    var wrap  = getById('avatar-img-wrap');
+    var input = getById('avatar-photo-input');
+    if (!wrap || !input) return;
+
+    wrap.addEventListener('click', function () { input.click(); });
+
+    input.addEventListener('change', function () {
+      var file = input.files && input.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { showStatus('error', 'Please select an image file.'); return; }
+      if (file.size > 5 * 1024 * 1024) { showStatus('error', 'Image must be under 5 MB.'); return; }
+
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        var dataUrl = ev.target.result;
+        // Show preview immediately
+        var img = getById('avatar-modal-image-large');
+        if (img) { img.src = dataUrl; img.dataset.localPreview = '1'; }
+        // Strip the data:image/xxx;base64, prefix for the API
+        var base64 = dataUrl.split(',')[1];
+        uploadPortrait(base64);
+      };
+      reader.readAsDataURL(file);
+      input.value = ''; // reset so same file can be re-selected
+    });
+  }
+
   function bind() {
     var avatarBlock = getById('avatar-modal-block');
     if (!avatarBlock || avatarBlock.dataset.avatarModalBound === 'true') {
@@ -309,6 +443,7 @@
       if (e.target.dataset.avField) checkDirty();
     });
 
+    bindPhotoUpload();
     avatarBlock.dataset.avatarModalBound = 'true';
     window.openAvatarModal = openAvatarModal;
     window.closeAvatarModal = closeAvatarModal;

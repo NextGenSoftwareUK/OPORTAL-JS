@@ -312,7 +312,89 @@
     if (tab === 'logs') startLogsAutoRefresh();
     if (tab === 'peers') apiFetch('/api/v1/onode/peers').then(renderPeers);
     if (tab === 'config') apiFetch('/api/v1/onode/config').then(function (d) { renderPreformatted('onode-config', d); });
-    if (tab === 'oasisdna') apiFetch('/api/v1/onode/oasisdna').then(function (d) { renderPreformatted('onode-oasisdna', d); });
+    if (tab === 'oasisdna') initDNATab();
+  }
+
+  // ── OASIS DNA — password gate ─────────────────────────────────────────────────
+
+  function isONODELinked() {
+    // Check if this ONODE is linked to the logged-in avatar
+    try {
+      var avatar = JSON.parse(localStorage.getItem('avatar') || 'null');
+      var nodeId = avatar && (avatar.nodeId || avatar.NodeId || avatar.onodeId || avatar.ONODEId);
+      return !!nodeId;
+    } catch (e) { return false; }
+  }
+
+  function initDNATab() {
+    var notLinked = getById('onode-dna-not-linked');
+    var gate      = getById('onode-dna-gate');
+    var content   = getById('onode-dna-content');
+    if (!gate) return;
+
+    if (!isONODELinked()) {
+      if (notLinked) notLinked.hidden = false;
+      gate.hidden    = true;
+      if (content) content.hidden = true;
+      return;
+    }
+    // Reset to gate state each time the tab is opened
+    if (notLinked) notLinked.hidden = true;
+    gate.hidden = false;
+    if (content) content.hidden = true;
+    var pwInput = getById('onode-dna-password');
+    var errEl   = getById('onode-dna-gate-error');
+    if (pwInput) pwInput.value = '';
+    if (errEl)   errEl.hidden  = true;
+  }
+
+  function bindDNAGate(block) {
+    var unlockBtn = getById('onode-dna-unlock-btn');
+    var lockBtn   = getById('onode-dna-lock-btn');
+
+    if (unlockBtn) unlockBtn.addEventListener('click', async function () {
+      var pwInput = getById('onode-dna-password');
+      var errEl   = getById('onode-dna-gate-error');
+      var pw = pwInput ? pwInput.value.trim() : '';
+      if (!pw) { if (errEl) { errEl.textContent = 'Please enter your password.'; errEl.hidden = false; } return; }
+
+      // Verify password via avatar login endpoint
+      try {
+        var avatar = JSON.parse(localStorage.getItem('avatar') || 'null');
+        var username = avatar && (avatar.username || avatar.userName || avatar.UserName || avatar.email || avatar.Email);
+        var res = await fetch((window.apiUrl || '') + '/api/Avatar/authenticate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: username, password: pw })
+        });
+        var ok = res.ok;
+        if (!ok) throw new Error('bad');
+      } catch (e) { ok = false; }
+
+      if (!ok) {
+        if (errEl) { errEl.textContent = 'Incorrect password. Please try again.'; errEl.hidden = false; }
+        return;
+      }
+
+      // Unlock — fetch DNA and show
+      var gate    = getById('onode-dna-gate');
+      var content = getById('onode-dna-content');
+      if (gate)    gate.hidden    = true;
+      if (content) content.hidden = false;
+      if (errEl)   errEl.hidden   = true;
+      apiFetch('/api/v1/onode/oasisdna').then(function (d) { renderPreformatted('onode-oasisdna', d); });
+    });
+
+    if (lockBtn) lockBtn.addEventListener('click', function () {
+      var gate    = getById('onode-dna-gate');
+      var content = getById('onode-dna-content');
+      var pwInput = getById('onode-dna-password');
+      var pre     = getById('onode-oasisdna');
+      if (gate)    gate.hidden    = false;
+      if (content) content.hidden = true;
+      if (pwInput) pwInput.value  = '';
+      if (pre)     pre.textContent = '';
+    });
   }
 
   // ── Open / close ──────────────────────────────────────────────────────────────
@@ -383,6 +465,7 @@
     var restartBtn = getById('onode-restart-btn');
     if (restartBtn) restartBtn.addEventListener('click', function () { doControl('onode-restart-btn', 'restart', 'Restart', 'Restart your ONODE? It will briefly disconnect from the ONET.'); });
 
+    bindDNAGate(block);
     block.dataset.onodeBound = 'true';
     window.openONODEModal = openONODEModal;
     window.closeONODEModal = closeONODEModal;

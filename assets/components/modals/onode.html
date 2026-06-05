@@ -88,9 +88,36 @@
         <pre id="onode-config" class="onode-preformatted onode-preformatted--scroll">Loading config…</pre>
       </div>
 
-      <!-- OASISDNA -->
+      <!-- OASISDNA — password gated, only shown if ONODE is linked to avatar -->
       <div id="onode-tab-oasisdna" class="onode-tab-panel" hidden>
-        <pre id="onode-oasisdna" class="onode-preformatted onode-preformatted--scroll">Loading OASIS DNA…</pre>
+
+        <!-- Not linked state -->
+        <div id="onode-dna-not-linked" class="onode-empty" hidden>
+          <div class="onode-empty-icon">🔒</div>
+          <p>This ONODE is not linked to your avatar.<br>OASIS DNA is only accessible on your own node.</p>
+        </div>
+
+        <!-- Password gate -->
+        <div id="onode-dna-gate">
+          <div class="onode-dna-gate-card">
+            <div class="onode-dna-gate-icon">🔐</div>
+            <p class="onode-dna-gate-title">Confirm Your Identity</p>
+            <p class="onode-dna-gate-desc">OASIS DNA contains sensitive keys and configuration data. Please re-enter your password to view it.</p>
+            <div class="onode-dna-gate-form">
+              <input type="password" id="onode-dna-password" class="form-control" placeholder="Enter your password…" autocomplete="current-password" />
+              <button id="onode-dna-unlock-btn" class="button" type="button">Unlock</button>
+            </div>
+            <div id="onode-dna-gate-error" class="onode-dna-gate-error" hidden>Incorrect password. Please try again.</div>
+          </div>
+        </div>
+
+        <!-- Content — shown only after successful auth -->
+        <div id="onode-dna-content" hidden>
+          <div class="onode-dna-warning">⚠️ Keep this data private — it contains sensitive keys and configuration.</div>
+          <pre id="onode-oasisdna" class="onode-preformatted onode-preformatted--scroll"></pre>
+          <button id="onode-dna-lock-btn" class="button button--ghost" type="button" style="margin-top:12px">🔒 Lock</button>
+        </div>
+
       </div>
 
       <!-- Node controls (always visible) -->

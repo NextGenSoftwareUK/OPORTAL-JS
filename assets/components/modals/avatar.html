@@ -14,21 +14,62 @@
         </div>
       </div>
 
-      <div id="avatar-modal-status" class="avatar-inline-status" hidden></div>
+      <div id="avatar-modal-status" class="avatar-inline-status" style="visibility:hidden">&nbsp;</div>
 
       <div class="avatar-modal-unified">
 
         <!-- Left: summary panel -->
         <aside class="avatar-modal-summary">
+
+          <!-- Avatar image + level badge + upload overlay -->
           <div class="avatar-modal-summary-avatar">
-            <img id="avatar-modal-image-large" src="assets/img/loggedin.png" alt="Avatar" />
+            <div class="avatar-img-wrap" id="avatar-img-wrap" title="Click to upload photo">
+              <img id="avatar-modal-image-large" src="assets/img/loggedin.png" alt="Avatar" />
+              <div class="avatar-upload-overlay">
+                <span class="avatar-upload-icon">📷</span>
+                <span class="avatar-upload-label">Change Photo</span>
+              </div>
+              <input type="file" id="avatar-photo-input" accept="image/*" style="display:none" />
+            </div>
+            <div class="avatar-level-badge" id="avatar-level-badge">
+              <span class="avatar-level-num" id="avatar-level-num">—</span>
+              <span class="avatar-level-lbl">LVL</span>
+            </div>
           </div>
+
+          <!-- Username -->
           <div class="avatar-summary-name" id="avatar-summary-display-name">Avatar</div>
-          <div class="avatar-summary-meta">
-            <span class="avatar-summary-badge avatar-summary-badge--karma" id="avatar-summary-karma">Karma: —</span>
-            <span class="avatar-summary-badge avatar-summary-badge--xp" id="avatar-summary-xp">XP: —</span>
+
+          <!-- Karma -->
+          <div class="avatar-karma-row">
+            <div class="avatar-karma-stat">
+              <span class="avatar-karma-icon">⚡</span>
+              <div>
+                <div class="avatar-karma-value" id="avatar-karma-value">—</div>
+                <div class="avatar-karma-label">Karma</div>
+              </div>
+            </div>
+            <div class="avatar-karma-stat">
+              <span class="avatar-karma-icon">✦</span>
+              <div>
+                <div class="avatar-karma-value" id="avatar-xp-value">—</div>
+                <div class="avatar-karma-label">XP</div>
+              </div>
+            </div>
           </div>
-          <div class="avatar-summary-badge avatar-summary-badge--type" id="avatar-summary-type">User</div>
+
+          <!-- XP progress bar toward next level -->
+          <div class="avatar-xp-wrap">
+            <div class="avatar-xp-bar-labels">
+              <span class="avatar-xp-bar-label">Progress to next level</span>
+              <span class="avatar-xp-bar-pct" id="avatar-xp-pct">—</span>
+            </div>
+            <div class="avatar-xp-track">
+              <div class="avatar-xp-fill" id="avatar-xp-fill" style="width:0%"></div>
+            </div>
+            <div class="avatar-xp-threshold" id="avatar-xp-threshold"></div>
+          </div>
+
         </aside>
 
         <!-- Right: inline-editable fields -->
@@ -64,8 +105,8 @@
           </div>
 
           <div class="avatar-field-footer">
-            <button id="avatar-modal-save-btn" class="button avatar-save-btn" type="button" hidden>Save Changes</button>
-            <button id="avatar-modal-discard-btn" class="button button--ghost" type="button" hidden>Discard</button>
+            <button id="avatar-modal-save-btn" class="button avatar-save-btn" type="button" style="visibility:hidden">Save Changes</button>
+            <button id="avatar-modal-discard-btn" class="button button--ghost" type="button" style="visibility:hidden">Discard</button>
           </div>
         </div>
 

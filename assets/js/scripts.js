@@ -551,6 +551,62 @@ function toggleClass(el, className, bool) {
   });
 })();
 
+// ── JWT auto-refresh (every 14 min to beat the 15 min expiry) ─────────────────
+(function () {
+  var REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
+  var refreshTimer = null;
+
+  async function refreshJWT() {
+    if (localStorage.getItem('loggedIn') !== 'true') return;
+    try {
+      var avatarRaw = localStorage.getItem('avatar');
+      var avatar = avatarRaw ? JSON.parse(avatarRaw) : null;
+      var refreshToken = avatar && (avatar.refreshToken || avatar.RefreshToken);
+      if (!refreshToken) return;
+
+      var res = await fetch((window.apiUrl || '') + '/api/Avatar/refresh-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: refreshToken })
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+      var newToken = data.jwtToken || data.token || (data.result && (data.result.jwtToken || data.result.token));
+      var newRefresh = data.refreshToken || (data.result && data.result.refreshToken);
+      if (newToken && avatar) {
+        avatar.jwtToken = newToken;
+        avatar.token    = newToken;
+        if (newRefresh) avatar.refreshToken = newRefresh;
+        localStorage.setItem('avatar', JSON.stringify(avatar));
+        console.log('[OPORTAL] JWT refreshed successfully.');
+      }
+    } catch (e) {
+      console.warn('[OPORTAL] JWT refresh failed:', e);
+    }
+  }
+
+  function startRefresh() {
+    if (refreshTimer) return;
+    refreshTimer = setInterval(refreshJWT, REFRESH_INTERVAL);
+  }
+
+  function stopRefresh() {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+
+  // Start when logged in, stop on logout
+  document.addEventListener('DOMContentLoaded', function () {
+    if (localStorage.getItem('loggedIn') === 'true') startRefresh();
+  });
+  window.addEventListener('oasis-login',  startRefresh);
+  window.addEventListener('oasis-logout', stopRefresh);
+
+  // Expose so login/logout flow can trigger directly
+  window.startJWTRefresh = startRefresh;
+  window.stopJWTRefresh  = stopRefresh;
+})();
+
 function setup() {
 const avatarRaw = localStorage.getItem('avatar');
 if (avatarRaw && avatarRaw !== 'undefined') {
@@ -613,6 +669,7 @@ function addAuthPopup(login, msg, e) {
       localStorage.setItem('loggedIn', true)
       user = avatarProfile;
       window.user = avatarProfile;
+      if (typeof window.startJWTRefresh === 'function') window.startJWTRefresh();
       if (typeof setup === 'function') {
         setup();
       }
@@ -805,6 +862,7 @@ async function onLogout() {
       })
   }
   
+  if (typeof window.stopJWTRefresh === 'function') window.stopJWTRefresh();
 	localStorage.removeItem('avatar')
 	localStorage.setItem('loggedIn', false)
 	window.location.reload()

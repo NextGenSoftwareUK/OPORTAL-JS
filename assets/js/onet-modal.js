@@ -247,13 +247,6 @@
     renderTopology(data);
   }
 
-  async function loadOASISDNA() {
-    var el = getById('onet-oasisdna');
-    if (el) el.textContent = 'Loading…';
-    var data = await apiFetch('/api/v1/onet/oasisdna');
-    renderOASISDNA(data);
-  }
-
   // ── Action buttons ────────────────────────────────────────────────────────────
 
   async function doAction(btnId, endpoint, label) {
@@ -297,7 +290,6 @@
       p.hidden = p.id !== 'onet-tab-' + tab;
     });
     if (tab === 'topology') loadTopology();
-    if (tab === 'oasisdna') loadOASISDNA();
   }
 
   // ── Open / close ──────────────────────────────────────────────────────────────
