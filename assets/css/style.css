@@ -2574,8 +2574,9 @@ select option {
 .dev-portal-link:hover {
   background: rgba(107, 208, 255, 0.1);
   border-color: rgba(107, 208, 255, 0.38);
-  box-shadow: 0 4px 18px rgba(107, 208, 255, 0.15);
-  color: var(--color-white);
+  color: #00e5ff;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,1)) drop-shadow(0 0 20px rgba(0,229,255,.8)) drop-shadow(0 0 40px rgba(0,229,255,.4));
+  transition: filter .3s ease;
 }
 
 .dev-portal-link-icon {
