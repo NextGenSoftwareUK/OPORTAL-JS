@@ -2777,6 +2777,21 @@ select option {
   display: block;
 }
 
+.dev-portal-infographic--hero {
+  grid-column: 1 / -1;
+  cursor: default;
+  pointer-events: none;
+}
+.dev-portal-infographic--hero img {
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+.dev-portal-infographic--hero:hover {
+  border-color: rgba(134, 215, 255, 0.12);
+  box-shadow: none;
+}
+
 .dev-portal-infographic-label {
   font-size: 0.75rem;
   font-weight: 700;
