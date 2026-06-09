@@ -783,6 +783,7 @@ async function hydrateLoggedInAvatar(profile) {
       }
 
       const data = await response.json();
+      console.log("Fetched avatar detail:", data);
       const fullAvatar = extractAvatarData(data);
       if (!fullAvatar || typeof fullAvatar !== 'object') {
         continue;

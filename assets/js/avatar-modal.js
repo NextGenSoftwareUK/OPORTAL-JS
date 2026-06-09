@@ -138,7 +138,7 @@
       // Load portrait from API if we don't already have a local preview
       if (!img.dataset.localPreview) {
         var username2 = pickValue(p, ['username', 'userName', 'UserName']);
-        if (username2) loadPortrait(username2, img);
+        if (username2) loadPortrait(username2, img); //TODO: Portrait should already have been loaded with the rest of the AvatarDetail after beaming in so we shouldnt need to do this again...
         else img.src = 'assets/img/loggedin.png';
       }
     }
