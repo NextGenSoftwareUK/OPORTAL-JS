@@ -790,6 +790,7 @@ async function hydrateLoggedInAvatar(profile) {
       }
 
       const merged = Object.assign({}, avatar, fullAvatar);
+      console.log("Merged avatar data:", merged);
       localStorage.setItem('avatar', JSON.stringify(merged));
       user = merged;
       window.user = merged;
