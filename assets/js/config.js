@@ -1,5 +1,5 @@
-//window.apiUrl = 'https://oasisapionode-hseudrexdvbhenhv.canadacentral-01.azurewebsites.net';
-//window.apiUrl = 'https://api.oasisweb4.one';
+﻿//window.apiUrl = 'https://oasisapionode-hseudrexdvbhenhv.canadacentral-01.azurewebsites.net';
+//window.apiUrl = 'https://api.web4.oasisomniverse.one';
 // window.apiUrl = 'https://localhost:5002/';
 window.apiUrl = 'https://api.web4.oasisomniverse.one';
 window.API_BASE = window.apiUrl;

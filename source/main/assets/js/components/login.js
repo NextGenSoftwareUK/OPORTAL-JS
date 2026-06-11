@@ -1,4 +1,4 @@
-function addAuthPopup(login, msg, e) {
+﻿function addAuthPopup(login, msg, e) {
     // Get and remove previous pop ups
     var prev = document.getElementsByClassName('alert')[0];
     if (prev) prev.remove();
@@ -41,7 +41,7 @@ function onLogin() {
     };
     (async () => {
         const e = await fetch(
-            'https://api.oasisweb4.one/api/avatar/authenticate',
+            'https://api.web4.oasisomniverse.one/api/avatar/authenticate',
             {
                 method: 'POST',
                 body: JSON.stringify(n),
@@ -73,7 +73,7 @@ async function onLogout() {
     console.log(body);
 
     const e = await fetch(
-        'https://api.oasisweb4.one/api/avatar/revoke-token',
+        'https://api.web4.oasisomniverse.one/api/avatar/revoke-token',
         {
             method: 'POST',
             body: JSON.stringify(body),

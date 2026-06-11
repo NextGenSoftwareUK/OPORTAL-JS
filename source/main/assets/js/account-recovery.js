@@ -1,5 +1,5 @@
-(function () {
-  var API_BASE = 'https://api.oasisweb4.one';
+﻿(function () {
+  var API_BASE = 'https://api.web4.oasisomniverse.one';
 
   function getById(id) {
     return document.getElementById(id);

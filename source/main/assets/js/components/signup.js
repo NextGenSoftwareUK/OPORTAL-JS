@@ -1,4 +1,4 @@
-function onSignup() {
+﻿function onSignup() {
 	// Get button and change it when pressed
 	const submitBtn = document.getElementById('signup-submit')
 	submitBtn.innerHTML = 'loading... <img width="20px" src="assets/img/loading.gif"/>'
@@ -12,7 +12,7 @@ function onSignup() {
 	};
 	(async () => {
 		const e = await fetch(
-			'https://api.oasisweb4.one/api/avatar/register',
+			'https://api.web4.oasisomniverse.one/api/avatar/register',
 			{
 				method: 'POST',
 				body: JSON.stringify(n),
