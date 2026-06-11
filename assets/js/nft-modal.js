@@ -31,16 +31,32 @@
   // ── Status ──────────────────────────────────────────────────────────────────
 
   function showStatus(type, msg) {
+    // Top-of-modal status bar
     var el = getById('nft-modal-status');
-    if (!el) return;
-    el.className = 'nft-status nft-status--' + type;
-    el.textContent = msg;
-    el.hidden = false;
+    if (el) {
+      el.className = 'nft-status nft-status--' + type;
+      el.textContent = msg;
+      el.hidden = false;
+    }
+    // In-form status (visible when scrolled to the form)
+    var panel = getById('nft-action-panel');
+    if (panel && !panel.hidden) {
+      var activeForm = panel.querySelector('.nft-form-panel:not([hidden])');
+      if (activeForm) {
+        var formStatus = activeForm.querySelector('.nft-form-status');
+        if (formStatus) {
+          formStatus.className = 'nft-form-status nft-status nft-status--' + type;
+          formStatus.textContent = msg;
+          formStatus.hidden = false;
+        }
+      }
+    }
   }
 
   function hideStatus() {
     var el = getById('nft-modal-status');
     if (el) el.hidden = true;
+    document.querySelectorAll('.nft-form-status').forEach(function (s) { s.hidden = true; });
   }
 
   // ── Card builders ────────────────────────────────────────────────────────────

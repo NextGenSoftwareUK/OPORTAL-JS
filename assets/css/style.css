@@ -3370,6 +3370,10 @@ select option {
   flex-shrink: 0;
 }
 
+.nft-form-status {
+  margin-bottom: 14px;
+}
+
 .nft-form-actions {
   display: flex;
   gap: 10px;
