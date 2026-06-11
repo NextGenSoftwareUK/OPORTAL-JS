@@ -1,7 +1,7 @@
 //window.apiUrl = 'https://oasisapionode-hseudrexdvbhenhv.canadacentral-01.azurewebsites.net';
 //window.apiUrl = 'https://api.oasisweb4.one';
 // window.apiUrl = 'https://localhost:5002/';
-window.apiUrl = 'https://oasis-production-5297.up.railway.app';
+window.apiUrl = 'https://api.web4.oasisomniverse.one';
 window.API_BASE = window.apiUrl;
 
 // ── Nav preferences (defaults — overridden by localStorage if user has saved a preference) ──
