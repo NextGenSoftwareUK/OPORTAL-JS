@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <!-- <script type="text/javascript">
+      $(function () {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+          var ww = ($(window).width() < window.screen.width) ? $(window).width() : window.screen.width; //get proper width
+          var mw = 480; // min width of site
+          var ratio = ww / mw; //calculate ratio
+          if (ww < mw) { //smaller than minimum size
+            $('#Viewport').attr('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=yes, width=' + ww);
+          } else { //regular size
+            $('#Viewport').attr('content', 'initial-scale=1.0, maximum-scale=2, minimum-scale=1.0, user-scalable=yes, width=' + ww);
+          }
+        }
+      });
+    </script>  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/modernizr.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script>
+      if (!('CSS' in window) || !CSS.supports('color', 'var(--color-var)')) { var cfStyle = document.getElementById('codyframe'); if (cfStyle) { var href = cfStyle.getAttribute('href'); href = href.replace('style.css', 'style-fallback.css'); cfStyle.setAttribute('href', href); } }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;400;500;700&display=swap"
+      rel="stylesheet" type="text/css">
+    <title>The OASIS</title>
+  </head>
+
+  <body data-theme="default">
+    <header class="main-header js-main-header">
+      <!-- <div class="logo-wrapper js-logo-wrapper">
+        <a href="#0" class="logo"> <img src="assets/img/dummy-logo.svg" alt="Logo"> </a>
+      </div> -->
+      <div></div>
+      <div class="top-nav js-top-nav">
+        <ul class="nav__list js-nav__list" id="guest-links">
+          <li class="nav__item js-nav__login"><a class="js-modal-trigger" href="#0" data-signin="login">Beam in</a> </li>
+          <li class="nav__item js-nav__login"><a class="js-modal-trigger" href="#0" data-signin="signup">Sign up</a>
+          </li>
+        </ul>
+        <div class="nav__item nav__item--account" data-display="loggedIn">
+          <a href="#0" onclick="accountDropdown()">
+            <img class="avatar" src="assets/img/loggedout.png">
+          </a>
+          <ul class="nav__sub-list">
+            <li class="nav__sub-item"><p id="username">dummy username</p></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openAvatarModal()">My Avatar</a></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openWalletModal()">Wallet</a></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openNftModal()">NFT Wallet</a></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openKarmaModal()">Karma</a></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openMessagingModal()">Messages</a></li>
+            <!-- <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openSearchModal()">Search Avatars</a></li> -->
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="return openSettingsModal()">Settings</a></li>
+            <li class="nav__sub-item"><a class="nav__sub-link nav__sub-link--glow" href="#0" onclick="onLogout()">Beam Out</a></li>
+          </ul>
+        </div>
+        <div style="cursor: pointer;" class="nav__item"><button class="reset nav-trigger js-nav-trigger"
+            aria-label="Toggle menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <div id="loading"></div>
+      <div class="content-wrapper">
+      </div>
+    </main>
+    <div id="portal-components-root"></div>
+    <!-- <script src="assets/js/util.js"></script> -->
+    <!-- <script src="assets/js/menu-aim.js"></script> -->
+    <!-- <script src="assets/js/modernizr.js"></script> -->
+    <script src="assets/js/config.js?v=20260528"></script>
+    <script src="assets/js/menu-messages.js?v=20260603"></script>
+    <script src="assets/js/scripts.js?v=20260528"></script>
+    <script src="assets/js/account-recovery.js?v=20260528"></script>
+    <script src="assets/js/avatar-modal.js?v=20260528"></script>
+    <script src="assets/js/dev-portal-modal.js?v=20260603"></script>
+    <script src="assets/js/nft-modal.js?v=20260603"></script>
+    <script src="assets/js/search-avatars-modal.js?v=20260603"></script>
+    <script src="assets/js/settings-modal.js?v=20260603"></script>
+    <script src="assets/js/karma-modal.js?v=20260603"></script>
+    <script src="assets/js/data-modal.js?v=20260603"></script>
+    <script src="assets/js/hyperdrive-modal.js?v=20260603"></script>
+    <script src="assets/js/wallet-modal.js?v=20260603"></script>
+    <script src="assets/js/messaging-modal.js?v=20260603"></script>
+    <script src="assets/js/onet-modal.js?v=20260603"></script>
+    <script src="assets/js/onode-modal.js?v=20260603"></script>
+    <script src="assets/js/map-modal.js?v=20260603"></script>
+    <script src="assets/js/portal-components.js?v=20260603"></script>
+    <script src="assets/js/router.js?v=20260613"></script>
+    <!-- <script src="assets/js/_1_main.js"></script> -->
+  </body>
+</html>
+
+
+
