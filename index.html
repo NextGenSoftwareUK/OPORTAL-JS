@@ -164,9 +164,11 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
 }
 @media(max-width:560px){
   #hero{
-    padding:7rem .85rem 2.2rem;
+    min-height:auto;
+    padding:7rem .85rem 10rem;
     gap:1rem;
     justify-content:flex-start;
+    overflow:visible;
   }
   .nav-actions{gap:.45rem;flex-wrap:nowrap}
   .nav-beam,.nav-cta{font-size:.66rem;padding:.42rem .72rem;letter-spacing:.08em}
@@ -178,7 +180,8 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
   .how-grid,.foot-grid{grid-template-columns:1fr}
   .hero-bg{
     width:min(100%,480px);
-    transform:translateY(4rem) scale(1.22);
+    transform:translateY(3.2rem) scale(1.12);
+    margin-bottom:1rem;
     opacity:.98;
     filter:drop-shadow(0 0 28px rgba(0,229,255,.22));
   }
