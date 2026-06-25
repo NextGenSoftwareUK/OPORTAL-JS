@@ -41,9 +41,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;font-size:.92rem;letter-spacing:.06em;transition:color .2s}
 .nav-links a:hover{color:var(--cyan)}
 .nav-actions{display:flex;gap:.7rem;align-items:center}
-.nav-beam{color:var(--cyan);text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:.1em;border:1px solid rgba(0,229,255,.32);padding:.5rem 1rem;border-radius:999px;transition:background .2s,border-color .2s}
+.nav-beam{color:var(--cyan);text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:.1em;border:1px solid rgba(0,229,255,.32);padding:.5rem 1rem;border-radius:999px;transition:background .2s,border-color .2s;white-space:nowrap;flex-shrink:0}
 .nav-beam:hover{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.6)}
-.nav-cta{background:var(--cyan);color:#021018;padding:.5rem 1.15rem;border-radius:999px;font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-decoration:none;transition:box-shadow .2s,transform .2s}
+.nav-cta{background:var(--cyan);color:#021018;padding:.5rem 1.15rem;border-radius:999px;font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-decoration:none;transition:box-shadow .2s,transform .2s;white-space:nowrap;flex-shrink:0}
 .nav-cta:hover{box-shadow:0 0 22px rgba(0,229,255,.5);transform:translateY(-1px)}
 @media(max-width:820px){.nav-links{display:none}}
 
@@ -151,8 +151,9 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
     order:2;
     max-width:100%;
     margin-top:0;
-    width:min(100%,560px);
-    opacity:.72;
+    width:min(100%,520px);
+    opacity:.88;
+    transform:translateY(-1rem) scale(1.03);
   }
   .id-band{grid-template-columns:1fr;padding:2.2rem}
   .how-grid{grid-template-columns:1fr 1fr}
@@ -162,13 +163,25 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
   .foot-bottom{justify-content:center;text-align:center}
 }
 @media(max-width:560px){
-  #hero{padding:7.2rem 1rem 3.5rem}
+  #hero{
+    padding:7rem .85rem 2.2rem;
+    gap:1rem;
+    justify-content:flex-start;
+  }
+  .nav-actions{gap:.45rem;flex-wrap:nowrap}
+  .nav-beam,.nav-cta{font-size:.66rem;padding:.42rem .72rem;letter-spacing:.08em}
   .hero-kicker{font-size:.72rem;letter-spacing:.2em;padding:.3rem .85rem}
   #hero h1{font-size:clamp(2.1rem,13vw,3.3rem)}
   .hero-sub{font-size:1.04rem;line-height:1.65;margin-bottom:1.9rem}
   .hero-btns,.cta-btns{flex-direction:column;align-items:stretch;max-width:320px;margin:0 auto}
   .hero-btns a,.cta-btns a{width:100%;text-align:center}
   .how-grid,.foot-grid{grid-template-columns:1fr}
+  .hero-bg{
+    width:min(100%,380px);
+    transform:translateY(-.5rem) scale(1.08);
+    opacity:.98;
+    filter:drop-shadow(0 0 28px rgba(0,229,255,.22));
+  }
   .foot-inner{padding:0 1rem}
   .foot-brand{margin-bottom:1.8rem}
   .foot-brand .logo-txt{font-size:.92rem}
@@ -215,49 +228,80 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
         <stop offset="45%" stop-color="#48dc82" stop-opacity=".05"/>
         <stop offset="100%" stop-color="#04101c" stop-opacity="0"/>
       </radialGradient>
-      <filter id="soft"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <radialGradient id="portalCore" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#f5feff" stop-opacity="1"/>
+        <stop offset="18%" stop-color="#9df7ff" stop-opacity=".95"/>
+        <stop offset="45%" stop-color="#00e5ff" stop-opacity=".55"/>
+        <stop offset="72%" stop-color="#007dff" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="#021018" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="soft">
+        <feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="warp">
+        <feTurbulence type="fractalNoise" baseFrequency=".01" numOctaves="2" seed="11" result="noise">
+          <animate attributeName="baseFrequency" values=".008;.014;.008" dur="7s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
     </defs>
 
     <ellipse cx="720" cy="450" rx="660" ry="450" fill="url(#pg)"/>
 
-    <!-- beam-in particle streams (avatars beaming into the portal) -->
+    <!-- portal structure -->
     <g filter="url(#soft)">
-      <circle r="4.5" fill="#00e5ff"><animateMotion dur="2.8s" repeatCount="indefinite" path="M120,120 L720,450"/></circle>
-      <circle r="4" fill="#48dc82"><animateMotion dur="3.2s" repeatCount="indefinite" path="M1320,160 L720,450"/></circle>
-      <circle r="4" fill="#ffb43c"><animateMotion dur="3.6s" repeatCount="indefinite" path="M150,760 L720,450"/></circle>
-      <circle r="4.5" fill="#00e5ff"><animateMotion dur="3s" repeatCount="indefinite" path="M1300,780 L720,450"/></circle>
-      <circle r="3.5" fill="#ff7070"><animateMotion dur="3.4s" begin=".6s" repeatCount="indefinite" path="M720,60 L720,450"/></circle>
-      <circle r="3.5" fill="#8b5cf6"><animateMotion dur="3.8s" begin="1s" repeatCount="indefinite" path="M720,840 L720,450"/></circle>
+      <animateTransform attributeName="transform" type="rotate" from="0 720 450" to="360 720 450" dur="28s" repeatCount="indefinite"/>
+      <circle cx="720" cy="450" r="365" fill="rgba(0,229,255,.04)">
+        <animate attributeName="r" values="340;385;340" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <ellipse cx="720" cy="450" rx="510" ry="320" fill="none" stroke="rgba(0,229,255,.24)" stroke-width="1.6" stroke-dasharray="8,14"/>
+      <ellipse cx="720" cy="450" rx="430" ry="270" fill="none" stroke="rgba(0,229,255,.34)" stroke-width="2.1" stroke-dasharray="18,16"/>
+      <ellipse cx="720" cy="450" rx="325" ry="205" fill="none" stroke="rgba(0,229,255,.5)" stroke-width="2.6" stroke-dasharray="6,10"/>
+      <ellipse cx="720" cy="450" rx="235" ry="150" fill="none" stroke="rgba(72,220,255,.7)" stroke-width="3" stroke-dasharray="2,7"/>
+      <ellipse cx="720" cy="450" rx="155" ry="100" fill="none" stroke="rgba(165,248,255,.88)" stroke-width="3.4" stroke-dasharray="1,4"/>
+    </g>
+    <g filter="url(#warp)">
+      <animateTransform attributeName="transform" type="rotate" from="360 720 450" to="0 720 450" dur="16s" repeatCount="indefinite"/>
+      <polygon points="720,146 973,292 973,608 720,754 467,608 467,292" fill="none" stroke="rgba(0,229,255,.28)" stroke-width="1.3"/>
+      <polygon points="720,190 939,317 939,583 720,710 501,583 501,317" fill="none" stroke="rgba(0,229,255,.18)" stroke-width=".9" stroke-dasharray="5,11"/>
     </g>
 
-    <!-- portal rings -->
-    <g>
-      <animateTransform attributeName="transform" type="rotate" from="0 720 450" to="360 720 450" dur="80s" repeatCount="indefinite"/>
-      <ellipse cx="720" cy="450" rx="520" ry="330" fill="none" stroke="rgba(0,229,255,.16)" stroke-width="1.4" stroke-dasharray="3,14"/>
-    </g>
-    <g>
-      <animateTransform attributeName="transform" type="rotate" from="360 720 450" to="0 720 450" dur="58s" repeatCount="indefinite"/>
-      <ellipse cx="720" cy="450" rx="430" ry="275" fill="none" stroke="rgba(72,220,130,.16)" stroke-width="1.2" stroke-dasharray="2,12"/>
-    </g>
-    <g>
-      <animateTransform attributeName="transform" type="rotate" from="0 720 450" to="360 720 450" dur="44s" repeatCount="indefinite"/>
-      <ellipse cx="720" cy="450" rx="350" ry="225" fill="none" stroke="rgba(255,180,60,.14)" stroke-width="1" stroke-dasharray="2,10"/>
-    </g>
-
-    <!-- hexagon portal frame -->
-    <g opacity=".5">
-      <animateTransform attributeName="transform" type="rotate" from="0 720 450" to="360 720 450" dur="120s" repeatCount="indefinite"/>
-      <polygon points="720,170 962,310 962,590 720,730 478,590 478,310" fill="none" stroke="rgba(0,229,255,.18)" stroke-width="1.2"/>
-      <circle cx="720" cy="170" r="4" fill="#00e5ff"/><circle cx="962" cy="310" r="4" fill="#00e5ff"/>
-      <circle cx="962" cy="590" r="4" fill="#00e5ff"/><circle cx="720" cy="730" r="4" fill="#00e5ff"/>
-      <circle cx="478" cy="590" r="4" fill="#00e5ff"/><circle cx="478" cy="310" r="4" fill="#00e5ff"/>
+    <!-- inward particle streams -->
+    <g filter="url(#soft)">
+      <circle r="4.5" fill="#8feeff"><animateMotion dur="1.65s" repeatCount="indefinite" path="M120,120 C240,115 420,160 560,260 C650,322 690,386 720,450"/></circle>
+      <circle r="4" fill="#5fe9ff"><animateMotion dur="1.8s" repeatCount="indefinite" path="M1320,160 C1210,170 1060,240 930,330 C835,390 775,430 720,450"/></circle>
+      <circle r="3.8" fill="#3fdcff"><animateMotion dur="2s" repeatCount="indefinite" path="M150,760 C250,690 365,625 470,560 C585,490 660,465 720,450"/></circle>
+      <circle r="4.2" fill="#00e5ff"><animateMotion dur="1.75s" repeatCount="indefinite" path="M1300,780 C1215,715 1120,635 1030,570 C930,495 835,460 720,450"/></circle>
+      <circle r="3.5" fill="#a6f7ff"><animateMotion dur="2.2s" begin=".2s" repeatCount="indefinite" path="M720,60 C715,140 724,220 735,292 C744,350 736,406 720,450"/></circle>
+      <circle r="3.6" fill="#4fd3ff"><animateMotion dur="2.35s" begin=".6s" repeatCount="indefinite" path="M720,840 C724,760 721,686 713,616 C706,548 710,492 720,450"/></circle>
+      <circle r="3" fill="#00e5ff"><animateMotion dur="1.45s" begin=".35s" repeatCount="indefinite" path="M60,450 C160,452 280,446 390,438 C515,429 625,437 720,450"/></circle>
+      <circle r="3" fill="#7af3ff"><animateMotion dur="1.5s" begin=".85s" repeatCount="indefinite" path="M1380,450 C1270,448 1160,452 1050,458 C920,465 810,460 720,450"/></circle>
+      <circle r="2.8" fill="#b0fbff"><animateMotion dur="1.35s" begin="1.2s" repeatCount="indefinite" path="M210,210 C300,245 395,290 490,340 C590,394 657,426 720,450"/></circle>
+      <circle r="2.8" fill="#52dfff"><animateMotion dur="1.4s" begin="1.45s" repeatCount="indefinite" path="M1230,680 C1140,650 1040,610 940,560 C835,508 770,475 720,450"/></circle>
+      <circle r="2.4" fill="#c9fdff"><animateMotion dur="1.28s" begin=".9s" repeatCount="indefinite" path="M360,90 C430,160 500,230 560,300 C627,375 676,416 720,450"/></circle>
+      <circle r="2.4" fill="#7cecff"><animateMotion dur="1.32s" begin="1.05s" repeatCount="indefinite" path="M1110,120 C1050,185 980,240 920,300 C860,360 795,409 720,450"/></circle>
     </g>
 
-    <!-- core -->
-    <circle cx="720" cy="450" r="26" fill="rgba(0,229,255,.14)" stroke="#00e5ff" stroke-width="1.5" filter="url(#soft)">
-      <animate attributeName="r" values="26;33;26" dur="3.4s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="720" cy="450" r="10" fill="#00e5ff" opacity=".9"/>
+    <!-- portal core -->
+    <g filter="url(#warp)">
+      <circle cx="720" cy="450" r="180" fill="rgba(0,229,255,.06)">
+        <animate attributeName="r" values="170;195;170" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="450" r="112" fill="url(#portalCore)">
+        <animate attributeName="r" values="108;122;108" dur="2.1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="450" r="62" fill="rgba(0,229,255,.08)" stroke="rgba(0,229,255,.96)" stroke-width="2.4">
+        <animate attributeName="r" values="58;72;58" dur="1.45s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="450" r="28" fill="rgba(255,255,255,.1)" stroke="rgba(191,250,255,1)" stroke-width="1.8">
+        <animate attributeName="r" values="26;34;26" dur="1.05s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="450" r="10" fill="#eaffff">
+        <animate attributeName="r" values="10;6;10" dur=".9s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="450" r="6" fill="#021018" opacity=".95"/>
+    </g>
   </svg>
 
   <div class="hero-inner">
