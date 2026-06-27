@@ -177,7 +177,8 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
   .hero-sub{font-size:1.04rem;line-height:1.65;margin-bottom:1.9rem}
   .hero-btns,.cta-btns{flex-direction:column;align-items:stretch;max-width:320px;margin:0 auto}
   .hero-btns a,.cta-btns a{width:100%;text-align:center}
-  .how-grid,.foot-grid{grid-template-columns:1fr}
+  .how-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem}
   .hero-bg{
     width:min(100%,360px);
     transform:translateY(1.4rem) scale(.96);
