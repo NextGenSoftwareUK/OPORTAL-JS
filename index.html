@@ -48,8 +48,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
 .nav-hamburger span{display:block;width:22px;height:2px;background:var(--cyan);border-radius:2px}
 @media(max-width:820px){
+  nav{padding:.75rem 1rem}
   .nav-links{display:none}
   .nav-hamburger{display:flex}
+  .nav-cta{display:none}
 }
 
 /* ── HERO ── */
@@ -224,6 +226,7 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:3.5
     <li><a href="#inside">Inside</a></li>
     <li><a href="#how">How it works</a></li>
     <li><a href="https://oasisomniverse.one" target="_blank" rel="noopener">Omniverse</a></li>
+    <li><a href="/signup" target="_blank" rel="noopener">Sign Up</a></li>
   </ul>
   <div class="nav-actions">
     <a href="/beamin" class="nav-beam" target="_blank" rel="noopener">BEAM IN</a>
