@@ -45,8 +45,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .nav-beam:hover{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.6)}
 .nav-cta{background:var(--cyan);color:#021018;padding:.5rem 1.15rem;border-radius:999px;font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-decoration:none;transition:box-shadow .2s,transform .2s;white-space:nowrap;flex-shrink:0}
 .nav-cta:hover{box-shadow:0 0 22px rgba(0,229,255,.5);transform:translateY(-1px)}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
-.nav-hamburger span{display:block;width:22px;height:2px;background:var(--cyan);border-radius:2px}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:1000;position:relative}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--cyan);border-radius:2px;transition:transform .25s,opacity .25s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 @media(max-width:820px){
   nav{padding:.75rem 1rem}
   .nav-hamburger{display:flex}
@@ -570,13 +573,13 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:2.5
 })();
 // ── MOBILE MENU ──
 function toggleMenu(){
-  var links=document.querySelector('.nav-links');
-  links.classList.toggle('open');
+  document.querySelector('.nav-links').classList.toggle('open');
+  document.querySelector('.nav-hamburger').classList.toggle('open');
 }
 document.querySelectorAll('.nav-links a').forEach(function(a){
   a.addEventListener('click', function(){
     var links=document.querySelector('.nav-links');
-    if(window.innerWidth<820) links.classList.remove('open');
+    if(window.innerWidth<820){links.classList.remove('open');document.querySelector('.nav-hamburger').classList.remove('open')}
   });
 });
 </script>
