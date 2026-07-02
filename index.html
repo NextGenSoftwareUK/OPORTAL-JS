@@ -30,7 +30,7 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:9999}
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
-a{color:inherit}
+a{color:inherit;transition:filter .3s ease}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2.2rem;background:rgba(4,16,28,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
@@ -222,6 +222,7 @@ footer{background:var(--surface2);border-top:1px solid var(--border);padding:2.5
   .foot-col ul li a{font-size:.78rem;line-height:1.45;display:inline-block}
   .foot-bottom{padding-top:.75rem;font-size:.76rem;line-height:1.55}
 }
+a:hover{filter:drop-shadow(0 0 8px rgba(0,229,255,1)) drop-shadow(0 0 20px rgba(0,229,255,.8)) drop-shadow(0 0 40px rgba(0,229,255,.4))}
 </style>
 </head>
 <body>
