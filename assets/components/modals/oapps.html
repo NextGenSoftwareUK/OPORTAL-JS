@@ -1,0 +1,46 @@
+<div class="modal__block js-modal-block oapps-modal-block" data-type="oapps" id="oapps-modal-block">
+  <section class="oapps-modal-shell" aria-label="OAPPs">
+    <div class="oapps-modal-card">
+
+      <div class="oapps-modal-top">
+        <div>
+          <h1 class="oapps-modal-title">OAPPs</h1>
+          <p class="oapps-modal-lead">Discover, install and manage OASIS Applications built on the STAR / WEB5 platform.</p>
+        </div>
+        <button id="oapps-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div class="oapps-tabs">
+        <button class="oapps-tab is-active" data-tab="my">My OAPPs</button>
+        <button class="oapps-tab" data-tab="all">All OAPPs</button>
+        <button class="oapps-tab" data-tab="search">Search</button>
+      </div>
+
+      <div id="oapps-status" class="oapps-status" hidden></div>
+
+      <!-- My OAPPs -->
+      <div id="oapps-tab-my" class="oapps-tab-panel">
+        <div id="oapps-my-list" class="oapps-grid">
+          <div class="oapps-loading">Loading your OAPPs…</div>
+        </div>
+      </div>
+
+      <!-- All OAPPs -->
+      <div id="oapps-tab-all" class="oapps-tab-panel" hidden>
+        <div id="oapps-all-list" class="oapps-grid">
+          <div class="oapps-loading">Loading OAPPs…</div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div id="oapps-tab-search" class="oapps-tab-panel" hidden>
+        <div class="oapps-search-bar">
+          <input id="oapps-search-input" class="oapps-search-input" type="text" placeholder="Search OAPPs…">
+          <button id="oapps-search-btn" class="oapps-search-btn">Search</button>
+        </div>
+        <div id="oapps-search-results" class="oapps-grid"></div>
+      </div>
+
+    </div>
+  </section>
+</div>

@@ -1,0 +1,43 @@
+<div class="modal__block js-modal-block quests-modal-block" data-type="quests" id="quests-modal-block">
+  <section class="quests-modal-shell" aria-label="Quests">
+    <div class="quests-modal-card">
+
+      <div class="quests-modal-top">
+        <div>
+          <h1 class="quests-modal-title">Quests</h1>
+          <p class="quests-modal-lead">View and manage your OASIS quests and objectives.</p>
+        </div>
+        <button id="quests-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div class="quests-tabs">
+        <button class="quests-tab is-active" data-tab="my">My Quests</button>
+        <button class="quests-tab" data-tab="all">All Quests</button>
+        <button class="quests-tab" data-tab="search">Search</button>
+      </div>
+
+      <div id="quests-status" class="quests-status" hidden></div>
+
+      <div id="quests-tab-my" class="quests-tab-panel">
+        <div id="quests-my-list" class="quests-list">
+          <div class="quests-loading">Loading your quests…</div>
+        </div>
+      </div>
+
+      <div id="quests-tab-all" class="quests-tab-panel" hidden>
+        <div id="quests-all-list" class="quests-list">
+          <div class="quests-loading">Loading quests…</div>
+        </div>
+      </div>
+
+      <div id="quests-tab-search" class="quests-tab-panel" hidden>
+        <div class="quests-search-bar">
+          <input id="quests-search-input" class="quests-search-input" type="text" placeholder="Search quests…">
+          <button id="quests-search-btn" class="quests-search-btn">Search</button>
+        </div>
+        <div id="quests-search-results" class="quests-list"></div>
+      </div>
+
+    </div>
+  </section>
+</div>

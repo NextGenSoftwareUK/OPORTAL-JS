@@ -1,0 +1,48 @@
+<div class="modal__block js-modal-block eggs-modal-block" data-type="eggs" id="eggs-modal-block">
+  <section class="eggs-modal-shell" aria-label="Eggs">
+    <div class="eggs-modal-card">
+
+      <div class="eggs-modal-top">
+        <div>
+          <h1 class="eggs-modal-title">Eggs</h1>
+          <p class="eggs-modal-lead">Discover, collect and hatch eggs hidden across the OASIS.</p>
+        </div>
+        <button id="eggs-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div class="eggs-tabs">
+        <button class="eggs-tab is-active" data-tab="my">My Eggs</button>
+        <button class="eggs-tab" data-tab="all">All Eggs</button>
+        <button class="eggs-tab" data-tab="quests">Egg Quests</button>
+        <button class="eggs-tab" data-tab="leaderboard">Leaderboard</button>
+      </div>
+
+      <div id="eggs-status" class="eggs-status" hidden></div>
+
+      <div id="eggs-tab-my" class="eggs-tab-panel">
+        <div id="eggs-my-grid" class="eggs-grid">
+          <div class="eggs-loading">Loading your eggs…</div>
+        </div>
+      </div>
+
+      <div id="eggs-tab-all" class="eggs-tab-panel" hidden>
+        <div id="eggs-all-grid" class="eggs-grid">
+          <div class="eggs-loading">Loading all eggs…</div>
+        </div>
+      </div>
+
+      <div id="eggs-tab-quests" class="eggs-tab-panel" hidden>
+        <div id="eggs-quests-list" class="eggs-quests-list">
+          <div class="eggs-loading">Loading egg quests…</div>
+        </div>
+      </div>
+
+      <div id="eggs-tab-leaderboard" class="eggs-tab-panel" hidden>
+        <div id="eggs-leaderboard-list" class="eggs-leaderboard">
+          <div class="eggs-loading">Loading leaderboard…</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

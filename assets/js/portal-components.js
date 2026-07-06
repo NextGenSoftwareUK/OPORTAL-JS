@@ -22,6 +22,10 @@
     'assets/components/modals/onet.html',
     'assets/components/modals/onode.html',
     'assets/components/modals/map.html',
+    'assets/components/modals/oapps.html',
+    'assets/components/modals/quests.html',
+    'assets/components/modals/missions.html',
+    'assets/components/modals/eggs.html',
   ];
 
   function getRoot() {

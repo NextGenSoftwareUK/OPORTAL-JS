@@ -1,0 +1,36 @@
+<div class="modal__block js-modal-block missions-modal-block" data-type="missions" id="missions-modal-block">
+  <section class="missions-modal-shell" aria-label="Missions">
+    <div class="missions-modal-card">
+
+      <div class="missions-modal-top">
+        <div>
+          <h1 class="missions-modal-title">Missions</h1>
+          <p class="missions-modal-lead">View and manage your OASIS missions.</p>
+        </div>
+        <button id="missions-modal-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div class="missions-tabs">
+        <button class="missions-tab is-active" data-tab="all">All Missions</button>
+        <button class="missions-tab" data-tab="search">Search</button>
+      </div>
+
+      <div id="missions-status" class="missions-status" hidden></div>
+
+      <div id="missions-tab-all" class="missions-tab-panel">
+        <div id="missions-all-list" class="missions-list">
+          <div class="missions-loading">Loading missions…</div>
+        </div>
+      </div>
+
+      <div id="missions-tab-search" class="missions-tab-panel" hidden>
+        <div class="missions-search-bar">
+          <input id="missions-search-input" class="missions-search-input" type="text" placeholder="Search missions…">
+          <button id="missions-search-btn" class="missions-search-btn">Search</button>
+        </div>
+        <div id="missions-search-results" class="missions-list"></div>
+      </div>
+
+    </div>
+  </section>
+</div>

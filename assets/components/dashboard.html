@@ -203,13 +203,21 @@
         <span class="dash-qa-icon">&#128301;</span>
         <span class="dash-qa-label">HyperDrive</span>
       </button>
-      <button class="dash-qa-btn" onclick="showComingSoonMessage()">
+      <button class="dash-qa-btn" onclick="if(typeof openOAPPsModal==='function')openOAPPsModal()">
+        <span class="dash-qa-icon">&#128421;</span>
+        <span class="dash-qa-label">OAPPs</span>
+      </button>
+      <button class="dash-qa-btn" onclick="if(typeof openQuestsModal==='function')openQuestsModal()">
         <span class="dash-qa-icon">&#127918;</span>
         <span class="dash-qa-label">Quests</span>
       </button>
-      <button class="dash-qa-btn" onclick="showComingSoonMessage()">
+      <button class="dash-qa-btn" onclick="if(typeof openMissionsModal==='function')openMissionsModal()">
         <span class="dash-qa-icon">&#9876;</span>
         <span class="dash-qa-label">Missions</span>
+      </button>
+      <button class="dash-qa-btn" onclick="if(typeof openEggsModal==='function')openEggsModal()">
+        <span class="dash-qa-icon">&#129424;</span>
+        <span class="dash-qa-label">Eggs</span>
       </button>
     </div>
   </div>

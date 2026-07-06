@@ -1,0 +1,340 @@
+/* ============================================================
+   Shared styles for OAPPs, Quests, Missions, Eggs modals
+   ============================================================ */
+
+/* ---- Shared modal shell pattern ---- */
+.oapps-modal-block,
+.quests-modal-block,
+.missions-modal-block,
+.eggs-modal-block {
+  width: min(860px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  letter-spacing: normal;
+}
+
+.oapps-modal-shell,
+.quests-modal-shell,
+.missions-modal-shell,
+.eggs-modal-shell { width: 100%; padding: 0; }
+
+.oapps-modal-card,
+.quests-modal-card,
+.missions-modal-card,
+.eggs-modal-card {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(134, 215, 255, 0.16);
+  background: rgba(8, 18, 29, 0.94);
+  box-shadow: 0 28px 100px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 28px 32px 32px;
+}
+
+/* ---- Shared top header ---- */
+.oapps-modal-top,
+.quests-modal-top,
+.missions-modal-top,
+.eggs-modal-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.oapps-modal-title,
+.quests-modal-title,
+.missions-modal-title,
+.eggs-modal-title {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.oapps-modal-lead,
+.quests-modal-lead,
+.missions-modal-lead,
+.eggs-modal-lead {
+  margin: 0;
+  color: #a8bfd8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---- Shared status bar ---- */
+.oapps-status, .quests-status, .missions-status, .eggs-status {
+  padding: .6rem 1rem;
+  border-radius: 8px;
+  font-size: .82rem;
+  margin-bottom: 1rem;
+}
+.oapps-status--loading, .quests-status--loading, .missions-status--loading, .eggs-status--loading { background: rgba(0,229,255,.08); color: #00e5ff; }
+.oapps-status--success, .quests-status--success, .missions-status--success, .eggs-status--success { background: rgba(72,220,130,.1); color: #48dc82; }
+.oapps-status--error, .quests-status--error, .missions-status--error, .eggs-status--error { background: rgba(255,112,112,.1); color: #ff7070; }
+
+/* ---- Shared tabs ---- */
+.oapps-tabs, .quests-tabs, .missions-tabs, .eggs-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding-bottom: .75rem;
+}
+
+.oapps-tab, .quests-tab, .missions-tab, .eggs-tab {
+  background: none;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  color: #a8bfd8;
+  font-size: .78rem;
+  font-family: inherit;
+  padding: .4rem .9rem;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.oapps-tab.is-active, .quests-tab.is-active, .missions-tab.is-active, .eggs-tab.is-active {
+  background: rgba(0,229,255,.12);
+  border-color: rgba(0,229,255,.4);
+  color: #00e5ff;
+}
+
+.oapps-tab:hover:not(.is-active), .quests-tab:hover:not(.is-active),
+.missions-tab:hover:not(.is-active), .eggs-tab:hover:not(.is-active) {
+  background: rgba(255,255,255,.05);
+  color: #fff;
+}
+
+/* ---- Shared search bar ---- */
+.oapps-search-bar, .quests-search-bar, .missions-search-bar {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+
+.oapps-search-input, .quests-search-input, .missions-search-input {
+  flex: 1;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  color: #fff;
+  font-size: .85rem;
+  font-family: inherit;
+  padding: .55rem .9rem;
+  outline: none;
+  transition: border-color .15s;
+}
+.oapps-search-input:focus, .quests-search-input:focus, .missions-search-input:focus {
+  border-color: rgba(0,229,255,.4);
+}
+.oapps-search-input::placeholder, .quests-search-input::placeholder, .missions-search-input::placeholder { color: rgba(168,191,216,.4); }
+
+.oapps-search-btn, .quests-search-btn, .missions-search-btn {
+  background: rgba(0,229,255,.12);
+  border: 1px solid rgba(0,229,255,.3);
+  border-radius: 8px;
+  color: #00e5ff;
+  font-size: .82rem;
+  font-family: inherit;
+  padding: .55rem 1.1rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+.oapps-search-btn:hover, .quests-search-btn:hover, .missions-search-btn:hover { background: rgba(0,229,255,.2); }
+
+/* ---- Shared loading / empty ---- */
+.oapps-loading, .quests-loading, .missions-loading, .eggs-loading {
+  color: rgba(168,191,216,.5);
+  font-size: .85rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.oapps-empty, .quests-empty, .missions-empty, .eggs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: rgba(168,191,216,.6);
+  font-size: .85rem;
+  line-height: 1.6;
+}
+
+.oapps-empty-icon, .quests-empty-icon, .missions-empty-icon, .eggs-empty-icon {
+  font-size: 2.5rem;
+  opacity: .4;
+}
+
+/* ============================================================
+   OAPPs
+   ============================================================ */
+.oapps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: .9rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.oapps-grid::-webkit-scrollbar { width: 3px; }
+.oapps-grid::-webkit-scrollbar-thumb { background: rgba(0,229,255,.2); border-radius: 2px; }
+
+.oapps-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(134,215,255,.1);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  transition: border-color .15s;
+}
+.oapps-card:hover { border-color: rgba(134,215,255,.22); }
+
+.oapps-card-header { display: flex; align-items: center; gap: .75rem; }
+.oapps-card-icon { font-size: 1.4rem; flex-shrink: 0; }
+.oapps-card-meta { flex: 1; min-width: 0; }
+.oapps-card-name { font-size: .9rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.oapps-card-version { font-size: .68rem; color: rgba(168,191,216,.6); margin-top: .1rem; }
+.oapps-card-desc { font-size: .78rem; color: #a8bfd8; line-height: 1.45; }
+.oapps-card-footer { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: auto; }
+.oapps-card-type { font-size: .65rem; background: rgba(0,229,255,.08); color: #00e5ff; border: 1px solid rgba(0,229,255,.2); border-radius: 4px; padding: .15rem .45rem; }
+.oapps-card-date { font-size: .65rem; color: rgba(168,191,216,.5); margin-left: auto; }
+
+.oapps-badge { font-size: .62rem; padding: .15rem .5rem; border-radius: 20px; font-weight: 700; text-transform: uppercase; flex-shrink: 0; }
+.oapps-badge--published { background: rgba(72,220,130,.12); color: #48dc82; border: 1px solid rgba(72,220,130,.3); }
+.oapps-badge--draft { background: rgba(255,180,60,.08); color: #ffb43c; border: 1px solid rgba(255,180,60,.25); }
+
+/* ============================================================
+   Quests & Missions (shared list style)
+   ============================================================ */
+.quests-list, .missions-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.quests-list::-webkit-scrollbar, .missions-list::-webkit-scrollbar { width: 3px; }
+.quests-list::-webkit-scrollbar-thumb, .missions-list::-webkit-scrollbar-thumb { background: rgba(0,229,255,.2); border-radius: 2px; }
+
+.quest-card, .mission-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(134,215,255,.1);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  transition: border-color .15s;
+}
+.quest-card:hover, .mission-card:hover { border-color: rgba(134,215,255,.22); }
+
+.quest-card-header, .mission-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .4rem;
+}
+.quest-card-name, .mission-card-name { font-size: .92rem; font-weight: 600; color: #fff; }
+.quest-status-badge, .mission-status-badge { font-size: .68rem; font-weight: 700; text-transform: uppercase; flex-shrink: 0; }
+.quest-card-desc, .mission-card-desc { font-size: .78rem; color: #a8bfd8; line-height: 1.45; margin-bottom: .5rem; }
+.quest-objectives, .mission-quests-count { font-size: .75rem; color: rgba(168,191,216,.7); margin-bottom: .4rem; }
+.quest-card-footer, .mission-card-footer { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.quest-tag, .mission-tag { font-size: .65rem; background: rgba(181,122,255,.08); color: #b57aff; border: 1px solid rgba(181,122,255,.25); border-radius: 4px; padding: .15rem .45rem; }
+.quest-reward, .mission-reward { font-size: .7rem; background: rgba(72,220,130,.08); color: #48dc82; border: 1px solid rgba(72,220,130,.2); border-radius: 4px; padding: .15rem .45rem; }
+.quest-reward--karma, .mission-reward--karma { background: rgba(0,229,255,.08); color: #00e5ff; border-color: rgba(0,229,255,.2); }
+.quest-date, .mission-date { font-size: .65rem; color: rgba(168,191,216,.5); margin-left: auto; }
+
+/* ============================================================
+   Eggs
+   ============================================================ */
+.eggs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: .9rem;
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.eggs-grid::-webkit-scrollbar { width: 3px; }
+.eggs-grid::-webkit-scrollbar-thumb { background: rgba(0,229,255,.2); border-radius: 2px; }
+
+.egg-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(134,215,255,.1);
+  border-radius: 14px;
+  padding: 1.1rem .8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
+  text-align: center;
+  transition: border-color .15s, transform .15s;
+}
+.egg-card:hover { border-color: rgba(134,215,255,.25); transform: translateY(-2px); }
+.egg-card--hatched { opacity: .65; }
+.egg-card-icon { font-size: 2rem; line-height: 1; }
+.egg-card-name { font-size: .78rem; font-weight: 600; color: #fff; }
+.egg-card-type { font-size: .65rem; color: rgba(168,191,216,.6); }
+.egg-card-hatched { font-size: .7rem; color: #48dc82; }
+.egg-card-unhatched { font-size: .7rem; color: rgba(168,191,216,.5); }
+.egg-hatch-btn {
+  background: rgba(72,220,130,.12);
+  border: 1px solid rgba(72,220,130,.3);
+  border-radius: 6px;
+  color: #48dc82;
+  font-size: .72rem;
+  font-family: inherit;
+  padding: .3rem .7rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+.egg-hatch-btn:hover { background: rgba(72,220,130,.22); }
+
+.egg-quest-item {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(134,215,255,.1);
+  border-radius: 10px;
+  padding: .85rem 1rem;
+  margin-bottom: .6rem;
+}
+.egg-quest-name { font-size: .88rem; font-weight: 600; color: #fff; margin-bottom: .3rem; }
+.egg-quest-desc { font-size: .78rem; color: #a8bfd8; line-height: 1.4; margin-bottom: .4rem; }
+.egg-quest-reward { font-size: .75rem; color: #48dc82; }
+
+.eggs-quests-list {
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.eggs-leaderboard { max-height: 460px; overflow-y: auto; }
+.eggs-leaderboard-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.eggs-leaderboard-table th { color: rgba(168,191,216,.6); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; padding: .5rem .75rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,.08); }
+.eggs-leaderboard-table td { padding: .6rem .75rem; color: #a8bfd8; border-bottom: 1px solid rgba(255,255,255,.04); }
+.eggs-leaderboard-table tr:last-child td { border-bottom: none; }
+.eggs-lb-top td { color: #fff; font-weight: 600; }
+.eggs-lb-top:first-child td { color: #ffb43c; }
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .oapps-modal-card, .quests-modal-card, .missions-modal-card, .eggs-modal-card { padding: 18px 16px 24px; border-radius: 14px; }
+  .oapps-grid { grid-template-columns: 1fr; }
+  .eggs-grid { grid-template-columns: repeat(2, 1fr); }
+}

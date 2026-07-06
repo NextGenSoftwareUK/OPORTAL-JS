@@ -3,6 +3,7 @@
 // window.apiUrl = 'https://localhost:5002/';
 window.apiUrl = 'https://api.web4.oasisomniverse.one';
 window.API_BASE = window.apiUrl;
+window.web5ApiUrl = 'https://api.web5.oasisomniverse.one';
 
 // ── Nav preferences (defaults — overridden by localStorage if user has saved a preference) ──
 // OLD_SIDE_MENU   : true = old flat menu, false = new grouped sections
