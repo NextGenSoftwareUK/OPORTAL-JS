@@ -256,14 +256,14 @@
   window.showDashboard = function () {
     var el = document.getElementById('dashboard');
     if (el) {
-      el.removeAttribute('hidden');
+      el.classList.remove('dashboard--hidden');
       initDashboard();
     }
   };
 
   window.hideDashboard = function () {
     var el = document.getElementById('dashboard');
-    if (el) el.setAttribute('hidden', '');
+    if (el) el.classList.add('dashboard--hidden');
   };
 
   // Re-init on re-login event
