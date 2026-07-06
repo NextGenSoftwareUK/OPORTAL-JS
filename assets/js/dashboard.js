@@ -257,6 +257,7 @@
     var el = document.getElementById('dashboard');
     if (el) {
       el.classList.remove('dashboard--hidden');
+      el.style.display = '';
       initDashboard();
     }
   };
