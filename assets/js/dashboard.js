@@ -183,7 +183,7 @@
     set('dash-karma-pos', '…');
     set('dash-karma-neg', '…');
     set('dash-karma-net', fmtNum(karma));
-    set('dash-wallet-provider', 'Solana');
+    set('dash-wallet-provider', 'Multi-chain');
     set('dash-oapps-msg', 'Coming soon…');
 
     // Hydrate with fresh API data so username/karma/xp/level are correct from the start

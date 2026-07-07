@@ -229,6 +229,7 @@
 
 /* ---- Karma chart ---- */
 .dash-chart { width: 100%; height: auto; display: block; }
+#dash-karma-chart-wrap { min-height: 0; }
 .dash-empty { text-align: center; color: rgba(168,191,216,.5); font-size: .8rem; padding: 1.5rem 0; }
 .dash-karma-totals { display: flex; gap: 1.2rem; margin-top: .7rem; flex-wrap: wrap; }
 .dash-karma-total { display: flex; align-items: center; gap: .4rem; font-size: .75rem; }
