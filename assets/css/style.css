@@ -5242,6 +5242,8 @@ select option {
 }
 .onet-stat-card-label { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-contrast-medium); margin-bottom: 8px; }
 .onet-stat-card-value { font-size: 1.3rem; font-weight: 700; color: var(--color-white); }
+.onet-stat-card-value--dim { color: var(--color-contrast-medium); font-size: 1rem; }
+.onet-coming-soon-note { grid-column: 1/-1; font-size: 0.8rem; color: var(--color-contrast-medium); background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 12px; padding: 12px 16px; line-height: 1.55; margin-top: 4px; }
 
 .onet-actions-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
 .onet-action-btn, .onode-ctrl-btn { min-height: 40px; font-size: 0.82rem; padding: 0 16px; }
@@ -5435,6 +5437,11 @@ select option {
 .onet-tab-panel[hidden], .onode-tab-panel[hidden], .map-tab-panel[hidden] {
   display: none;
 }
+/* Fixed-height tab content area so switching tabs / showing status never resizes the modal */
+.onet-tab-panel, .onode-tab-panel { min-height: 320px; }
+/* Status strip reserves its space so it doesn't push content when it appears */
+#onode-modal-status { min-height: 44px; transition: opacity 0.15s; }
+#onode-modal-status[hidden] { display: block !important; visibility: hidden; opacity: 0; pointer-events: none; }
 
 /* Panel action bars */
 .wallet-panel-actions, .messaging-panel-actions {

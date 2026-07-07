@@ -96,7 +96,57 @@
     setText('onet-stat-uptime', s ? (s.uptime || s.networkUptime || '—') : '—');
   }
 
+  // ── Formatting helpers ────────────────────────────────────────────────────────
+
+  var KEY_LABELS = {
+    totalNodes: 'Total Nodes', nodeCount: 'Total Nodes', totalNodeCount: 'Total Nodes',
+    networkRunning: 'Network Running', isRunning: 'Running', running: 'Running',
+    activeConnections: 'Active Connections', connections: 'Connections',
+    networkLoad: 'Network Load', load: 'Network Load',
+    uptime: 'Uptime', networkUptime: 'Network Uptime',
+    lastActivity: 'Last Activity', lastActiveTime: 'Last Active',
+    bandwidth: 'Bandwidth', cpuUsage: 'CPU Usage', memoryUsage: 'Memory Usage',
+    version: 'Version', protocolVersion: 'Protocol Version',
+    statusMessage: 'Status', status: 'Status',
+    peersConnected: 'Peers Connected', activePeers: 'Active Peers',
+    packetsSent: 'Packets Sent', packetsReceived: 'Packets Received',
+    totalKarmaAwarded: 'Karma Awarded',
+  };
+
+  function fmtKey(k) {
+    var lower = k.charAt(0).toLowerCase() + k.slice(1);
+    if (KEY_LABELS[lower]) return KEY_LABELS[lower];
+    if (KEY_LABELS[k]) return KEY_LABELS[k];
+    // camelCase / PascalCase → spaced title case
+    return k
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, function (c) { return c.toUpperCase(); })
+      .trim();
+  }
+
+  function fmtVal(v) {
+    if (v === null || v === undefined || v === '') return '—';
+    if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+    var str = String(v);
+    // Negative timespan (e.g. -00:00:00.0000022) → treat as zero / not started
+    if (/^-\d\d:\d\d:\d\d/.test(str)) return '—';
+    // ISO date string
+    if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+      try {
+        var d = new Date(str);
+        return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      } catch (e) { return str; }
+    }
+    // Plain zero timespan → 0s
+    if (/^00:00:00/.test(str)) return '0s';
+    // Timespan like HH:MM:SS → format nicely
+    if (/^\d+:\d{2}:\d{2}/.test(str)) return str.split('.')[0];
+    return str;
+  }
+
   // ── Overview / stats grid ─────────────────────────────────────────────────────
+
+  var HIDE_KEYS = new Set(['$id','$type','id','Id']);
 
   function renderStatsGrid(stats) {
     var grid = getById('onet-stats-grid');
@@ -107,18 +157,20 @@
       return;
     }
     var entries = Object.entries(s).filter(function (kv) {
-      return typeof kv[1] !== 'object' || kv[1] == null;
+      return !HIDE_KEYS.has(kv[0]) && (typeof kv[1] !== 'object' || kv[1] == null);
     });
     if (!entries.length) {
       grid.innerHTML = '<div class="onet-empty"><p>No overview data available.</p></div>';
       return;
     }
     grid.innerHTML = entries.map(function (kv) {
+      var val = fmtVal(kv[1]);
       return '<div class="onet-stat-card">' +
-        '<div class="onet-stat-card-label">' + escapeHtml(kv[0]) + '</div>' +
-        '<div class="onet-stat-card-value">' + escapeHtml(String(kv[1])) + '</div>' +
+        '<div class="onet-stat-card-label">' + escapeHtml(fmtKey(kv[0])) + '</div>' +
+        '<div class="onet-stat-card-value' + (val === '—' ? ' onet-stat-card-value--dim' : '') + '">' + escapeHtml(val) + '</div>' +
         '</div>';
-    }).join('');
+    }).join('') +
+    '<div class="onet-coming-soon-note">&#128680; Full network management — start/stop nodes, topology control, and live metrics — is coming soon as the ONET expands.</div>';
   }
 
   // ── Health bars ───────────────────────────────────────────────────────────────
