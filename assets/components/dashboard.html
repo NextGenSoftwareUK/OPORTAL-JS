@@ -46,6 +46,20 @@
         <div class="dash-card-label">Holons / Data</div>
       </div>
     </div>
+    <div class="dash-card dash-card--purple" onclick="if(typeof openFilesModal==='function')openFilesModal()">
+      <div class="dash-card-icon">&#128193;</div>
+      <div class="dash-card-body">
+        <div class="dash-card-value" id="dash-card-files">—</div>
+        <div class="dash-card-label">Files</div>
+      </div>
+    </div>
+    <div class="dash-card dash-card--purple" onclick="if(typeof openWalletModal==='function')openWalletModal()">
+      <div class="dash-card-icon">&#128179;</div>
+      <div class="dash-card-body">
+        <div class="dash-card-value" id="dash-card-wallets">—</div>
+        <div class="dash-card-label">Wallets</div>
+      </div>
+    </div>
     <div class="dash-card dash-card--amber" onclick="if(typeof openNftModal==='function')openNftModal()">
       <div class="dash-card-icon">&#9670;</div>
       <div class="dash-card-body">
@@ -60,11 +74,11 @@
         <div class="dash-card-label">Geo NFTs</div>
       </div>
     </div>
-    <div class="dash-card dash-card--coral" onclick="if(typeof openQuestsModal==='function')openQuestsModal()">
+    <div class="dash-card dash-card--amber" onclick="if(typeof openGamesModal==='function')openGamesModal()">
       <div class="dash-card-icon">&#127918;</div>
       <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-quests">—</div>
-        <div class="dash-card-label">Quests</div>
+        <div class="dash-card-value" id="dash-card-games">—</div>
+        <div class="dash-card-label">Games</div>
       </div>
     </div>
     <div class="dash-card dash-card--teal" onclick="if(typeof openMissionsModal==='function')openMissionsModal()">
@@ -74,18 +88,18 @@
         <div class="dash-card-label">Missions</div>
       </div>
     </div>
-    <div class="dash-card dash-card--purple" onclick="if(typeof openFilesModal==='function')openFilesModal()">
-      <div class="dash-card-icon">&#128193;</div>
-      <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-files">—</div>
-        <div class="dash-card-label">Files</div>
-      </div>
-    </div>
-    <div class="dash-card dash-card--amber" onclick="if(typeof openGamesModal==='function')openGamesModal()">
+    <div class="dash-card dash-card--coral" onclick="if(typeof openQuestsModal==='function')openQuestsModal()">
       <div class="dash-card-icon">&#127918;</div>
       <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-games">—</div>
-        <div class="dash-card-label">Games</div>
+        <div class="dash-card-value" id="dash-card-quests">—</div>
+        <div class="dash-card-label">Quests</div>
+      </div>
+    </div>
+    <div class="dash-card dash-card--amber" onclick="if(typeof openInventoryModal==='function')openInventoryModal()">
+      <div class="dash-card-icon">&#127970;</div>
+      <div class="dash-card-body">
+        <div class="dash-card-value" id="dash-card-inventory">—</div>
+        <div class="dash-card-label">Inventory</div>
       </div>
     </div>
     <div class="dash-card dash-card--cyan" onclick="if(typeof openCompetitionModal==='function')openCompetitionModal()">
@@ -95,25 +109,11 @@
         <div class="dash-card-label">My Rank</div>
       </div>
     </div>
-    <div class="dash-card dash-card--green" onclick="if(typeof openSubscriptionModal==='function')openSubscriptionModal()">
-      <div class="dash-card-icon">&#11088;</div>
-      <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-plan">—</div>
-        <div class="dash-card-label">Subscription</div>
-      </div>
-    </div>
     <div class="dash-card dash-card--coral" onclick="if(typeof openGiftsModal==='function')openGiftsModal()">
       <div class="dash-card-icon">&#127873;</div>
       <div class="dash-card-body">
         <div class="dash-card-value" id="dash-card-gifts">—</div>
         <div class="dash-card-label">Gifts</div>
-      </div>
-    </div>
-    <div class="dash-card dash-card--purple" onclick="if(typeof openWalletModal==='function')openWalletModal()">
-      <div class="dash-card-icon">&#128179;</div>
-      <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-wallets">—</div>
-        <div class="dash-card-label">Wallets</div>
       </div>
     </div>
     <div class="dash-card dash-card--teal" onclick="if(typeof openMessagingModal==='function')openMessagingModal()">
@@ -123,11 +123,11 @@
         <div class="dash-card-label">Messages</div>
       </div>
     </div>
-    <div class="dash-card dash-card--amber" onclick="if(typeof openInventoryModal==='function')openInventoryModal()">
-      <div class="dash-card-icon">&#127970;</div>
+    <div class="dash-card dash-card--green" onclick="if(typeof openSubscriptionModal==='function')openSubscriptionModal()">
+      <div class="dash-card-icon">&#11088;</div>
       <div class="dash-card-body">
-        <div class="dash-card-value" id="dash-card-inventory">—</div>
-        <div class="dash-card-label">Inventory</div>
+        <div class="dash-card-value" id="dash-card-plan">—</div>
+        <div class="dash-card-label">Subscription</div>
       </div>
     </div>
   </div>
