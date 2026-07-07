@@ -41,6 +41,31 @@
   var syncLogIdx = 0;
 
   function getById(id) { return document.getElementById(id); }
+  // Unwrap EnumValue<T> objects { value, name, score } returned by the API
+  function unwrapEnum(v) {
+    if (v == null) return null;
+    if (typeof v === 'string') return v;
+    if (typeof v === 'number') return String(v);
+    if (typeof v === 'object') {
+      for (var k of ['name', 'Name', 'title', 'Title', 'label', 'Label']) {
+        if (v[k] != null && v[k] !== '') return String(v[k]);
+      }
+      if (v.value != null && v.value !== '') return String(v.value);
+    }
+    return null;
+  }
+  // Extract a provider key string from whatever the API returns
+  function resolveProviderName(p) {
+    if (!p) return '';
+    if (typeof p === 'string') return p;
+    // Try known string fields first
+    var candidates = [p.providerType, p.ProviderType, p.name, p.Name, p.type, p.Type];
+    for (var i = 0; i < candidates.length; i++) {
+      var v = unwrapEnum(candidates[i]);
+      if (v && v !== '') return v;
+    }
+    return '';
+  }
   function escapeHtml(v) {
     return String(v == null ? '' : v)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -155,7 +180,7 @@
   // ── Render: provider cards ────────────────────────────────────────────────────
 
   function buildProviderCard(p, index, activeType) {
-    var name = typeof p === 'string' ? p : (p.providerType || p.ProviderType || p.name || p.Name || String(p));
+    var name = resolveProviderName(p);
     var meta = getMeta(name);
     var latency = fakeLatency();
     var isActive = String(name).toLowerCase() === String(activeType || '').toLowerCase();
@@ -198,7 +223,7 @@
     var nodes = '';
     for (var i = 0; i < count; i++) {
       var p = providerList[i];
-      var name = typeof p === 'string' ? p : (p.providerType || p.ProviderType || p.name || String(p));
+      var name = resolveProviderName(p);
       var meta = getMeta(name);
       var angle = (360 / count) * i - 90;
       var delay = (i * 0.3).toFixed(1);
@@ -224,7 +249,7 @@
 
     var html = '';
     providerList.forEach(function (p, i) {
-      var name = typeof p === 'string' ? p : (p.providerType || p.ProviderType || p.name || String(p));
+      var name = resolveProviderName(p);
       var meta = getMeta(name);
       var isActive = String(name).toLowerCase() === String(active || '').toLowerCase();
       html += '<div class="hd-fo-row">' +
@@ -248,7 +273,7 @@
     if (!container || !providerList || !providerList.length) return;
 
     container.innerHTML = providerList.map(function (p, i) {
-      var name = typeof p === 'string' ? p : (p.providerType || p.ProviderType || p.name || String(p));
+      var name = resolveProviderName(p);
       var meta = getMeta(name);
       var progress = Math.floor(Math.random() * 30) + 70;
       var isSyncing = progress < 100 && i < 3;
@@ -278,7 +303,7 @@
     var total = loads.reduce(function (a, b) { return a + b; }, 0);
 
     container.innerHTML = providerList.slice(0, 6).map(function (p, i) {
-      var name = typeof p === 'string' ? p : (p.providerType || p.ProviderType || p.name || String(p));
+      var name = resolveProviderName(p);
       var meta = getMeta(name);
       var pct = Math.round((loads[i] / total) * 100);
       var latency = fakeLatency();
