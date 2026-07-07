@@ -186,6 +186,11 @@
     set('dash-wallet-provider', 'Solana');
     set('dash-oapps-msg', 'Coming soon…');
 
+    // Hydrate with fresh API data so username/karma/xp/level are correct from the start
+    if (typeof window.hydrateAvatarProfile === 'function') {
+      window.hydrateAvatarProfile(p).catch(function () {});
+    }
+
     // Avatar image
     var img = document.getElementById('dash-avatar-img');
     if (img) {

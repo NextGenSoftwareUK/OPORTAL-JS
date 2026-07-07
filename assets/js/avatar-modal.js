@@ -465,6 +465,7 @@
     avatarBlock.dataset.avatarModalBound = 'true';
     window.openAvatarModal = openAvatarModal;
     window.closeAvatarModal = closeAvatarModal;
+    window.hydrateAvatarProfile = hydrateAvatar;
   }
 
   if (document.readyState === 'loading') {
