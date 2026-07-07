@@ -76,63 +76,6 @@
     if (el) el.textContent = val;
   }
 
-  // ---- Karma bar chart (pure SVG) ----
-  function renderKarmaChart(records) {
-    var svg = document.getElementById('dash-karma-chart');
-    var empty = document.getElementById('dash-karma-chart-empty');
-    if (!svg) return;
-
-    // Aggregate by karma type/action
-    var buckets = {};
-    records.forEach(function (r) {
-      var label = r.karmaType || r.KarmaType || r.description || r.Description ||
-                  r.karmaSourceTitle || r.KarmaSourceTitle || 'Other';
-      // Shorten label
-      if (label.length > 20) label = label.substring(0, 18) + '…';
-      var pts = Number(r.karmaPoints || r.KarmaPoints || r.points || r.Points || r.amount || r.Amount || 0);
-      if (!buckets[label]) buckets[label] = 0;
-      buckets[label] += pts;
-    });
-
-    var entries = Object.entries(buckets).sort(function (a, b) { return Math.abs(b[1]) - Math.abs(a[1]); }).slice(0, 8);
-
-    if (entries.length === 0) {
-      svg.setAttribute('hidden', '');
-      if (empty) empty.removeAttribute('hidden');
-      return;
-    }
-    svg.removeAttribute('hidden');
-    if (empty) empty.setAttribute('hidden', '');
-
-    var W = 420, H = 200;
-    var padL = 110, padR = 16, padT = 12, padB = 24;
-    var chartW = W - padL - padR;
-    var barH = Math.min(18, (H - padT - padB) / entries.length - 4);
-    var spacing = (H - padT - padB) / entries.length;
-
-    var maxVal = Math.max.apply(null, entries.map(function (e) { return Math.abs(e[1]); })) || 1;
-
-    var svgParts = [];
-    // Gridline at zero (vertical)
-    svgParts.push('<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (H - padB) + '" stroke="rgba(255,255,255,.08)" stroke-width="1"/>');
-
-    entries.forEach(function (entry, i) {
-      var label = entry[0], val = entry[1];
-      var y = padT + i * spacing + spacing / 2;
-      var barW = Math.max(2, (Math.abs(val) / maxVal) * chartW);
-      var color = val >= 0 ? '#48dc82' : '#ff7070';
-
-      // Label
-      svgParts.push('<text x="' + (padL - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="#a8bfd8">' + escHtml(label) + '</text>');
-      // Bar
-      svgParts.push('<rect x="' + padL + '" y="' + (y - barH / 2) + '" width="' + barW + '" height="' + barH + '" rx="3" fill="' + color + '" opacity="0.85"/>');
-      // Value label
-      svgParts.push('<text x="' + (padL + barW + 4) + '" y="' + (y + 4) + '" font-size="9" fill="' + color + '" font-weight="bold">' + (val > 0 ? '+' : '') + val + '</text>');
-    });
-
-    svg.innerHTML = svgParts.join('');
-  }
-
   // ---- Akashic records list ----
   function renderAkashicList(records) {
     var ul = document.getElementById('dash-akashic-list');
@@ -250,7 +193,6 @@
     // Akashic records
     var records = extractList(akashicData);
     renderAkashicList(records);
-    renderKarmaChart(records);
 
     // Karma stats
     var ks = karmaStats && (karmaStats.result || karmaStats.Result || karmaStats);

@@ -62,7 +62,7 @@
 
   // ── Status banner ─────────────────────────────────────────────────────────────
 
-  function updateBanner(status) {
+  function updateBanner(status, unreachable) {
     var s = extractResult(status);
     var running = s && (s.isRunning || String(s.status || s.Status || '').toLowerCase() === 'running');
     var banner = getById('onode-status-banner');
@@ -70,6 +70,14 @@
     var label = getById('onode-status-label');
     var desc = getById('onode-status-desc');
     if (!banner) return;
+
+    if (unreachable) {
+      banner.className = 'hd-mode-banner hd-mode-banner--offline';
+      if (dot) dot.className = 'hd-mode-dot hd-mode-dot--offline';
+      if (label) label.textContent = 'UNAVAILABLE';
+      if (desc) desc.textContent = 'ONODE could not be reached. Make sure your local ONODE is running.';
+      return;
+    }
 
     var cls = running ? 'online' : 'offline';
     banner.className = 'hd-mode-banner hd-mode-banner--' + cls;
@@ -272,8 +280,9 @@
     var info    = infoRes.isError    ? null : (infoRes.result    || infoRes);
     var metrics = metricsRes.isError ? null : (metricsRes.result || metricsRes);
 
+    var allFailed = statusRes.isError && infoRes.isError && metricsRes.isError;
     hideStatus();
-    updateBanner(status || {});
+    updateBanner(status || {}, allFailed);
     updateStatBar(status, info);
     buildInfoGrid(info);
     buildMetricsGrid(metrics);
@@ -283,7 +292,8 @@
 
   async function doControl(btnId, method, label, confirmMsg) {
     var client = window.oasisClient && window.oasisClient.oNODE;
-    if (!client || !client[method]) { showStatus('error', 'Action not available.'); return; }
+    if (!client) { showStatus('error', 'ONODE SDK not initialised — please refresh the page.'); return; }
+    if (!client[method]) { showStatus('error', 'Action not available in this SDK version.'); return; }
     if (confirmMsg && !confirm(confirmMsg)) return;
     setBtn(btnId, label + '…', true);
     var sdkRes = await client[method]().catch(function () { return { isError: true }; });

@@ -130,48 +130,47 @@
         <div class="dash-card-label">Subscription</div>
       </div>
     </div>
-  </div>
-
-  <!-- Charts + Akashic Records -->
-  <div class="dash-grid">
-    <!-- Karma Breakdown Chart -->
-    <div class="dash-panel">
-      <div class="dash-panel-header">
-        <h3 class="dash-panel-title">&#9670; Karma Breakdown</h3>
-        <button class="dash-panel-link" onclick="if(typeof openKarmaModal==='function')openKarmaModal()">View All</button>
-      </div>
-      <div id="dash-karma-chart-wrap">
-        <svg id="dash-karma-chart" class="dash-chart" viewBox="0 0 420 200" preserveAspectRatio="xMidYMid meet"></svg>
-        <div id="dash-karma-chart-empty" class="dash-empty" hidden>No karma records yet</div>
-      </div>
-      <div class="dash-karma-totals">
-        <div class="dash-karma-total">
-          <span class="dash-kt-dot" style="background:#48dc82"></span>
-          <span class="dash-kt-label">Positive</span>
-          <span class="dash-kt-val" id="dash-karma-pos">—</span>
-        </div>
-        <div class="dash-karma-total">
-          <span class="dash-kt-dot" style="background:#ff7070"></span>
-          <span class="dash-kt-label">Negative</span>
-          <span class="dash-kt-val" id="dash-karma-neg">—</span>
-        </div>
-        <div class="dash-karma-total">
-          <span class="dash-kt-dot" style="background:#00e5ff"></span>
-          <span class="dash-kt-label">Net</span>
-          <span class="dash-kt-val" id="dash-karma-net">—</span>
-        </div>
+    <div class="dash-card dash-card--cyan" onclick="if(typeof openClanModal==='function')openClanModal()">
+      <div class="dash-card-icon">&#128737;</div>
+      <div class="dash-card-body">
+        <div class="dash-card-value" id="dash-card-clans">—</div>
+        <div class="dash-card-label">Clans</div>
       </div>
     </div>
-
-    <!-- Akashic Records -->
-    <div class="dash-panel">
-      <div class="dash-panel-header">
-        <h3 class="dash-panel-title">&#9998; Akashic Records</h3>
-        <button class="dash-panel-link" onclick="if(typeof openKarmaModal==='function')openKarmaModal()">View All</button>
+    <div class="dash-card dash-card--teal" onclick="if(typeof openONETModal==='function')openONETModal()">
+      <div class="dash-card-icon">&#127760;</div>
+      <div class="dash-card-body">
+        <div class="dash-card-value" id="dash-card-onet">—</div>
+        <div class="dash-card-label">ONET Nodes</div>
       </div>
-      <ul id="dash-akashic-list" class="dash-akashic-list">
-        <li class="dash-akashic-loading">Loading…</li>
-      </ul>
+    </div>
+  </div>
+
+  <!-- Karma Akashic Records -->
+  <div class="dash-panel">
+    <div class="dash-panel-header">
+      <h3 class="dash-panel-title">&#9998; Karma Akashic Records</h3>
+      <button class="dash-panel-link" onclick="if(typeof openKarmaModal==='function')openKarmaModal()">View All</button>
+    </div>
+    <ul id="dash-akashic-list" class="dash-akashic-list">
+      <li class="dash-akashic-loading">Loading…</li>
+    </ul>
+    <div class="dash-karma-totals">
+      <div class="dash-karma-total">
+        <span class="dash-kt-dot" style="background:#48dc82"></span>
+        <span class="dash-kt-label">Positive</span>
+        <span class="dash-kt-val" id="dash-karma-pos">—</span>
+      </div>
+      <div class="dash-karma-total">
+        <span class="dash-kt-dot" style="background:#ff7070"></span>
+        <span class="dash-kt-label">Negative</span>
+        <span class="dash-kt-val" id="dash-karma-neg">—</span>
+      </div>
+      <div class="dash-karma-total">
+        <span class="dash-kt-dot" style="background:#00e5ff"></span>
+        <span class="dash-kt-label">Net</span>
+        <span class="dash-kt-val" id="dash-karma-net">—</span>
+      </div>
     </div>
   </div>
 
