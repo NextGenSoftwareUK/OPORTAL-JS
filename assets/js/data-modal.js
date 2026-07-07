@@ -103,6 +103,7 @@
       */
       hideStatus();
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
+      _cachedBrowseList = list || [];
       renderBrowseGrid(list);
       if (!list) showStatus('warn', 'No holons returned from the API.');
     } catch (e) {
@@ -159,7 +160,12 @@
           resultEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon">🔍</div><p>No holon found with that ID.</p></div>';
         }
       }
-      if (sdkRes.isError) showStatus('error', sdkRes.message || 'Load failed.');
+      // Only show red error for genuine API failures, not "not found"
+      if (sdkRes.isError && list === null) {
+        var msg = sdkRes.message || '';
+        var isNotFound = /not found|no holon|404/i.test(msg);
+        if (!isNotFound) showStatus('error', msg || 'Load failed.');
+      }
     } catch (e) {
       showStatus('error', 'Network error loading holon.');
     } finally {
@@ -204,6 +210,102 @@
     } finally {
       if (btn) btn.disabled = false;
     }
+  }
+
+  // ── Search ────────────────────────────────────────────────────────────────────
+
+  var _cachedBrowseList = null;
+
+  async function searchHolons(query, inName, inDesc, inMeta, metaKey, metaVal) {
+    var resultsEl = getById('data-search-results');
+    if (!resultsEl) return;
+    if (!query && !metaKey) { resultsEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon">🔍</div><p>Enter a search term above.</p></div>'; return; }
+
+    var profile = readAvatar();
+    var token = getToken(profile);
+    if (!token) { showStatus('error', 'Please sign in first.'); return; }
+
+    resultsEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon" style="animation:spin 1s linear infinite">⌛</div><p>Searching…</p></div>';
+    var btn = getById('data-search-btn');
+    if (btn) btn.disabled = true;
+
+    try {
+      // Build SearchParams compatible with the OASIS search API
+      var searchParams = {
+        searchOnlyForCurrentAvatar: true,
+        recursive: true,
+        searchGroups: [{
+          searchHolons: true,
+          searchAvatars: false,
+          holonSearchParams: {
+            searchAllFields: !inName && !inDesc && !inMeta,
+            name: inName,
+            description: inDesc,
+            metaData: inMeta,
+            metaDataKey: metaKey || null
+          }
+        }]
+      };
+      if (metaKey && metaVal) {
+        searchParams.filterByMetaData = {};
+        searchParams.filterByMetaData[metaKey] = metaVal;
+      }
+
+      var sdkRes = await window.oasisClient.search.get(searchParams);
+      var list = null;
+      if (!sdkRes.isError) {
+        var r = sdkRes.result || sdkRes;
+        list = extractList(r.holons || r.results || r.holonResults || r) || extractList(sdkRes.result);
+      }
+
+      if (list && list.length) {
+        renderSearchResults(list, query);
+      } else {
+        // Fall back to client-side filter on browse data
+        renderSearchResults(clientSideSearch(query, inName, inDesc, inMeta, metaKey, metaVal), query);
+      }
+    } catch (e) {
+      renderSearchResults(clientSideSearch(query, inName, inDesc, inMeta, metaKey, metaVal), query);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function clientSideSearch(query, inName, inDesc, inMeta, metaKey, metaVal) {
+    var list = _cachedBrowseList;
+    if (!list || !list.length) return [];
+    var q = query ? query.toLowerCase() : '';
+    return list.filter(function (h) {
+      if (q) {
+        var matched = false;
+        if (inName && (h.name || h.Name || '').toLowerCase().includes(q)) matched = true;
+        if (inDesc && (h.description || h.Description || '').toLowerCase().includes(q)) matched = true;
+        if (inMeta) {
+          var meta = h.metaData || h.MetaData || h.metadata || {};
+          var metaStr = JSON.stringify(meta).toLowerCase();
+          if (metaStr.includes(q)) matched = true;
+        }
+        if (!matched) return false;
+      }
+      if (metaKey) {
+        var meta2 = h.metaData || h.MetaData || h.metadata || {};
+        var val = meta2[metaKey] || meta2[metaKey.toLowerCase()];
+        if (val === undefined) return false;
+        if (metaVal && String(val).toLowerCase() !== metaVal.toLowerCase()) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderSearchResults(list, query) {
+    var el = getById('data-search-results');
+    if (!el) return;
+    if (!list || !list.length) {
+      el.innerHTML = '<div class="data-empty"><div class="data-empty-icon">🔍</div><p>No holons found' + (query ? ' matching <em>' + escapeHtml(query) + '</em>' : '') + '.</p></div>';
+      return;
+    }
+    el.innerHTML = '<div class="data-search-count">' + list.length + ' result' + (list.length === 1 ? '' : 's') + '</div>' +
+      list.map(function (h) { return buildHolonCard(h, false); }).join('');
   }
 
   // ── Delete ────────────────────────────────────────────────────────────────────
@@ -351,6 +453,31 @@
         if (!name) { showStatus('error', 'Please enter a holon name.'); return; }
         saveHolon(name, desc, '0', provider, true);
       });
+    }
+
+    // Search form
+    var searchForm = getById('data-search-form');
+    if (searchForm) {
+      searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var query = (getById('data-search-query') || {}).value.trim();
+        var inName = !!(getById('data-search-in-name') || {}).checked;
+        var inDesc = !!(getById('data-search-in-desc') || {}).checked;
+        var inMeta = !!(getById('data-search-in-meta') || {}).checked;
+        var metaKey = ((getById('data-search-meta-key') || {}).value || '').trim();
+        var metaVal = ((getById('data-search-meta-val') || {}).value || '').trim();
+        searchHolons(query, inName, inDesc, inMeta, metaKey, metaVal);
+      });
+      var metaChk = getById('data-search-in-meta');
+      if (metaChk) {
+        metaChk.addEventListener('change', function () {
+          var show = metaChk.checked;
+          var r1 = getById('data-search-meta-row');
+          var r2 = getById('data-search-meta-val-row');
+          if (r1) r1.style.display = show ? '' : 'none';
+          if (r2) r2.style.display = show ? '' : 'none';
+        });
+      }
     }
 
     block.dataset.dataBound = 'true';

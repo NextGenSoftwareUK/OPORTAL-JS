@@ -18,6 +18,7 @@
         <button class="data-tab" data-tab="load">Load by ID</button>
         <button class="data-tab" data-tab="save">Save Holon</button>
         <button class="data-tab" data-tab="offchain">Off-Chain</button>
+        <button class="data-tab" data-tab="search">Search</button>
       </div>
 
       <!-- Browse -->
@@ -146,6 +147,34 @@
           </div>
           <button class="button data-submit-btn" type="submit" id="data-offchain-btn">Save Off-Chain</button>
         </form>
+      </div>
+
+      <!-- Search -->
+      <div id="data-tab-search" class="data-tab-panel" hidden>
+        <form id="data-search-form" class="data-form" onsubmit="return false">
+          <div class="data-form-row">
+            <label class="data-form-label" for="data-search-query">Search Query</label>
+            <input class="data-form-input" id="data-search-query" type="text" placeholder="Enter search term…" autocomplete="off" />
+          </div>
+          <div class="data-form-row">
+            <label class="data-form-label">Search In</label>
+            <div class="data-search-fields">
+              <label class="data-check-label"><input type="checkbox" id="data-search-in-name" checked /><span>Name</span></label>
+              <label class="data-check-label"><input type="checkbox" id="data-search-in-desc" checked /><span>Description</span></label>
+              <label class="data-check-label"><input type="checkbox" id="data-search-in-meta" /><span>Metadata</span></label>
+            </div>
+          </div>
+          <div class="data-form-row" id="data-search-meta-row" style="display:none">
+            <label class="data-form-label" for="data-search-meta-key">Metadata Key</label>
+            <input class="data-form-input" id="data-search-meta-key" type="text" placeholder="e.g. category" autocomplete="off" />
+          </div>
+          <div class="data-form-row" id="data-search-meta-val-row" style="display:none">
+            <label class="data-form-label" for="data-search-meta-val">Metadata Value</label>
+            <input class="data-form-input" id="data-search-meta-val" type="text" placeholder="Optional — leave blank to match any value" autocomplete="off" />
+          </div>
+          <button class="button data-submit-btn" type="submit" id="data-search-btn">Search Holons</button>
+        </form>
+        <div id="data-search-results" class="data-holon-grid" style="margin-top:18px"></div>
       </div>
 
     </div>

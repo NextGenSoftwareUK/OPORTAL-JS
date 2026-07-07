@@ -4384,6 +4384,8 @@ select option {
 .data-info-icon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
 .data-info-block strong { display: block; font-size: 0.95rem; color: var(--color-white); margin-bottom: 6px; }
 .data-info-text { font-size: 0.85rem; color: var(--color-contrast-medium); line-height: 1.6; margin: 0; }
+.data-search-fields { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.data-search-count { font-size: 0.75rem; color: var(--color-contrast-medium); margin-bottom: 8px; }
 
 @media (max-width: 700px) {
   .data-holon-grid { grid-template-columns: 1fr; }
