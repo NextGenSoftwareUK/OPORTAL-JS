@@ -259,8 +259,8 @@
     try {
       // SDK: @oasisomniverse/web4-api
       var sdkRes = email
-        ? await window.oasisClient.avatar.updateAvatarDetailByEmail(Object.assign({ email: email }, payload))
-        : await window.oasisClient.avatar.updateAvatarDetailByUsername(Object.assign({ username: username }, payload));
+        ? await window.oasisClient.avatar.updateAvatarDetailByEmail(Object.assign({}, payload, { email: email }))
+        : await window.oasisClient.avatar.updateAvatarDetailByUsername(Object.assign({}, payload, { username: username }));
       /* OLD fetch:
       var url = getUpdateUrl(profile);
       var res = await fetch(url, { method: 'POST', headers: {...}, body: JSON.stringify(payload) });
