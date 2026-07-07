@@ -193,6 +193,9 @@
       token ? safe(window.oasisClient.subscription.getMySubscriptions()) : Promise.resolve(null),                                            // [8]
       token && window.starClient ? safe(window.starClient.games.getAllGames()) : Promise.resolve(null),                                       // [9]
       token ? safe(window.oasisClient.gifts.getMyGifts()) : Promise.resolve(null),                                                           // [10]
+      avatarId && token ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false })) : Promise.resolve(null), // [11]
+      token ? safe(window.oasisClient.messaging.getMessages()) : Promise.resolve(null),                                                        // [12]
+      token ? safe(fetch(API_BASE + '/api/Avatar/inventory', { headers: { 'Authorization': 'Bearer ' + token } }).then(function(r){ return r.json(); })) : Promise.resolve(null), // [13]
     ]);
     /* OLD fetch calls:
     apiFetch(API_BASE + '/api/karma/get-karma-akashic-records-for-avatar/' + avatarId, token)
@@ -214,6 +217,9 @@
     var subsData     = sdkVal(results[8].value);
     var gamesData    = sdkVal(results[9].value);
     var giftsData    = sdkVal(results[10].value);
+    var walletsData   = sdkVal(results[11].value);
+    var messagesData  = sdkVal(results[12].value);
+    var inventoryData = results[13] && results[13].value;
 
     // Akashic records
     var records = extractList(akashicData);
@@ -284,10 +290,27 @@
     var games = extractList(gamesData);
     set('dash-card-games', fmtNum(games.length) || '0');
 
-    // Gifts — update OAPPs panel to show pending gifts count too
+    // Gifts
     var gifts = extractList(giftsData);
     var pendingGifts = gifts.filter(function(g) { return !(g.isOpened || g.IsOpened || g.opened); }).length;
-    if (pendingGifts > 0) set('dash-oapps-msg', pendingGifts + ' gift' + (pendingGifts === 1 ? '' : 's') + ' waiting!');
+    set('dash-card-gifts', fmtNum(gifts.length) || '0');
+    if (pendingGifts > 0) {
+      set('dash-card-gifts', pendingGifts + ' pending');
+      set('dash-oapps-msg', pendingGifts + ' gift' + (pendingGifts === 1 ? '' : 's') + ' waiting!');
+    }
+
+    // Wallets
+    var wallets = extractList(walletsData);
+    set('dash-card-wallets', fmtNum(wallets.length) || '0');
+
+    // Messages
+    var messages = extractList(messagesData);
+    var unread = messages.filter(function(m) { return !(m.isRead || m.IsRead || m.read); }).length;
+    set('dash-card-messages', unread > 0 ? unread + ' unread' : fmtNum(messages.length) || '0');
+
+    // Inventory (direct REST call — not in SDK)
+    var inventory = extractList(inventoryData);
+    set('dash-card-inventory', fmtNum(inventory.length) || '0');
   }
 
   // ---- Show / Hide ----
