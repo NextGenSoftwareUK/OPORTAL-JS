@@ -2954,6 +2954,41 @@ select option {
   color: var(--color-white);
 }
 
+.nft-provider-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #a8bfd8;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 32px 6px 12px;
+  cursor: pointer;
+  outline: none;
+  flex: 1;
+  min-width: 180px;
+  max-width: 260px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8bfd8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.nft-provider-select:hover,
+.nft-provider-select:focus {
+  border-color: rgba(107, 208, 255, 0.4);
+  background-color: rgba(107, 208, 255, 0.06);
+  color: #e0f0ff;
+}
+
+.nft-provider-select option,
+.nft-provider-select optgroup {
+  background: #0d1f35;
+  color: #a8bfd8;
+}
+
 .nft-refresh-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);

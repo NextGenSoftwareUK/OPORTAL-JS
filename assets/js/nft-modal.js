@@ -549,17 +549,11 @@
       });
     }
 
-    // Provider pills
-    var pillsContainer = getById('nft-provider-pills');
-    if (pillsContainer) {
-      pillsContainer.addEventListener('click', function (e) {
-        var pill = e.target.closest('.nft-provider-pill');
-        if (!pill) return;
-        pillsContainer.querySelectorAll('.nft-provider-pill').forEach(function (p) {
-          p.classList.remove('is-active');
-        });
-        pill.classList.add('is-active');
-        currentProvider = pill.dataset.provider;
+    // Provider dropdown
+    var providerSelect = getById('nft-provider-select');
+    if (providerSelect) {
+      providerSelect.addEventListener('change', function () {
+        currentProvider = providerSelect.value;
         var profile = readAvatar();
         loadAll(profile);
       });

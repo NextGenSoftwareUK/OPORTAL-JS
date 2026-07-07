@@ -17,12 +17,37 @@
       <!-- Provider selector -->
       <div class="nft-provider-bar">
         <span class="nft-provider-label">Provider:</span>
-        <div class="nft-provider-pills" id="nft-provider-pills">
-          <button class="nft-provider-pill is-active" data-provider="Solana">Solana</button>
-          <button class="nft-provider-pill" data-provider="Ethereum">Ethereum</button>
-          <button class="nft-provider-pill" data-provider="EOS">EOS</button>
-          <button class="nft-provider-pill" data-provider="Holochain">Holochain</button>
-        </div>
+        <select id="nft-provider-select" class="nft-provider-select">
+          <optgroup label="Blockchain">
+            <option value="SolanaOASIS">Solana</option>
+            <option value="EthereumOASIS">Ethereum</option>
+            <option value="EOSIOOASIS">EOS</option>
+            <option value="PolygonOASIS">Polygon</option>
+            <option value="BNBChainOASIS">BNB Chain</option>
+            <option value="ArbitrumOASIS">Arbitrum</option>
+            <option value="AvalancheOASIS">Avalanche</option>
+            <option value="OptimismOASIS">Optimism</option>
+            <option value="FantomOASIS">Fantom</option>
+            <option value="CardanoOASIS">Cardano</option>
+            <option value="PolkadotOASIS">Polkadot</option>
+            <option value="SuiOASIS">Sui</option>
+            <option value="AptosOASIS">Aptos</option>
+            <option value="NEAROASIS">NEAR</option>
+            <option value="BitcoinOASIS">Bitcoin</option>
+            <option value="ElrondOASIS">Elrond</option>
+            <option value="TelosOASIS">Telos</option>
+            <option value="TRONOASIS">TRON</option>
+            <option value="CosmosBlockChainOASIS">Cosmos</option>
+            <option value="HashgraphOASIS">Hashgraph</option>
+            <option value="ChainLinkOASIS">Chainlink</option>
+            <option value="BlockStackOASIS">Blockstack</option>
+            <option value="MoralisOASIS">Moralis</option>
+          </optgroup>
+          <optgroup label="Network">
+            <option value="HoloOASIS">Holochain</option>
+            <option value="ThreeFoldOASIS">ThreeFold</option>
+          </optgroup>
+        </select>
         <button id="nft-refresh-btn" class="nft-refresh-btn" title="Refresh NFTs">&#8635;</button>
       </div>
 
