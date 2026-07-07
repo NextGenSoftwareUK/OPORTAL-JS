@@ -218,6 +218,8 @@
       avatarId && token ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false })) : Promise.resolve(null), // [11]
       token ? safe(window.oasisClient.messaging.getMessages()) : Promise.resolve(null),                                                        // [12]
       token ? safe(fetch(API_BASE + '/api/Avatar/inventory', { headers: { 'Authorization': 'Bearer ' + token } }).then(function(r){ return r.json(); })) : Promise.resolve(null), // [13]
+      token ? safe(window.oasisClient.clan.list()) : Promise.resolve(null),               // [14]
+      safe(window.oasisClient.oNET.getNetworkStats()),                                     // [15]
     ]);
     /* OLD fetch calls:
     apiFetch(API_BASE + '/api/karma/get-karma-akashic-records-for-avatar/' + avatarId, token)
@@ -242,6 +244,8 @@
     var walletsData   = sdkVal(results[11].value);
     var messagesData  = sdkVal(results[12].value);
     var inventoryData = results[13] && results[13].value;
+    var clansData     = sdkVal(results[14] && results[14].value);
+    var onetData      = sdkVal(results[15] && results[15].value);
 
     // Akashic records
     var records = extractList(akashicData);
@@ -333,6 +337,15 @@
     // Inventory (direct REST call — not in SDK)
     var inventory = extractList(inventoryData);
     set('dash-card-inventory', fmtNum(inventory.length) || '0');
+
+    // Clans
+    var clans = extractList(clansData);
+    set('dash-card-clans', fmtNum(clans.length) || '0');
+
+    // ONET nodes
+    var onetStats = onetData && (onetData.result || onetData);
+    var nodeCount = onetStats && (onetStats.totalNodes || onetStats.TotalNodes || onetStats.nodeCount || onetStats.NodeCount);
+    set('dash-card-onet', nodeCount != null ? fmtNum(nodeCount) : '—');
   }
 
   // ---- Show / Hide ----
