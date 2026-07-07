@@ -32,7 +32,7 @@ var _OASIS_WEB4_UNUSED_ = (() => {
         return `?${params.toString()}`;
       }
       var HttpClient = class {
-        constructor({ baseUrl = DEFAULT_BASE_URL, tokenStore, fetchImpl = globalThis.fetch } = {}) {
+        constructor({ baseUrl = DEFAULT_BASE_URL, tokenStore, fetchImpl = globalThis.fetch && globalThis.fetch.bind(globalThis) } = {}) {
           if (!fetchImpl) {
             throw new Error(
               "No global fetch implementation found. Use Node 18+, a modern browser, or pass { fetchImpl } explicitly."
