@@ -468,6 +468,11 @@
     window.hydrateAvatarProfile = hydrateAvatar;
   }
 
+  // Expose immediately so nav clicks work before portal components finish loading
+  window.openAvatarModal = openAvatarModal;
+  window.closeAvatarModal = closeAvatarModal;
+  window.hydrateAvatarProfile = hydrateAvatar;
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bind);
   } else {
