@@ -2473,7 +2473,7 @@ select option {
 .modal__block.dev-portal-modal-block {
   width: min(1160px, calc(100vw - 24px));
   max-height: calc(100vh - 24px);
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   left: 50%;
   top: 50%;
@@ -2485,7 +2485,13 @@ select option {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   letter-spacing: normal;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,200,255,.55) rgba(0,200,255,.08);
 }
+.modal__block.dev-portal-modal-block::-webkit-scrollbar { width: 8px; }
+.modal__block.dev-portal-modal-block::-webkit-scrollbar-track { background: rgba(0,200,255,.06); border-radius: 4px; }
+.modal__block.dev-portal-modal-block::-webkit-scrollbar-thumb { background: rgba(0,200,255,.5); border-radius: 4px; }
+.modal__block.dev-portal-modal-block::-webkit-scrollbar-thumb:hover { background: rgba(0,200,255,.8); }
 
 .dev-portal-shell {
   width: 100%;
