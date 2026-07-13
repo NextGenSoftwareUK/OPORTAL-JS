@@ -16,6 +16,8 @@
     { "source": "/hyperdrive", "destination": "/portal.html" },
     { "source": "/onet",       "destination": "/portal.html" },
     { "source": "/onode",      "destination": "/portal.html" },
-    { "source": "/developer",  "destination": "/portal.html" }
+    { "source": "/developer",  "destination": "/portal.html" },
+    { "source": "/devportal",  "destination": "/portal.html" },
+    { "source": "/subscription", "destination": "/portal.html" }
   ]
 }
