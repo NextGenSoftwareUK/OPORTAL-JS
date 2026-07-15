@@ -25,7 +25,7 @@
   }
 
   function getAvatarId(profile) {
-    return profile && (profile.id || profile.Id || profile.avatarId || profile.AvatarId || '');
+    return profile && (profile.avatarId || profile.AvatarId || profile.id || profile.Id || '');
   }
 
   // ── Status ──────────────────────────────────────────────────────────────────
