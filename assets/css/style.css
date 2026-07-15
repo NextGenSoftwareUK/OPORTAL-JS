@@ -3778,6 +3778,12 @@ select option {
   transition: opacity 0.15s;
 }
 
+.nft-detail-link--hash {
+  white-space: normal;
+  word-break: break-all;
+  align-items: flex-start;
+}
+
 .nft-detail-link:hover {
   opacity: 0.75;
   text-decoration: underline;
