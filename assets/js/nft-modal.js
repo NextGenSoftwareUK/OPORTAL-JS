@@ -9,6 +9,20 @@
 
   function getById(id) { return document.getElementById(id); }
 
+  // Expose globals immediately so the router can call openNftModal() even if
+  // portal-components-ready fires before bind() runs (race condition on refresh).
+  function exposeGlobals() {
+    window.openNftModal = openNftModal;
+    window.closeNftModal = closeNftModal;
+    window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
+    window.nftShowSendForm = function () { closeActionPanel(); showActionPanel('nft-form-send'); };
+    window.nftShowPlaceForm = function () { populateNftSelect(); closeActionPanel(); showActionPanel('nft-form-place'); };
+    window.nftCloseActionPanel = closeActionPanel;
+    window.nftSubmitMint = function () { apiMintNft(readAvatar()); };
+    window.nftSubmitSend = function () { apiSendNft(readAvatar()); };
+    window.nftSubmitPlace = function () { apiPlaceGeoNft(readAvatar()); };
+  }
+
   function escapeHtml(v) {
     return String(v == null ? '' : v)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -904,22 +918,9 @@
 
   // ── Bind ─────────────────────────────────────────────────────────────────────
 
-  function exposeGlobals() {
-    window.openNftModal = openNftModal;
-    window.closeNftModal = closeNftModal;
-    window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
-    window.nftShowSendForm = function () { closeActionPanel(); showActionPanel('nft-form-send'); };
-    window.nftShowPlaceForm = function () { populateNftSelect(); closeActionPanel(); showActionPanel('nft-form-place'); };
-    window.nftCloseActionPanel = closeActionPanel;
-    window.nftSubmitMint = function () { apiMintNft(readAvatar()); };
-    window.nftSubmitSend = function () { apiSendNft(readAvatar()); };
-    window.nftSubmitPlace = function () { apiPlaceGeoNft(readAvatar()); };
-  }
-
   function bind() {
     var nftBlock = getById('nft-modal-block');
     if (!nftBlock || nftBlock.dataset.nftBound === 'true') {
-      exposeGlobals();
       return;
     }
 
@@ -1009,8 +1010,17 @@
     }
 
     nftBlock.dataset.nftBound = 'true';
-    exposeGlobals();
+
+    // If the router already opened the NFT modal before bind() ran (race on
+    // refresh), the block will already be visible — load NFTs now.
+    if (nftBlock.classList.contains('is-selected')) {
+      loadAll(readAvatar());
+    }
   }
+
+  // Expose globals immediately so the router can call openNftModal() regardless
+  // of whether bind() has run yet.
+  exposeGlobals();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bind);
