@@ -3822,6 +3822,27 @@ select option {
 }
 
 /* Inline send panel inside detail view */
+.nft-send-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.nft-send-toggle-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(107, 208, 255, 0.25);
+  background: transparent;
+  color: #a8bfd8;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.nft-send-toggle-btn--active {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: rgba(0, 229, 255, 0.5);
+  color: #00e5ff;
+}
+
 .nft-detail-send-panel {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(107, 208, 255, 0.14);

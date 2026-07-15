@@ -134,8 +134,18 @@
                   <input class="nft-form-input" id="nft-detail-send-from" type="text" placeholder="Your wallet address">
                 </div>
                 <div class="nft-form-field nft-form-field--full">
+                  <div class="nft-send-toggle">
+                    <button class="nft-send-toggle-btn nft-send-toggle-btn--active" id="nft-detail-send-by-wallet-btn">Wallet Address</button>
+                    <button class="nft-send-toggle-btn" id="nft-detail-send-by-avatar-btn">Avatar Username</button>
+                  </div>
+                </div>
+                <div class="nft-form-field nft-form-field--full" id="nft-detail-send-to-wallet-field">
                   <label class="nft-form-label" for="nft-detail-send-to">To Wallet Address <span class="nft-form-required">*</span></label>
                   <input class="nft-form-input" id="nft-detail-send-to" type="text" placeholder="Recipient wallet address">
+                </div>
+                <div class="nft-form-field nft-form-field--full" id="nft-detail-send-to-avatar-field" hidden>
+                  <label class="nft-form-label" for="nft-detail-send-avatar-username">To Avatar Username <span class="nft-form-required">*</span></label>
+                  <input class="nft-form-input" id="nft-detail-send-avatar-username" type="text" placeholder="Recipient avatar username">
                 </div>
                 <div class="nft-form-field">
                   <label class="nft-form-label" for="nft-detail-send-amount">Amount</label>

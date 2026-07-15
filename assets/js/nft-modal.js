@@ -732,10 +732,13 @@
   async function apiSendNftFromDetail(profile) {
     if (!activeDetailNft) return;
     var fromAddr = ((getById('nft-detail-send-from') || {}).value || '').trim();
-    var toAddr = ((getById('nft-detail-send-to') || {}).value || '').trim();
-    if (!fromAddr || !toAddr) {
-      var status = getById('nft-detail-send-status');
-      if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = 'From and To wallet addresses are required.'; status.hidden = false; }
+    var byAvatar = getById('nft-detail-send-by-avatar-btn') && getById('nft-detail-send-by-avatar-btn').classList.contains('nft-send-toggle-btn--active');
+    var toAddr = byAvatar ? '' : ((getById('nft-detail-send-to') || {}).value || '').trim();
+    var toUsername = byAvatar ? ((getById('nft-detail-send-avatar-username') || {}).value || '').trim() : '';
+
+    var status = getById('nft-detail-send-status');
+    if (!fromAddr || (!toAddr && !toUsername)) {
+      if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = byAvatar ? 'From wallet address and avatar username are required.' : 'From and To wallet addresses are required.'; status.hidden = false; }
       return;
     }
 
@@ -744,13 +747,17 @@
 
     var body = {
       fromWalletAddress: fromAddr,
-      toWalletAddress: toAddr,
       fromProvider: currentProvider,
       toProvider: currentProvider,
       amount: parseFloat((getById('nft-detail-send-amount') || {}).value) || 0,
       memoText: (getById('nft-detail-send-memo') || {}).value || '',
       waitTillNFTSent: false
     };
+    if (toUsername) {
+      body.sendToAvatarUsername = toUsername;
+    } else {
+      body.toWalletAddress = toAddr;
+    }
 
     var btn = getById('nft-detail-send-submit-btn');
     var status = getById('nft-detail-send-status');
@@ -977,12 +984,14 @@
       backBtn.addEventListener('click', function () { hideNftDetail(); });
     }
 
-    // Detail panel: send button toggle
+    // Detail panel: send button toggle + auto-scroll
     var detailSendBtn = getById('nft-detail-send-btn');
     if (detailSendBtn) {
       detailSendBtn.addEventListener('click', function () {
         var panel = getById('nft-detail-send-panel');
-        if (panel) panel.hidden = !panel.hidden;
+        if (!panel) return;
+        panel.hidden = !panel.hidden;
+        if (!panel.hidden) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     }
 
@@ -999,6 +1008,28 @@
       detailSendCancel.addEventListener('click', function () {
         var panel = getById('nft-detail-send-panel');
         if (panel) panel.hidden = true;
+      });
+    }
+
+    // Send-to toggle: wallet address vs avatar username
+    var byWalletBtn = getById('nft-detail-send-by-wallet-btn');
+    var byAvatarBtn = getById('nft-detail-send-by-avatar-btn');
+    if (byWalletBtn && byAvatarBtn) {
+      byWalletBtn.addEventListener('click', function () {
+        byWalletBtn.classList.add('nft-send-toggle-btn--active');
+        byAvatarBtn.classList.remove('nft-send-toggle-btn--active');
+        var wf = getById('nft-detail-send-to-wallet-field');
+        var af = getById('nft-detail-send-to-avatar-field');
+        if (wf) wf.hidden = false;
+        if (af) af.hidden = true;
+      });
+      byAvatarBtn.addEventListener('click', function () {
+        byAvatarBtn.classList.add('nft-send-toggle-btn--active');
+        byWalletBtn.classList.remove('nft-send-toggle-btn--active');
+        var wf = getById('nft-detail-send-to-wallet-field');
+        var af = getById('nft-detail-send-to-avatar-field');
+        if (wf) wf.hidden = true;
+        if (af) af.hidden = false;
       });
     }
 
