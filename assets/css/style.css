@@ -3052,6 +3052,22 @@ select option {
   background: rgba(107, 208, 255, 0.07);
   border: 1px solid rgba(107, 208, 255, 0.2);
   color: var(--color-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes nft-spin {
+  to { transform: rotate(360deg); }
+}
+.nft-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(107, 208, 255, 0.25);
+  border-top-color: rgba(107, 208, 255, 0.9);
+  border-radius: 50%;
+  animation: nft-spin 0.7s linear infinite;
+  flex-shrink: 0;
 }
 
 .nft-status--warn {

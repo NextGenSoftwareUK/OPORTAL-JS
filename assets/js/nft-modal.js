@@ -87,11 +87,16 @@
 
   // ── Status ──────────────────────────────────────────────────────────────────
 
+  function statusHTML(type, msg) {
+    if (type === 'loading') return '<span class="nft-spinner"></span>' + escapeHtml(msg);
+    return escapeHtml(msg);
+  }
+
   function showStatus(type, msg) {
     var el = getById('nft-modal-status');
     if (el) {
       el.className = 'nft-status nft-status--' + type;
-      el.textContent = msg;
+      el.innerHTML = statusHTML(type, msg);
       el.hidden = false;
     }
     var panel = getById('nft-action-panel');
@@ -101,7 +106,7 @@
         var formStatus = activeForm.querySelector('.nft-form-status');
         if (formStatus) {
           formStatus.className = 'nft-form-status nft-status nft-status--' + type;
-          formStatus.textContent = msg;
+          formStatus.innerHTML = statusHTML(type, msg);
           formStatus.hidden = false;
         }
       }
@@ -109,7 +114,7 @@
     var detailStatus = getById('nft-detail-send-status');
     if (detailStatus && getById('nft-detail-panel') && !getById('nft-detail-panel').hidden) {
       detailStatus.className = 'nft-form-status nft-status nft-status--' + type;
-      detailStatus.textContent = msg;
+      detailStatus.innerHTML = statusHTML(type, msg);
       detailStatus.hidden = false;
     }
   }
