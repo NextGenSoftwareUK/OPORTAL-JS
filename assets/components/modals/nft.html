@@ -49,6 +49,10 @@
           </optgroup>
         </select>
         <button id="nft-refresh-btn" class="nft-refresh-btn" title="Refresh NFTs">&#8635;</button>
+        <label class="nft-group-toggle" title="Group NFTs that share the same collection">
+          <input type="checkbox" id="nft-group-by-collection">
+          <span>Group by Collections</span>
+        </label>
       </div>
 
       <!-- Status / loading -->
@@ -92,6 +96,62 @@
         <div id="nft-oland-price" class="nft-oland-price" hidden>
           <span class="nft-oland-price-label">Current OLAND Price:</span>
           <span class="nft-oland-price-value" id="nft-oland-price-value">—</span>
+        </div>
+      </div>
+
+      <!-- ── NFT Detail Panel ── -->
+      <div id="nft-detail-panel" class="nft-detail-panel" hidden>
+        <div class="nft-detail-header">
+          <button class="nft-detail-back-btn" id="nft-detail-back-btn">&#8592; Back</button>
+          <div class="nft-detail-header-actions">
+            <button class="button button--ghost nft-action-btn nft-detail-send-btn" id="nft-detail-send-btn">Send NFT</button>
+          </div>
+        </div>
+
+        <div class="nft-detail-body">
+          <div class="nft-detail-image-col">
+            <img id="nft-detail-img" class="nft-detail-img" src="" alt="" loading="lazy">
+            <div id="nft-detail-img-placeholder" class="nft-detail-img-placeholder" hidden>🎴</div>
+            <div id="nft-detail-badges" class="nft-detail-badges"></div>
+          </div>
+
+          <div class="nft-detail-meta-col">
+            <h2 id="nft-detail-title" class="nft-detail-title"></h2>
+            <p id="nft-detail-desc" class="nft-detail-desc"></p>
+
+            <div id="nft-detail-rows" class="nft-detail-rows"></div>
+
+            <!-- Inline send form -->
+            <div id="nft-detail-send-panel" class="nft-detail-send-panel" hidden>
+              <div class="nft-form-header">
+                <h3 class="nft-form-title">Send NFT</h3>
+                <button class="nft-form-close-btn" id="nft-detail-send-close-btn" aria-label="Close">&#x2715;</button>
+              </div>
+              <div class="nft-form-grid">
+                <div class="nft-form-field nft-form-field--full">
+                  <label class="nft-form-label" for="nft-detail-send-from">From Wallet Address <span class="nft-form-required">*</span></label>
+                  <input class="nft-form-input" id="nft-detail-send-from" type="text" placeholder="Your wallet address">
+                </div>
+                <div class="nft-form-field nft-form-field--full">
+                  <label class="nft-form-label" for="nft-detail-send-to">To Wallet Address <span class="nft-form-required">*</span></label>
+                  <input class="nft-form-input" id="nft-detail-send-to" type="text" placeholder="Recipient wallet address">
+                </div>
+                <div class="nft-form-field">
+                  <label class="nft-form-label" for="nft-detail-send-amount">Amount</label>
+                  <input class="nft-form-input" id="nft-detail-send-amount" type="number" step="0.000001" min="0" placeholder="0">
+                </div>
+                <div class="nft-form-field">
+                  <label class="nft-form-label" for="nft-detail-send-memo">Memo</label>
+                  <input class="nft-form-input" id="nft-detail-send-memo" type="text" placeholder="Optional memo">
+                </div>
+              </div>
+              <div id="nft-detail-send-status" class="nft-form-status nft-status" hidden></div>
+              <div class="nft-form-actions">
+                <button class="button button--ghost nft-action-btn" id="nft-detail-send-cancel-btn">Cancel</button>
+                <button class="button button--ghost nft-action-btn nft-form-btn--submit" id="nft-detail-send-submit-btn">Send NFT</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
