@@ -228,6 +228,7 @@
     showStatus('loading', 'Loading your NFTs from ' + currentProvider + '…');
 
     var token = getToken(profile);
+    if (token && window.oasisClient) window.oasisClient.setToken(token);
     var hadError = false;
 
     async function safeFetch(fn) {
