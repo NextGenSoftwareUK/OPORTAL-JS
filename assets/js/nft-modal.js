@@ -361,7 +361,9 @@
       Object.keys(meta).forEach(function (k) {
         var v = meta[k];
         if (v == null || v === '') return;
-        rows += makeRow(k.charAt(0).toUpperCase() + k.slice(1), String(v).toUpperCase());
+        var label = k.replace(/([A-Z])/g, ' $1').trim();
+        label = label.charAt(0).toUpperCase() + label.slice(1);
+        rows += makeRow(label, String(v).toUpperCase());
       });
     }
 
