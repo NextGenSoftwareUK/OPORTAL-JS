@@ -613,7 +613,13 @@ function toggleClass(el, className, bool) {
   // is replaced before any API calls are made (JWT expires in 15 min).
   document.addEventListener('DOMContentLoaded', function () {
     if (localStorage.getItem('loggedIn') === 'true') {
-      refreshJWT();
+      // If JWT is expired, refresh it first then re-run setup so the UI
+      // shows the avatar menu, dashboard and NFTs correctly after refresh.
+      if (!isJwtValid()) {
+        refreshJWT().then(function (ok) {
+          if (ok && typeof setup === 'function') setup();
+        });
+      }
       startRefresh();
     }
   });
