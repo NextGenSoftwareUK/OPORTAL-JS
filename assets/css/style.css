@@ -3790,8 +3790,9 @@ select option {
 }
 .nft-detail-link:hover,
 .nft-detail-link:focus-visible {
-  filter: none;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,1)) drop-shadow(0 0 20px rgba(0,229,255,.8)) drop-shadow(0 0 40px rgba(0,229,255,.4));
   text-shadow: none;
+  transition: filter .3s ease;
 }
 
 .nft-detail-ext-icon {
