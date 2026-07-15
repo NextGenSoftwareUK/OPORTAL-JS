@@ -361,7 +361,7 @@
       Object.keys(meta).forEach(function (k) {
         var v = meta[k];
         if (v == null || v === '') return;
-        rows += makeRow(k.charAt(0).toUpperCase() + k.slice(1), String(v));
+        rows += makeRow(k.charAt(0).toUpperCase() + k.slice(1), String(v).toUpperCase());
       });
     }
 
