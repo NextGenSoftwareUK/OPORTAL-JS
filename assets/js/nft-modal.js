@@ -1042,10 +1042,17 @@
 
     nftBlock.dataset.nftBound = 'true';
 
-    // If the router already opened the NFT modal before bind() ran (race on
-    // refresh), the block will already be visible — load NFTs now.
+    // If the router already opened the NFT modal before bind() ran, load now.
+    // Also schedule a fallback for the reverse race (bind runs before router).
     if (nftBlock.classList.contains('is-selected')) {
       loadAll(readAvatar());
+    } else {
+      setTimeout(function () {
+        var nb = getById('nft-modal-block');
+        if (nb && nb.classList.contains('is-selected') && !isFetching && loadedNfts.length === 0) {
+          loadAll(readAvatar());
+        }
+      }, 600);
     }
   }
 
