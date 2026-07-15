@@ -105,13 +105,13 @@
         <div class="nft-detail-header">
           <button class="nft-detail-back-btn" id="nft-detail-back-btn">&#8592; Back</button>
           <div class="nft-detail-header-actions">
-            <button class="button button--ghost nft-action-btn nft-detail-send-btn" id="nft-detail-send-btn">Send NFT</button>
+            <button class="button button--ghost nft-action-btn nft-detail-send-btn" id="nft-detail-send-btn" onclick="var p=document.getElementById('nft-detail-send-panel');if(p)p.hidden=!p.hidden;return false;">Send NFT</button>
           </div>
         </div>
 
         <div class="nft-detail-body">
           <div class="nft-detail-image-col">
-            <img id="nft-detail-img" class="nft-detail-img" src="" alt="" loading="lazy">
+            <img id="nft-detail-img" class="nft-detail-img" src="" alt="" loading="lazy" hidden>
             <div id="nft-detail-img-placeholder" class="nft-detail-img-placeholder" hidden>🎴</div>
             <div id="nft-detail-badges" class="nft-detail-badges"></div>
           </div>

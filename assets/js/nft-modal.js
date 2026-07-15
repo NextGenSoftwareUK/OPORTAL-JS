@@ -40,7 +40,7 @@
     if (!val) return '';
     try {
       var d = new Date(val);
-      if (isNaN(d.getTime())) return String(val);
+      if (isNaN(d.getTime()) || d.getFullYear() < 2000) return '';
       return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
     } catch (e) { return String(val); }
   }
