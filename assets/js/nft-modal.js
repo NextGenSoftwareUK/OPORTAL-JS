@@ -88,7 +88,7 @@
   // ── Status ──────────────────────────────────────────────────────────────────
 
   function statusHTML(type, msg) {
-    if (type === 'loading') return '<span class="nft-spinner"></span>' + escapeHtml(msg);
+    if (type === 'loading') return escapeHtml(msg) + ' <span class="nft-spinner"></span>';
     return escapeHtml(msg);
   }
 
