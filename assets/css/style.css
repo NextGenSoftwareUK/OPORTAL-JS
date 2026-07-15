@@ -2878,7 +2878,7 @@ select option {
 .modal__block.nft-modal-block {
   width: min(1100px, calc(100vw - 24px));
   max-height: calc(100vh - 24px);
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   left: 50%;
   top: 50%;
@@ -2891,6 +2891,11 @@ select option {
   transform: translate(-50%, -50%);
   letter-spacing: normal;
 }
+
+.modal__block.nft-modal-block::-webkit-scrollbar { width: 8px; }
+.modal__block.nft-modal-block::-webkit-scrollbar-track { background: rgba(0,200,255,.06); border-radius: 4px; }
+.modal__block.nft-modal-block::-webkit-scrollbar-thumb { background: rgba(0,200,255,.5); border-radius: 4px; }
+.modal__block.nft-modal-block::-webkit-scrollbar-thumb:hover { background: rgba(0,200,255,.8); }
 
 .nft-modal-shell {
   width: 100%;

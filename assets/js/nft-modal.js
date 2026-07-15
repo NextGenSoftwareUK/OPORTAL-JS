@@ -145,7 +145,7 @@
   function buildCollectionCard(key, nfts) {
     var sample = nfts[0];
     var image = getNftImage(sample);
-    var name = escapeHtml(sample.collectionName || sample.CollectionName || 'Collection');
+    var name = escapeHtml(sample.collectionName || sample.CollectionName || getNftTitle(sample));
     var count = nfts.length;
     var keyEsc = escapeHtml(key);
 
