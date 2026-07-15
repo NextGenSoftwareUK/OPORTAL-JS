@@ -628,6 +628,7 @@
     var token = getToken(profile);
     if (!token) { showStatus('error', 'You must be logged in to mint an NFT.'); return; }
 
+    var nftStandardType = currentProvider === 'SolanaOASIS' ? 'SPL' : 'ERC1155';
     var body = {
       title: title,
       description: (getById('nft-mint-desc') || {}).value || '',
@@ -637,7 +638,13 @@
       numberToMint: parseInt((getById('nft-mint-quantity') || {}).value) || 1,
       memoText: (getById('nft-mint-memo') || {}).value || '',
       storeNFTMetaDataOnChain: false,
-      waitTillNFTMinted: false
+      onChainProvider: currentProvider,
+      offChainProvider: 'MongoDBOASIS',
+      nftStandardType: nftStandardType,
+      nftOffChainMetaType: 'OASIS',
+      waitTillNFTMinted: true,
+      waitForNFTToMintInSeconds: 180,
+      attemptToMintEveryXSeconds: 1
     };
 
     var btn = getById('nft-mint-submit-btn');

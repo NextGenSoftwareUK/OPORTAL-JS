@@ -3132,9 +3132,9 @@ select option {
 }
 
 .nft-card:hover {
-  border-color: rgba(107, 208, 255, 0.28);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border-color: rgba(0, 229, 255, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.08);
 }
 
 .nft-card-img {
