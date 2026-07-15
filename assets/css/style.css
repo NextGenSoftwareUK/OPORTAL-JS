@@ -3788,7 +3788,11 @@ select option {
   word-break: break-all;
   align-items: flex-start;
 }
-
+.nft-detail-link:hover,
+.nft-detail-link:focus-visible {
+  filter: none;
+  text-shadow: none;
+}
 
 .nft-detail-ext-icon {
   font-style: normal;
