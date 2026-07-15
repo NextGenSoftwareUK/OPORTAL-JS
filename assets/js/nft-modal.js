@@ -419,9 +419,18 @@
     var rowsEl = getById('nft-detail-rows');
     if (rowsEl) rowsEl.innerHTML = rows;
 
-    // Pre-fill send form with owner wallet
+    // Pre-fill send form with owner wallet and NFT provider
     var sendFrom = getById('nft-detail-send-from');
     if (sendFrom && walletAddr) sendFrom.value = walletAddr;
+    var nftProvider = (nft.onChainProvider && (nft.onChainProvider.name || nft.onChainProvider.value)) ||
+      nft.providerType || nft.ProviderType || currentProvider;
+    var fromProviderBadge = getById('nft-detail-send-from-provider');
+    if (fromProviderBadge) fromProviderBadge.textContent = nftProvider;
+    var toProviderSel = getById('nft-detail-send-to-provider');
+    if (toProviderSel) {
+      var matchOpt = Array.prototype.find.call(toProviderSel.options, function (o) { return o.value === nftProvider; });
+      toProviderSel.value = matchOpt ? nftProvider : toProviderSel.options[0].value;
+    }
 
     // Hide inline send panel
     var sendPanel = getById('nft-detail-send-panel');
@@ -778,8 +787,9 @@
 
     var body = {
       fromWalletAddress: fromAddr,
-      fromProvider: currentProvider,
-      toProvider: currentProvider,
+      fromProvider: (activeDetailNft.onChainProvider && (activeDetailNft.onChainProvider.name || activeDetailNft.onChainProvider.value)) ||
+        activeDetailNft.providerType || activeDetailNft.ProviderType || currentProvider,
+      toProvider: (getById('nft-detail-send-to-provider') || {}).value || currentProvider,
       amount: parseFloat((getById('nft-detail-send-amount') || {}).value) || 0,
       memoText: (getById('nft-detail-send-memo') || {}).value || '',
       waitTillNFTSent: false
