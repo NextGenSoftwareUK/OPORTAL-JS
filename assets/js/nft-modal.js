@@ -819,10 +819,18 @@
         if (status) { status.className = 'nft-form-status nft-status nft-status--success'; status.textContent = 'NFT sent successfully!'; }
         setTimeout(function () { hideNftDetail(); loadAll(readAvatar()); }, 1500);
       } else {
-        if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = 'Send failed: ' + (sdkRes.message || 'Unknown error'); }
+        var errMsg = sdkRes.message || sdkRes.Message || 'Unknown error';
+        var detail = sdkRes.detailedMessage || sdkRes.DetailedMessage ||
+                     sdkRes.innerMessage || sdkRes.InnerMessage ||
+                     sdkRes.exceptionMessage || sdkRes.ExceptionMessage ||
+                     sdkRes.reason || sdkRes.Reason || '';
+        if (detail && !errMsg.includes(detail)) errMsg += ' ' + detail;
+        console.error('[NFT Send] API error:', sdkRes);
+        if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = 'Send failed: ' + errMsg; }
       }
     } catch (e) {
-      if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = 'Network error — could not reach the API.'; }
+      console.error('[NFT Send] Exception:', e);
+      if (status) { status.className = 'nft-form-status nft-status nft-status--error'; status.textContent = 'Network error: ' + (e.message || 'Could not reach the API.'); }
     } finally {
       if (btn) { btn.disabled = false; btn.textContent = 'Send NFT'; }
     }
