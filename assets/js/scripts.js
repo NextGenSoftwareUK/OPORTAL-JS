@@ -691,6 +691,15 @@ if (avatarRaw && avatarRaw !== 'undefined') {
   }
 }
 
+window.addEventListener('avatarUpdated', function (e) {
+  var p = e.detail;
+  if (!p) return;
+  var newName = p.username || p.userName || p.UserName;
+  if (!newName) return;
+  var el = document.getElementById('username');
+  if (el) el.innerHTML = newName;
+});
+
 function addAuthPopup(login, msg, e) {
 	// Get and remove previous pop ups
 	var prev = document.getElementsByClassName('alert')[0]
