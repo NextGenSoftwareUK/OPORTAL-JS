@@ -146,7 +146,7 @@
     var forSale = nft.isForSale || nft.IsForSale;
 
     var imgHtml = image
-      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.style.display=\'none\'">'
+      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.outerHTML=\'<div class=\\\"nft-card-img nft-card-img--placeholder\\\">🎴</div>\'">'
       : '<div class="nft-card-img nft-card-img--placeholder">🎴</div>';
 
     var saleTag = forSale ? '<span class="nft-card-sale-tag">For Sale</span>' : '';
@@ -169,7 +169,7 @@
     var keyEsc = escapeHtml(key);
 
     var imgHtml = image
-      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.style.display=\'none\'">'
+      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.outerHTML=\'<div class=\\\"nft-card-img nft-card-img--placeholder\\\">🗂️</div>\'">'
       : '<div class="nft-card-img nft-card-img--placeholder">🗂️</div>';
 
     return '<div class="nft-card nft-card--collection nft-card--clickable" data-collection-key="' + keyEsc + '" role="button" tabindex="0" aria-label="Expand collection ' + name + '">' +
