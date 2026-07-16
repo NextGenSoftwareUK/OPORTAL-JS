@@ -280,18 +280,13 @@
     var imgEl = getById('nft-detail-img');
     var imgPh = getById('nft-detail-img-placeholder');
     var image = getNftImage(nft);
+    if (imgEl) { imgEl.hidden = true; imgEl.src = ''; }
+    if (imgPh) imgPh.hidden = true;
     if (image && imgEl) {
-      imgEl.src = image;
+      imgEl.onerror = function () { imgEl.hidden = true; };
+      imgEl.onload  = function () { imgEl.hidden = false; };
       imgEl.alt = getNftTitle(nft);
-      imgEl.hidden = false;
-      if (imgPh) imgPh.hidden = true;
-      imgEl.onerror = function () {
-        imgEl.hidden = true;
-        if (imgPh) imgPh.hidden = true;
-      };
-    } else {
-      if (imgEl) { imgEl.hidden = true; imgEl.src = ''; }
-      if (imgPh) imgPh.hidden = true;
+      imgEl.src = image;
     }
 
     var titleEl = getById('nft-detail-title');
