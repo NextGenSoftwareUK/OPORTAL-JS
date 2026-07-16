@@ -5,7 +5,7 @@
       <div class="onode-modal-top">
         <div>
           <h1 class="onode-modal-title">ONODE — My Node</h1>
-          <p class="onode-modal-lead">Monitor and manage your local OASIS Node (ONODE) on the ONET.</p>
+          <p class="onode-modal-lead">Monitor and manage your OASIS Node (ONODE) on the ONET.</p>
         </div>
         <button id="onode-close-btn" class="modal-close-btn" type="button" aria-label="Close">&#x2715;</button>
       </div>
@@ -19,7 +19,10 @@
             <div id="onode-status-desc" class="hd-mode-desc">Contacting your ONODE…</div>
           </div>
         </div>
-        <button id="onode-refresh-btn" class="hd-pill-btn" type="button">⟳ Refresh</button>
+        <div class="hd-mode-banner-right">
+          <span id="onode-mode-label" class="onode-mode-badge"></span>
+          <button id="onode-refresh-btn" class="hd-pill-btn" type="button">⟳ Refresh</button>
+        </div>
       </div>
 
       <!-- Stats bar -->
@@ -40,13 +43,33 @@
           <div class="onode-stat-label">Version</div>
           <div class="onode-stat-value" id="onode-stat-version">—</div>
         </div>
+        <div class="onode-stat-block">
+          <div class="onode-stat-label">Last Sync</div>
+          <div class="onode-stat-value" id="onode-sync-label">—</div>
+        </div>
       </div>
 
       <div id="onode-modal-status" class="onode-status" hidden></div>
 
+      <!-- Remote control panel (global — all services) -->
+      <div id="onode-remote-control" class="onode-remote-panel" hidden>
+        <div class="onode-remote-panel-header">
+          <span class="onode-remote-panel-title">Node Control</span>
+          <span id="onode-control-mode-note" class="onode-remote-panel-note"></span>
+        </div>
+        <div class="onode-remote-panel-actions">
+          <button id="onode-start-btn"        class="button onode-ctrl-btn onode-ctrl-btn--start"   type="button">▶ Start All</button>
+          <button id="onode-stop-btn"         class="button onode-ctrl-btn onode-ctrl-btn--stop"    type="button">■ Stop All</button>
+          <button id="onode-restart-btn"      class="button onode-ctrl-btn onode-ctrl-btn--restart" type="button">↺ Restart All</button>
+          <button id="onode-remote-start-all" class="button onode-ctrl-btn onode-ctrl-btn--start"   type="button" style="display:none">▶ Remote Start All</button>
+          <button id="onode-remote-stop-all"  class="button onode-ctrl-btn onode-ctrl-btn--stop"    type="button" style="display:none">■ Remote Stop All</button>
+        </div>
+      </div>
+
       <!-- Tabs -->
       <div class="onode-tabs">
         <button class="onode-tab is-active" data-tab="overview">Overview</button>
+        <button class="onode-tab" data-tab="services">Services</button>
         <button class="onode-tab" data-tab="metrics">Metrics</button>
         <button class="onode-tab" data-tab="logs">Logs</button>
         <button class="onode-tab" data-tab="peers">Peers</button>
@@ -58,6 +81,21 @@
       <div id="onode-tab-overview" class="onode-tab-panel">
         <div id="onode-info-grid" class="onode-info-grid">
           <div class="onode-empty"><div class="onode-empty-icon">🖥️</div><p>Loading node information…</p></div>
+        </div>
+      </div>
+
+      <!-- Services (Web4–Web10) -->
+      <div id="onode-tab-services" class="onode-tab-panel" hidden>
+        <div class="onode-svc-header">
+          <span class="onode-svc-col onode-svc-col--dot"></span>
+          <span class="onode-svc-col onode-svc-col--id">Service</span>
+          <span class="onode-svc-col onode-svc-col--status">Status</span>
+          <span class="onode-svc-col onode-svc-col--uptime">Uptime</span>
+          <span class="onode-svc-col onode-svc-col--port">Port</span>
+          <span class="onode-svc-col onode-svc-col--actions">Actions</span>
+        </div>
+        <div id="onode-services-grid" class="onode-services-grid">
+          <div class="onode-empty"><p>Loading services…</p></div>
         </div>
       </div>
 
@@ -118,13 +156,6 @@
           <button id="onode-dna-lock-btn" class="button button--ghost" type="button" style="margin-top:12px">🔒 Lock</button>
         </div>
 
-      </div>
-
-      <!-- Node controls (always visible) -->
-      <div class="onode-controls">
-        <button id="onode-start-btn" class="button button--ghost onode-ctrl-btn" type="button">Start</button>
-        <button id="onode-stop-btn" class="button button--ghost onode-ctrl-btn" type="button">Stop</button>
-        <button id="onode-restart-btn" class="button button--ghost onode-ctrl-btn" type="button">Restart</button>
       </div>
 
     </div>
