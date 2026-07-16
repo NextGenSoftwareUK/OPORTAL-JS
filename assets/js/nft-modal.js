@@ -571,57 +571,57 @@
     isFetching = true;
     showStatus('loading', 'Loading your NFTs…');
 
-    // Wait for JWT refresh to complete (if it was triggered on page load)
-    // before making API calls, so we don't fire with a stale token.
-    if (window.jwtReadyPromise) {
-      await window.jwtReadyPromise;
-      // Re-read profile so we pick up any updated token
-      profile = readAvatar();
-    }
-
-    var token = getToken(profile);
-    if (token && window.oasisClient) window.oasisClient.setToken(token);
-    var hadError = false;
-
-    async function safeFetch(fn) {
-      try { return await withTimeout(fn(), 20000); } catch (e) { hadError = true; return null; }
-    }
-
-    var results;
     try {
-      results = await withTimeout(Promise.all([
-        safeFetch(function () { return fetchNfts(profile); }),
-        safeFetch(function () { return fetchGeoNfts(profile); }),
-        safeFetch(function () { return fetchOland(token); }),
-        safeFetch(function () { return fetchOlandPrice(token); }),
-      ]), 25000);
-    } catch (e) {
+      // Wait for JWT refresh to complete (if it was triggered on page load)
+      // before making API calls, so we don't fire with a stale token.
+      if (window.jwtReadyPromise) {
+        await window.jwtReadyPromise;
+        profile = readAvatar();
+      }
+
+      var token = getToken(profile);
+      if (token && window.oasisClient) window.oasisClient.setToken(token);
+      var hadError = false;
+
+      async function safeFetch(fn) {
+        try { return await withTimeout(fn(), 20000); } catch (e) { hadError = true; return null; }
+      }
+
+      var results;
+      try {
+        results = await withTimeout(Promise.all([
+          safeFetch(function () { return fetchNfts(profile); }),
+          safeFetch(function () { return fetchGeoNfts(profile); }),
+          safeFetch(function () { return fetchOland(token); }),
+          safeFetch(function () { return fetchOlandPrice(token); }),
+        ]), 25000);
+      } catch (e) {
+        showStatus('warn', 'Loading timed out — please try refreshing.');
+        return;
+      }
+
+      var nfts = results[0], geoNfts = results[1], olandList = results[2], olandPrice = results[3];
+
       hideStatus();
+
+      loadedNfts = nfts || [];
+
+      renderGrid('nft-grid', 'nft-empty-standard', nfts, buildNftCard);
+      renderGrid('nft-geo-grid', 'nft-empty-geo', geoNfts, buildGeoNftCard);
+      renderGrid('nft-oland-grid', 'nft-empty-oland', olandList, buildOlandCard);
+
+      var priceEl = getById('nft-oland-price');
+      var priceVal = getById('nft-oland-price-value');
+      if (olandPrice != null && priceEl && priceVal) {
+        priceVal.textContent = typeof olandPrice === 'object' ? JSON.stringify(olandPrice) : String(olandPrice);
+        priceEl.hidden = false;
+      }
+
+      if (hadError && !nfts && !geoNfts && !olandList) {
+        showStatus('warn', 'Could not load NFT data — API may be unavailable or your session may have expired.');
+      }
+    } finally {
       isFetching = false;
-      showStatus('warn', 'Loading timed out — please try refreshing.');
-      return;
-    }
-
-    var nfts = results[0], geoNfts = results[1], olandList = results[2], olandPrice = results[3];
-
-    hideStatus();
-    isFetching = false;
-
-    loadedNfts = nfts || [];
-
-    renderGrid('nft-grid', 'nft-empty-standard', nfts, buildNftCard);
-    renderGrid('nft-geo-grid', 'nft-empty-geo', geoNfts, buildGeoNftCard);
-    renderGrid('nft-oland-grid', 'nft-empty-oland', olandList, buildOlandCard);
-
-    var priceEl = getById('nft-oland-price');
-    var priceVal = getById('nft-oland-price-value');
-    if (olandPrice != null && priceEl && priceVal) {
-      priceVal.textContent = typeof olandPrice === 'object' ? JSON.stringify(olandPrice) : String(olandPrice);
-      priceEl.hidden = false;
-    }
-
-    if (hadError && !nfts && !geoNfts && !olandList) {
-      showStatus('warn', 'Could not load NFT data — API may be unavailable or your session may have expired.');
     }
   }
 

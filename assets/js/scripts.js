@@ -612,6 +612,9 @@ function toggleClass(el, className, bool) {
   // Also refresh immediately on page load so a stale JWT from a previous session
   // is replaced before any API calls are made (JWT expires in 15 min).
   document.addEventListener('DOMContentLoaded', function () {
+    // Show avatar menu immediately from static HTML — don't wait for portal-components-ready
+    if (typeof setup === 'function') setup();
+
     if (localStorage.getItem('loggedIn') === 'true') {
       if (!isJwtValid()) {
         // Expose a promise other modules (e.g. nft-modal) can await before
