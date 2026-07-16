@@ -9,9 +9,9 @@
 
   function getById(id) { return document.getElementById(id); }
 
-  // Global helpers for onerror attributes — avoids quote-escaping nightmares in inline HTML.
-  window._nftImgErr  = function (el) { el.outerHTML = '<div class="nft-card-img nft-card-img--placeholder">🎴</div>'; };
-  window._nftCollErr = function (el) { el.outerHTML = '<div class="nft-card-img nft-card-img--placeholder">🗂️</div>'; };
+  // Global helpers for onerror attributes — hide broken images rather than show a placeholder.
+  window._nftImgErr  = function (el) { el.style.display = 'none'; };
+  window._nftCollErr = function (el) { el.style.display = 'none'; };
 
   // Expose globals immediately so the router can call openNftModal() even if
   // portal-components-ready fires before bind() runs (race condition on refresh).
@@ -287,11 +287,11 @@
       if (imgPh) imgPh.hidden = true;
       imgEl.onerror = function () {
         imgEl.hidden = true;
-        if (imgPh) imgPh.hidden = false;
+        if (imgPh) imgPh.hidden = true;
       };
     } else {
       if (imgEl) { imgEl.hidden = true; imgEl.src = ''; }
-      if (imgPh) imgPh.hidden = false;
+      if (imgPh) imgPh.hidden = true;
     }
 
     var titleEl = getById('nft-detail-title');
