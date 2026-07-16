@@ -137,6 +137,22 @@
     .status--error { background: rgba(255,60,60,.08); border: 1px solid rgba(255,60,60,.25); color: #ff6b6b; }
     .status--success { background: rgba(0,229,255,.06); border: 1px solid rgba(0,229,255,.25); color: #00e5ff; }
 
+    .resend-wrap { margin-top: 16px; display: none; }
+    .btn-resend {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 8px;
+      color: #a8bfd8;
+      font-family: inherit;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-resend:hover:not(:disabled) { border-color: rgba(0,229,255,.4); color: #00e5ff; }
+    .btn-resend:disabled { opacity: .5; cursor: not-allowed; }
+
     .divider {
       border: none;
       border-top: 1px solid rgba(255,255,255,.07);
@@ -167,7 +183,7 @@
     <a class="logo" href="https://oportal.oasisomniverse.one">OPORTAL HOME</a>
 
     <h1>Set Your Password</h1>
-    <p class="subtitle">Your OASIS Founder NFT has been linked to this account. Choose a password to complete setup and beam in to the portal.</p>
+    <p class="subtitle">Your OASIS Founder NFT has been linked to this account. Choose a password to complete setup and beam in to the portal. <strong style="color:#f0a500">This link expires in 30 days.</strong></p>
 
     <div id="form-wrap">
       <div class="field">
@@ -194,6 +210,10 @@
       <button class="btn" id="submit-btn" onclick="handleSubmit()">Activate &amp; Set Password</button>
 
       <div class="status" id="status-box"></div>
+
+      <div class="resend-wrap" id="resend-wrap">
+        <button class="btn-resend" id="resend-btn" onclick="handleResend()">Resend activation email</button>
+      </div>
     </div>
 
     <hr class="divider">
@@ -281,9 +301,33 @@
         }, 1800);
 
       } catch (e) {
-        showStatus('error', e.message || 'Something went wrong. Please try again.');
+        var msg = e.message || 'Something went wrong. Please try again.';
+        var isExpired = msg.toLowerCase().includes('expired') || msg.toLowerCase().includes('already been used');
+        showStatus('error', msg + (isExpired ? ' Use the button below to get a new link.' : ''));
+        if (isExpired) document.getElementById('resend-wrap').style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Activate & Set Password';
+      }
+    }
+
+    async function handleResend() {
+      var btn = document.getElementById('resend-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      try {
+        var res = await fetch('https://founders.oasisomniverse.one/api/sendEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'resend-activation', email: email })
+        });
+        var data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.error || 'Failed to resend.');
+        showStatus('success', 'A new activation link has been sent to ' + email + '. Check your inbox.');
+        document.getElementById('resend-wrap').style.display = 'none';
+      } catch (e) {
+        showStatus('error', e.message || 'Could not resend. Please contact support.');
+        btn.disabled = false;
+        btn.textContent = 'Resend activation email';
       }
     }
 
