@@ -1019,6 +1019,20 @@
       });
     }
 
+    // Mint form: JSON Metadata URL only enabled when ExternalJSONURL is selected
+    var metaTypeSel = getById('nft-mint-off-chain-meta-type');
+    var jsonUrlEl = getById('nft-mint-json-url');
+    if (metaTypeSel && jsonUrlEl) {
+      function syncJsonUrl() {
+        var isExternal = metaTypeSel.value === 'ExternalJSONURL';
+        jsonUrlEl.disabled = !isExternal;
+        jsonUrlEl.style.opacity = isExternal ? '' : '0.4';
+        if (!isExternal) jsonUrlEl.value = '';
+      }
+      syncJsonUrl();
+      metaTypeSel.addEventListener('change', syncJsonUrl);
+    }
+
     // Mint form: sync on-chain provider → auto-suggest NFT standard type
     var mintProviderSel = getById('nft-mint-on-chain-provider');
     var mintStandardSel = getById('nft-mint-nft-standard-type');
