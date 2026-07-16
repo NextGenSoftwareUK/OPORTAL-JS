@@ -219,6 +219,14 @@
     } catch (e) {}
     if (!sdkRes || sdkRes.isError || !sdkRes.result) return profile;
     var merged = Object.assign({}, profile, sdkRes.result);
+    // Guard: if the returned detail has a different username than what we stored,
+    // the fallback id lookup returned the wrong avatar — keep the original username.
+    var origUsername = profile.username || profile.userName || profile.UserName;
+    var detailUsername = sdkRes.result.username || sdkRes.result.userName || sdkRes.result.UserName;
+    if (origUsername && detailUsername && detailUsername !== origUsername) {
+      merged.username = origUsername;
+      merged.userName = origUsername;
+    }
     saveAvatar(merged);
     window.dispatchEvent(new CustomEvent('avatarUpdated', { detail: merged }));
     return merged;
