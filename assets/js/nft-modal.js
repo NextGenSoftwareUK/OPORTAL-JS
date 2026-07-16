@@ -9,6 +9,10 @@
 
   function getById(id) { return document.getElementById(id); }
 
+  // Global helpers for onerror attributes — avoids quote-escaping nightmares in inline HTML.
+  window._nftImgErr  = function (el) { el.outerHTML = '<div class="nft-card-img nft-card-img--placeholder">🎴</div>'; };
+  window._nftCollErr = function (el) { el.outerHTML = '<div class="nft-card-img nft-card-img--placeholder">🗂️</div>'; };
+
   // Expose globals immediately so the router can call openNftModal() even if
   // portal-components-ready fires before bind() runs (race condition on refresh).
   function exposeGlobals() {
@@ -146,7 +150,7 @@
     var forSale = nft.isForSale || nft.IsForSale;
 
     var imgHtml = image
-      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.outerHTML=\'<div class=\\\"nft-card-img nft-card-img--placeholder\\\">🎴</div>\'">'
+      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="window._nftImgErr(this)">'
       : '<div class="nft-card-img nft-card-img--placeholder">🎴</div>';
 
     var saleTag = forSale ? '<span class="nft-card-sale-tag">For Sale</span>' : '';
@@ -169,7 +173,7 @@
     var keyEsc = escapeHtml(key);
 
     var imgHtml = image
-      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.outerHTML=\'<div class=\\\"nft-card-img nft-card-img--placeholder\\\">🗂️</div>\'">'
+      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="window._nftCollErr(this)">'
       : '<div class="nft-card-img nft-card-img--placeholder">🗂️</div>';
 
     return '<div class="nft-card nft-card--collection nft-card--clickable" data-collection-key="' + keyEsc + '" role="button" tabindex="0" aria-label="Expand collection ' + name + '">' +
@@ -201,7 +205,7 @@
     var image = getNftImage(nft);
 
     var imgHtml = image
-      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="this.style.display=\'none\'">'
+      ? '<img class="nft-card-img" src="' + escapeHtml(image) + '" alt="' + name + '" loading="lazy" onerror="window._nftImgErr(this)">'
       : '<div class="nft-card-img nft-card-img--placeholder">🗺️</div>';
 
     var coords = (lat && lng)
