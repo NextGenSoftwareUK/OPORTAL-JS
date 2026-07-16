@@ -256,10 +256,10 @@
       btn.textContent = 'Activating…';
 
       try {
-        var res = await fetch('https://founders.oasisomniverse.one/api/activate-account', {
+        var res = await fetch('https://founders.oasisomniverse.one/api/sendEmail', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email, key: key, newPassword: pw1 })
+          body: JSON.stringify({ action: 'activate', email: email, key: key, newPassword: pw1 })
         });
 
         var data = await res.json();
