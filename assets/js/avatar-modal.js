@@ -245,7 +245,12 @@
     var payload = {};
     var fields = document.querySelectorAll('#avatar-modal-block [data-av-field]');
     fields.forEach(function (input) {
-      payload[input.dataset.avField] = input.value.trim();
+      var key = input.dataset.avField;
+      var val = input.value.trim();
+      payload[key] = val;
+      // Also send PascalCase so the C# model binder picks it up regardless of JSON settings
+      var pascal = key.charAt(0).toUpperCase() + key.slice(1);
+      payload[pascal] = val;
     });
     return payload;
   }
