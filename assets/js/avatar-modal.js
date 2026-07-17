@@ -290,6 +290,10 @@
       var res = await fetch(url, { method: 'POST', headers: {...}, body: JSON.stringify(payload) });
       */
 
+      if (sdkRes.isError && sdkRes.message && /unauthori[zs]ed/i.test(sdkRes.message)) {
+        if (typeof window.handleUnauthorized === 'function') window.handleUnauthorized();
+        return;
+      }
       if (!sdkRes.isError) {
         var updated = Object.assign({}, profile, payload);
 

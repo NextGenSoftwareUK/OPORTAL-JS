@@ -937,6 +937,17 @@ async function onLogout() {
 	window.location.reload()
 }
 
+// Opens the Beam In (login) modal without a full page reload.
+window.openLoginModal = function () {
+  var modal = document.querySelector('.js-modal');
+  var blocks = document.querySelectorAll('.js-modal-block');
+  if (!modal) { window.location.reload(); return; }
+  blocks.forEach(function (b) {
+    b.classList.toggle('is-selected', b.getAttribute('data-type') === 'login');
+  });
+  modal.classList.add('is-visible');
+};
+
 // Called by any modal that receives a 401 / Unauthorized response.
 // Tries to silently refresh the JWT first; only clears the session if that fails.
 window.handleUnauthorized = async function () {
@@ -948,11 +959,15 @@ window.handleUnauthorized = async function () {
       return;
     }
   } catch (e) {}
-  // Refresh failed — session is truly dead, return to Beam In
+  // Refresh failed — session is truly dead, clear it and show Beam In
   if (typeof window.stopJWTRefresh === 'function') window.stopJWTRefresh();
+  if (typeof window.hideDashboard === 'function') window.hideDashboard();
   localStorage.removeItem('avatar');
   localStorage.setItem('loggedIn', 'false');
-  window.location.reload();
+  // Close any open modal then show login
+  var openModal = document.querySelector('.js-modal.is-visible');
+  if (openModal) openModal.classList.remove('is-visible');
+  window.openLoginModal();
 };
 
 function setSignupError(message) {
