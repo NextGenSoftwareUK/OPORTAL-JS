@@ -790,7 +790,7 @@ function addAuthPopup(login, msg, e) {
       //divError.classList.add('error');
     }
 		//console.log(type)
-		e.preventDefault()
+		if (e && typeof e.preventDefault === 'function') e.preventDefault();
 }
 
 function extractAvatarData(payload) {

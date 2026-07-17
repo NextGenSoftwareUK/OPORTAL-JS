@@ -149,14 +149,14 @@
     var results = await Promise.allSettled([
       avatarId && token ? safe(window.oasisClient.karma.getKarmaAkashicRecordsForAvatar({ avatarId: avatarId })) : Promise.resolve(null),  // [0]
       avatarId && token ? safe(window.oasisClient.karma.getKarmaStats({ avatarId: avatarId })) : Promise.resolve(null),                      // [1]
-      token ? safe(window.oasisClient.data.loadAllHolons({})) : Promise.resolve(null),                                                       // [2]
+      Promise.resolve(null),                                                                                                                   // [2] load-all-holons returns 400 — skip until API is ready
       avatarId && token ? safe(window.oasisClient.nft.loadAllWeb4NFTsForAvatarAsync({ avatarId: avatarId })) : Promise.resolve(null),        // [3]
       avatarId && token ? safe(window.oasisClient.nft.loadAllWeb4GeoNFTsForAvatarAsync({ avatarId: avatarId })) : Promise.resolve(null),     // [4]
       token ? safe(window.oasisClient.map.getMapStats()) : Promise.resolve(null),                                                             // [5]
       token ? safe(window.oasisClient.files.getAllFilesStoredForCurrentLoggedInAvatar()) : Promise.resolve(null),                             // [6]
-      token ? safe(window.oasisClient.competition.getMyRank({ competitionType: 'Karma', seasonType: 'AllTime' })) : Promise.resolve(null),   // [7]
+      Promise.resolve(null),                                                                                                                   // [7] competition/getMyRank 404 — skip until API is ready
       token ? safe(window.oasisClient.subscription.getMySubscriptions()) : Promise.resolve(null),                                            // [8]
-      token && window.starClient ? safe(window.starClient.games.getAllGames()) : Promise.resolve(null),                                       // [9]
+      Promise.resolve(null),                                                                                                                   // [9] web5 games — api.web5.oasisomniverse.one not yet deployed
       token ? safe(window.oasisClient.gifts.getMyGifts()) : Promise.resolve(null),                                                           // [10]
       avatarId && token ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false })) : Promise.resolve(null), // [11]
       token ? safe(window.oasisClient.messaging.getMessages()) : Promise.resolve(null),                                                        // [12]
