@@ -98,16 +98,13 @@
     var token = getToken(profile);
     if (!token) { showStatus('error', 'Please sign in to load holons.'); isFetching = false; return; }
 
+    var avatarId = profile && (profile.avatarId || profile.AvatarId || profile.id || profile.Id || '');
+
     try {
-      // SDK: @oasisomniverse/web4-api
-      var body = currentProvider === 'all' ? {} : { providerType: currentProvider };
-      var sdkRes = await window.oasisClient.data.loadAllHolons(body);
-      /* OLD fetch:
-      var path = currentProvider === 'all' ? '/api/data/load-all-holons/all'
-        : '/api/data/load-all-holons/all/true/true/0/true/0/' + encodeURIComponent(currentProvider) + '/false';
-      var res = await fetch(API_BASE + path, { headers: { 'Authorization': 'Bearer ' + token } });
-      var data = res.ok ? await res.json() : null;
-      */
+      // Load holons belonging to this avatar (matches dashboard count)
+      var body = { Id: avatarId, holonType: 'All' };
+      if (currentProvider !== 'all') body.providerType = currentProvider;
+      var sdkRes = await window.oasisClient.data.loadHolonsForParent(body);
       hideStatus();
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
       _cachedBrowseList = list || [];
