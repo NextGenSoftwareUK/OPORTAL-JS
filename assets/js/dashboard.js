@@ -198,9 +198,9 @@
       }
     });
 
-    // [2] Holons / Data
-    (token
-      ? safe(window.oasisClient.data.loadAllHolons({ holonType: 'All' }))
+    // [2] Holons / Data — load only holons belonging to this avatar
+    (avatarId && token
+      ? safe(window.oasisClient.data.loadHolonsForParent({ Id: avatarId, holonType: 'All' }))
       : Promise.resolve(null)
     ).then(function (res) {
       set('dash-card-holons', fmtNum(extractList(sdkVal(res)).length) || '0');
