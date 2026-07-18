@@ -152,6 +152,16 @@
 .dash-card-value { font-size: 1.25rem; font-weight: 700; color: #fff; line-height: 1; }
 .dash-card-label { font-size: .65rem; color: #a8bfd8; margin-top: .18rem; text-transform: uppercase; letter-spacing: .05em; }
 
+@keyframes dash-spin { to { transform: rotate(360deg); } }
+.dash-spinner {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(168,191,216,.25);
+  border-top-color: #a8bfd8;
+  border-radius: 50%;
+  animation: dash-spin .7s linear infinite;
+  vertical-align: middle;
+}
+
 .dash-card--cyan   { border-left: 3px solid rgba(0,229,255,.5); }
 .dash-card--cyan .dash-card-value   { color: #00e5ff; }
 .dash-card--cyan:hover   { box-shadow: 0 4px 20px rgba(0,229,255,.12); }

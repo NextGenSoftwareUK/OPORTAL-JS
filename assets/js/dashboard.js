@@ -142,7 +142,6 @@
         img.src = photo;
         img.onerror = function () { img.src = 'assets/img/loggedin.png'; };
       } else {
-        // No portrait in stored profile (e.g. after beam-out/in) — fetch from API
         var uname = p.username || p.userName || p.UserName;
         if (uname && typeof window.loadAvatarPortrait === 'function') {
           window.loadAvatarPortrait(uname, img);
@@ -150,150 +149,194 @@
       }
     }
 
-    // Fire parallel API calls — SDK: @oasisomniverse/web4-api + web5-api
-    var safe = function (p) { return p.catch(function () { return { isError: true }; }); };
-    var results = await Promise.allSettled([
-      avatarId && token ? safe(window.oasisClient.karma.getKarmaAkashicRecordsForAvatar({ avatarId: avatarId })) : Promise.resolve(null),  // [0]
-      avatarId && token ? safe(window.oasisClient.karma.getKarmaStats({ avatarId: avatarId })) : Promise.resolve(null),                      // [1]
-      token ? safe(window.oasisClient.data.loadAllHolons({ holonType: 'All' })) : Promise.resolve(null),                                     // [2]
-      avatarId && token ? safe(window.oasisClient.nft.loadAllWeb4NFTsForAvatarAsync({ avatarId: avatarId })) : Promise.resolve(null),        // [3]
-      avatarId && token ? safe(window.oasisClient.nft.loadAllWeb4GeoNFTsForAvatarAsync({ avatarId: avatarId })) : Promise.resolve(null),     // [4]
-      token ? safe(window.oasisClient.map.getMapStats()) : Promise.resolve(null),                                                             // [5]
-      token ? safe(window.oasisClient.files.getAllFilesStoredForCurrentLoggedInAvatar()) : Promise.resolve(null),                             // [6]
-      token ? safe(window.oasisClient.competition.getMyRank({ competitionType: 'Karma', seasonType: 'AllTime' })) : Promise.resolve(null),   // [7]
-      token ? safe(window.oasisClient.subscription.getMySubscriptions()) : Promise.resolve(null),                                            // [8]
-      token && window.starClient ? safe(window.starClient.games.getAllGames()) : Promise.resolve(null),                                       // [9]
-      token ? safe(window.oasisClient.gifts.getMyGifts()) : Promise.resolve(null),                                                           // [10]
-      avatarId && token ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false })) : Promise.resolve(null), // [11]
-      token ? safe(window.oasisClient.messaging.getMessages()) : Promise.resolve(null),                                                        // [12]
-      token ? safe(fetch(API_BASE + '/api/Avatar/inventory', { headers: { 'Authorization': 'Bearer ' + token } }).then(function(r){ return r.json(); })) : Promise.resolve(null), // [13]
-      token ? safe(window.oasisClient.clan.list()) : Promise.resolve(null),               // [14]
-      safe(window.oasisClient.oNET.getNetworkStats()),                                     // [15]
-    ]);
-    /* OLD fetch calls:
-    apiFetch(API_BASE + '/api/karma/get-karma-akashic-records-for-avatar/' + avatarId, token)
-    apiFetch(API_BASE + '/api/karma/get-karma-stats/' + avatarId, token)
-    apiFetch(API_BASE + '/api/data/load-all-holons/all', token)
-    apiFetch(API_BASE + '/api/Nft/load-all-nfts-for_avatar/' + avatarId + '/Solana', token)
-    apiFetch(API_BASE + '/api/Nft/load-all-geo-nfts-for-avatar/' + avatarId + '/Solana', token)
-    apiFetch(API_BASE + '/api/map/stats', token)
-    */
+    // Show spinners on all cards that require an API call
+    var SPINNER = '<span class="dash-spinner"></span>';
+    var apiCards = [
+      'dash-card-karma', 'dash-card-holons', 'dash-card-files', 'dash-card-wallets',
+      'dash-card-nfts', 'dash-card-geonfts', 'dash-card-games', 'dash-card-rank',
+      'dash-card-gifts', 'dash-card-messages', 'dash-card-inventory', 'dash-card-plan',
+      'dash-nfts-hero', 'dash-wallet-nfts', 'dash-wallet-balance',
+      'dash-map-visited', 'dash-map-total', 'dash-map-geo',
+      'dash-karma-pos', 'dash-karma-neg', 'dash-karma-net',
+    ];
+    apiCards.forEach(function (id) { setHtml(id, SPINNER); });
+    setHtml('dash-akashic-list', '<li class="dash-akashic-loading">' + SPINNER + ' Loading karma records…</li>');
 
-    var akashicData  = sdkVal(results[0].value);
-    var karmaStats   = sdkVal(results[1].value);
-    var holonData    = sdkVal(results[2].value);
-    var nftData      = sdkVal(results[3].value);
-    var geoNftData   = sdkVal(results[4].value);
-    var mapData      = sdkVal(results[5].value);
-    var filesData    = sdkVal(results[6].value);
-    var rankData     = sdkVal(results[7].value);
-    var subsData     = sdkVal(results[8].value);
-    var gamesData    = sdkVal(results[9].value);
-    var giftsData    = sdkVal(results[10].value);
-    var walletsData   = sdkVal(results[11].value);
-    var messagesData  = sdkVal(results[12].value);
-    var inventoryData = results[13] && results[13].value;
-    var clansData     = sdkVal(results[14] && results[14].value);
-    var onetData      = sdkVal(results[15] && results[15].value);
-
-    // Akashic records
-    var records = extractList(akashicData);
-    renderAkashicList(records);
-
-    // Karma stats
-    var ks = karmaStats && (karmaStats.result || karmaStats.Result || karmaStats);
-    if (ks) {
-      var pos = ks.totalPositiveKarma || ks.TotalPositiveKarma || ks.positiveKarma || ks.PositiveKarma;
-      var neg = ks.totalNegativeKarma || ks.TotalNegativeKarma || ks.negativeKarma || ks.NegativeKarma;
-      var net = ks.totalKarma || ks.TotalKarma || ks.netKarma || ks.NetKarma || karma;
-      if (pos !== undefined) set('dash-karma-pos', '+' + fmtNum(pos));
-      if (neg !== undefined) set('dash-karma-neg', fmtNum(neg));
-      if (net !== undefined) { set('dash-karma-net', fmtNum(net)); set('dash-karma-hero', fmtNum(net)); set('dash-card-karma', fmtNum(net)); }
-    } else {
-      set('dash-karma-pos', '—');
-      set('dash-karma-neg', '—');
+    function setHtml(id, html) {
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = html;
     }
 
-    // Holons
-    var holons = extractList(holonData);
-    set('dash-card-holons', fmtNum(holons.length) || '0');
+    // Fire all API calls in parallel — each .then() updates its card(s) as soon as data arrives
+    var safe = function (promise) { return promise.catch(function () { return { isError: true }; }); };
 
-    // NFTs
-    var nfts = extractList(nftData);
-    var nftCount = nfts.length;
-    set('dash-card-nfts', fmtNum(nftCount) || '0');
-    set('dash-nfts-hero', fmtNum(nftCount) || '0');
-    set('dash-wallet-nfts', fmtNum(nftCount) || '0');
+    // [0] Akashic records
+    (avatarId && token
+      ? safe(window.oasisClient.karma.getKarmaAkashicRecordsForAvatar({ avatarId: avatarId }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var records = extractList(sdkVal(res));
+      renderAkashicList(records);
+    });
 
-    // GeoNFTs
-    var geoNfts = extractList(geoNftData);
-    set('dash-card-geonfts', fmtNum(geoNfts.length) || '0');
+    // [1] Karma stats
+    (avatarId && token
+      ? safe(window.oasisClient.karma.getKarmaStats({ avatarId: avatarId }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var ks = sdkVal(res);
+      ks = ks && (ks.result || ks.Result || ks);
+      if (ks) {
+        var pos = ks.totalPositiveKarma || ks.TotalPositiveKarma || ks.positiveKarma || ks.PositiveKarma;
+        var neg = ks.totalNegativeKarma || ks.TotalNegativeKarma || ks.negativeKarma || ks.NegativeKarma;
+        var net = ks.totalKarma || ks.TotalKarma || ks.netKarma || ks.NetKarma || karma;
+        if (pos !== undefined) set('dash-karma-pos', '+' + fmtNum(pos));
+        if (neg !== undefined) set('dash-karma-neg', fmtNum(neg));
+        if (net !== undefined) { set('dash-karma-net', fmtNum(net)); set('dash-karma-hero', fmtNum(net)); set('dash-card-karma', fmtNum(net)); }
+      } else {
+        set('dash-karma-pos', '—'); set('dash-karma-neg', '—');
+      }
+    });
 
-    // Map stats
-    var ms = mapData && (mapData.result || mapData.Result || mapData);
-    if (ms) {
-      set('dash-map-visited', fmtNum(ms.totalVisited || ms.TotalVisited || ms.visitedCount || ms.VisitedCount || 0));
-      set('dash-map-total', fmtNum(ms.totalLocations || ms.TotalLocations || ms.locationCount || ms.LocationCount || 0));
-      set('dash-map-geo', fmtNum(ms.geoNFTsPlaced || ms.GeoNFTsPlaced || geoNfts.length || 0));
-    } else {
-      set('dash-map-visited', '—');
-      set('dash-map-total', '—');
+    // [2] Holons / Data
+    (token
+      ? safe(window.oasisClient.data.loadAllHolons({ holonType: 'All' }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-holons', fmtNum(extractList(sdkVal(res)).length) || '0');
+    });
+
+    // [3] NFTs + [4] GeoNFTs — run together so hero stat and map geo stay in sync
+    var nftPromise = avatarId && token
+      ? safe(window.oasisClient.nft.loadAllWeb4NFTsForAvatarAsync({ avatarId: avatarId }))
+      : Promise.resolve(null);
+    var geoNftPromise = avatarId && token
+      ? safe(window.oasisClient.nft.loadAllWeb4GeoNFTsForAvatarAsync({ avatarId: avatarId }))
+      : Promise.resolve(null);
+
+    nftPromise.then(function (res) {
+      var count = extractList(sdkVal(res)).length;
+      set('dash-card-nfts', fmtNum(count) || '0');
+      set('dash-nfts-hero', fmtNum(count) || '0');
+      set('dash-wallet-nfts', fmtNum(count) || '0');
+    });
+
+    geoNftPromise.then(function (res) {
+      var geoNfts = extractList(sdkVal(res));
+      set('dash-card-geonfts', fmtNum(geoNfts.length) || '0');
+      // Update map geo count when geoNFTs arrive (map stats may refine this)
       set('dash-map-geo', fmtNum(geoNfts.length) || '0');
-    }
+    });
 
-    // Quests & Missions (placeholders — APIs TBD)
+    // [5] Map stats (may override geoNFT geo count with server value)
+    Promise.all([
+      token ? safe(window.oasisClient.map.getMapStats()) : Promise.resolve(null),
+      geoNftPromise
+    ]).then(function (vals) {
+      var mapRes = vals[0]; var geoNfts = extractList(sdkVal(vals[1]));
+      var ms = sdkVal(mapRes); ms = ms && (ms.result || ms.Result || ms);
+      if (ms) {
+        set('dash-map-visited', fmtNum(ms.totalVisited || ms.TotalVisited || ms.visitedCount || ms.VisitedCount || 0));
+        set('dash-map-total',   fmtNum(ms.totalLocations || ms.TotalLocations || ms.locationCount || ms.LocationCount || 0));
+        set('dash-map-geo',     fmtNum(ms.geoNFTsPlaced || ms.GeoNFTsPlaced || geoNfts.length || 0));
+      } else {
+        set('dash-map-visited', '—'); set('dash-map-total', '—');
+        set('dash-map-geo', fmtNum(geoNfts.length) || '0');
+      }
+    });
+
+    // [6] Files
+    (token
+      ? safe(window.oasisClient.files.getAllFilesStoredForCurrentLoggedInAvatar())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-files', fmtNum(extractList(sdkVal(res)).length) || '0');
+    });
+
+    // [7] Competition rank
+    (token
+      ? safe(window.oasisClient.competition.getMyRank({ competitionType: 'Karma', seasonType: 'AllTime' }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var rank = sdkVal(res); rank = rank && (rank.result || rank);
+      var rankVal = rank && (rank.rank || rank.Rank || rank.position || rank.Position);
+      set('dash-card-rank', rankVal != null ? '#' + rankVal : '—');
+    });
+
+    // [8] Subscription
+    (token
+      ? safe(window.oasisClient.subscription.getMySubscriptions())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var subs = extractList(sdkVal(res));
+      var activeSub = subs.find(function (s) { return s.isActive || s.IsActive || s.status === 'active' || s.Status === 'active'; });
+      var planName = activeSub && (activeSub.planName || activeSub.PlanName || activeSub.name || activeSub.Name);
+      set('dash-card-plan', planName || (subs.length ? 'Active' : 'Free'));
+    });
+
+    // [9] Games (web5)
+    (token && window.starClient
+      ? safe(window.starClient.games.getAllGames())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-games', fmtNum(extractList(sdkVal(res)).length) || '0');
+    });
+
+    // [10] Gifts
+    (token
+      ? safe(window.oasisClient.gifts.getMyGifts())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var gifts = extractList(sdkVal(res));
+      var pending = gifts.filter(function (g) { return !(g.isOpened || g.IsOpened || g.opened); }).length;
+      set('dash-card-gifts', pending > 0 ? pending + ' pending' : fmtNum(gifts.length) || '0');
+      if (pending > 0) set('dash-oapps-msg', pending + ' gift' + (pending === 1 ? '' : 's') + ' waiting!');
+    });
+
+    // [11] Wallets
+    (avatarId && token
+      ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-wallets', fmtNum(extractList(sdkVal(res)).length) || '0');
+    });
+
+    // [12] Messages
+    (token
+      ? safe(window.oasisClient.messaging.getMessages())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      var messages = extractList(sdkVal(res));
+      var unread = messages.filter(function (m) { return !(m.isRead || m.IsRead || m.read); }).length;
+      set('dash-card-messages', unread > 0 ? unread + ' unread' : fmtNum(messages.length) || '0');
+    });
+
+    // [13] Inventory (direct REST)
+    (token
+      ? safe(fetch(API_BASE + '/api/Avatar/inventory', { headers: { 'Authorization': 'Bearer ' + token } }).then(function (r) { return r.json(); }))
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-inventory', fmtNum(extractList(res).length) || '0');
+    });
+
+    // [14] Clans
+    (token
+      ? safe(window.oasisClient.clan.list())
+      : Promise.resolve(null)
+    ).then(function (res) {
+      set('dash-card-clans', fmtNum(extractList(sdkVal(res)).length) || '0');
+    });
+
+    // [15] ONET
+    safe(window.oasisClient.oNET.getNetworkStats()).then(function (res) {
+      var onetStats = sdkVal(res); onetStats = onetStats && (onetStats.result || onetStats);
+      var nodeCount = onetStats && (onetStats.totalNodes || onetStats.TotalNodes || onetStats.nodeCount || onetStats.NodeCount);
+      set('dash-card-onet', nodeCount != null ? fmtNum(nodeCount) : '—');
+    });
+
+    // Quests & Missions (APIs TBD)
     set('dash-card-quests', '—');
     set('dash-card-missions', '—');
-
-    // Files
-    var files = extractList(filesData);
-    set('dash-card-files', fmtNum(files.length) || '0');
-
-    // Competition rank
-    var rank = rankData && (rankData.result || rankData);
-    var rankVal = rank && (rank.rank || rank.Rank || rank.position || rank.Position);
-    set('dash-card-rank', rankVal != null ? '#' + rankVal : '—');
-
-    // Subscription plan
-    var subs = extractList(subsData);
-    var activeSub = subs.find(function(s) { return s.isActive || s.IsActive || s.status === 'active' || s.Status === 'active'; });
-    var planName = activeSub && (activeSub.planName || activeSub.PlanName || activeSub.name || activeSub.Name);
-    set('dash-card-plan', planName || (subs.length ? 'Active' : 'Free'));
-
-    // Games (web5)
-    var games = extractList(gamesData);
-    set('dash-card-games', fmtNum(games.length) || '0');
-
-    // Gifts
-    var gifts = extractList(giftsData);
-    var pendingGifts = gifts.filter(function(g) { return !(g.isOpened || g.IsOpened || g.opened); }).length;
-    set('dash-card-gifts', fmtNum(gifts.length) || '0');
-    if (pendingGifts > 0) {
-      set('dash-card-gifts', pendingGifts + ' pending');
-      set('dash-oapps-msg', pendingGifts + ' gift' + (pendingGifts === 1 ? '' : 's') + ' waiting!');
-    }
-
-    // Wallets
-    var wallets = extractList(walletsData);
-    set('dash-card-wallets', fmtNum(wallets.length) || '0');
-
-    // Messages
-    var messages = extractList(messagesData);
-    var unread = messages.filter(function(m) { return !(m.isRead || m.IsRead || m.read); }).length;
-    set('dash-card-messages', unread > 0 ? unread + ' unread' : fmtNum(messages.length) || '0');
-
-    // Inventory (direct REST call — not in SDK)
-    var inventory = extractList(inventoryData);
-    set('dash-card-inventory', fmtNum(inventory.length) || '0');
-
-    // Clans
-    var clans = extractList(clansData);
-    set('dash-card-clans', fmtNum(clans.length) || '0');
-
-    // ONET nodes
-    var onetStats = onetData && (onetData.result || onetData);
-    var nodeCount = onetStats && (onetStats.totalNodes || onetStats.TotalNodes || onetStats.nodeCount || onetStats.NodeCount);
-    set('dash-card-onet', nodeCount != null ? fmtNum(nodeCount) : '—');
   }
 
   // ---- Show / Hide ----
