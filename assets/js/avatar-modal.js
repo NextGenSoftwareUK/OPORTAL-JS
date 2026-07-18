@@ -287,9 +287,11 @@
         modifiedDate: profile.modifiedDate || profile.ModifiedDate || '',
       };
       // SDK: @oasisomniverse/web4-api
-      var sdkRes = email
-        ? await window.oasisClient.avatar.updateAvatarDetailByEmail(Object.assign({}, preserved, payload, { email: email }))
-        : await window.oasisClient.avatar.updateAvatarDetailByUsername(Object.assign({}, preserved, payload, { username: username }));
+      var sdkRes = id
+        ? await window.oasisClient.avatar.updateAvatarDetail(Object.assign({}, preserved, payload, { 'id:guid': id }))
+        : email
+          ? await window.oasisClient.avatar.updateAvatarDetailByEmail(Object.assign({}, preserved, payload, { email: email }))
+          : await window.oasisClient.avatar.updateAvatarDetailByUsername(Object.assign({}, preserved, payload, { username: username }));
       /* OLD fetch:
       var url = getUpdateUrl(profile);
       var res = await fetch(url, { method: 'POST', headers: {...}, body: JSON.stringify(payload) });
