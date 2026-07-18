@@ -271,8 +271,9 @@
     var saveBtn = getById('avatar-modal-save-btn');
     var email = profile.email || profile.Email;
     var username = profile.username || profile.userName || profile.UserName;
+    var id = profile.id || profile.Id || profile.avatarId || profile.AvatarId;
 
-    if (!email && !username) { showStatus('error', 'Could not determine which avatar record to update.'); return; }
+    if (!id && !email && !username) { showStatus('error', 'Could not determine which avatar record to update.'); return; }
 
     showStatus('loading', 'Saving changes…');
     if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
