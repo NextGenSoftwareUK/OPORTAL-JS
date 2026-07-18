@@ -295,33 +295,33 @@
       var res = await fetch(url, { method: 'POST', headers: {...}, body: JSON.stringify(payload) });
       */
 
+      // Always run the Avatar update regardless of AvatarDetail result —
+      // it is independent, and SaveAvatarAsync syncs AvatarDetail by ID
+      // which self-heals any email/username corruption in the DB.
+      var oldUsername = profile.username || profile.userName || profile.UserName;
+      var avatarFields = {};
+      if (payload.title    || payload.Title)     avatarFields.Title     = payload.Title    || payload.title;
+      if (payload.firstName || payload.FirstName) avatarFields.FirstName = payload.FirstName || payload.firstName;
+      if (payload.lastName  || payload.LastName)  avatarFields.LastName  = payload.LastName  || payload.lastName;
+      if (payload.username  && payload.username !== oldUsername) avatarFields.Username = payload.username;
+      if (Object.keys(avatarFields).length > 0) {
+        var avatarRes = null;
+        try {
+          if (email) {
+            avatarRes = await window.oasisClient.avatar.updateByEmail(Object.assign({}, avatarFields, { email: email }));
+          } else if (oldUsername) {
+            avatarRes = await window.oasisClient.avatar.updateByUsername(Object.assign({}, avatarFields, { username: oldUsername }));
+          }
+        } catch (e) { /* network error — non-fatal */ }
+        if (avatarRes && avatarRes.isError) {
+          showStatus('error', avatarRes.message || 'Could not update username/email — it may already be in use.');
+          if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Changes'; }
+          return;
+        }
+      }
+
       if (!sdkRes.isError) {
         var updated = Object.assign({}, profile, payload);
-
-        // Title, FirstName, LastName and Username live on the Avatar object, not
-        // AvatarDetail — always send them to the Avatar update endpoint too.
-        var oldUsername = profile.username || profile.userName || profile.UserName;
-        var avatarFields = {};
-        if (payload.title    || payload.Title)     avatarFields.Title     = payload.Title    || payload.title;
-        if (payload.firstName || payload.FirstName) avatarFields.FirstName = payload.FirstName || payload.firstName;
-        if (payload.lastName  || payload.LastName)  avatarFields.LastName  = payload.LastName  || payload.lastName;
-        if (payload.username  && payload.username !== oldUsername) avatarFields.Username = payload.username;
-        if (Object.keys(avatarFields).length > 0) {
-          var avatarRes = null;
-          try {
-            if (email) {
-              avatarRes = await window.oasisClient.avatar.updateByEmail(Object.assign({}, avatarFields, { email: email }));
-            } else if (oldUsername) {
-              avatarRes = await window.oasisClient.avatar.updateByUsername(Object.assign({}, avatarFields, { username: oldUsername }));
-            }
-          } catch (e) { /* network error — AvatarDetail already saved, non-fatal */ }
-          if (avatarRes && avatarRes.isError) {
-            showStatus('error', avatarRes.message || 'Could not update username/email — it may already be in use.');
-            if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Changes'; }
-            return;
-          }
-        }
-
         saveAvatar(updated);
         currentProfile = updated;
         populate(updated);
