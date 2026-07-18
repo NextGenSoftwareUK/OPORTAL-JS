@@ -298,18 +298,22 @@
       if (!sdkRes.isError) {
         var updated = Object.assign({}, profile, payload);
 
-        // If username changed, also update the Avatar record (not just AvatarDetail)
+        // Title, FirstName, LastName and Username live on the Avatar object, not
+        // AvatarDetail — always send them to the Avatar update endpoint too.
         var oldUsername = profile.username || profile.userName || profile.UserName;
-        var newUsername = payload.username;
-        if (newUsername && newUsername !== oldUsername && window.oasisClient) {
+        var avatarFields = {};
+        if (payload.title    || payload.Title)     avatarFields.Title     = payload.Title    || payload.title;
+        if (payload.firstName || payload.FirstName) avatarFields.FirstName = payload.FirstName || payload.firstName;
+        if (payload.lastName  || payload.LastName)  avatarFields.LastName  = payload.LastName  || payload.lastName;
+        if (payload.username  && payload.username !== oldUsername) avatarFields.Username = payload.username;
+        if (Object.keys(avatarFields).length > 0) {
           try {
-            var avatarUpdatePayload = { username: newUsername };
             if (email) {
-              await window.oasisClient.avatar.updateByEmail(Object.assign({}, avatarUpdatePayload, { email: email }));
+              await window.oasisClient.avatar.updateByEmail(Object.assign({}, avatarFields, { email: email }));
             } else if (oldUsername) {
-              await window.oasisClient.avatar.updateByUsername(Object.assign({}, avatarUpdatePayload, { username: oldUsername }));
+              await window.oasisClient.avatar.updateByUsername(Object.assign({}, avatarFields, { username: oldUsername }));
             }
-          } catch (e) { /* non-fatal — detail already saved */ }
+          } catch (e) { /* non-fatal — AvatarDetail already saved */ }
         }
 
         saveAvatar(updated);
