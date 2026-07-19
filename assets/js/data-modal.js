@@ -3,6 +3,26 @@
   var currentProvider = 'all';
   var isFetching = false;
 
+  // ProviderType enum number → canonical string name (matches C# enum order)
+  var PROVIDER_TYPE_MAP = {
+    0:'None',1:'All',2:'Default',3:'SolanaOASIS',4:'ArbitrumOASIS',5:'AvalancheOASIS',
+    6:'BaseOASIS',7:'EthereumOASIS',8:'PolygonOASIS',9:'EOSIOOASIS',10:'TelosOASIS',
+    11:'SEEDSOASIS',12:'LoomOASIS',13:'TONOASIS',14:'StellarOASIS',15:'BlockStackOASIS',
+    16:'HashgraphOASIS',17:'ElrondOASIS',18:'TRONOASIS',19:'CosmosBlockChainOASIS',
+    20:'RootstockOASIS',21:'ChainLinkOASIS',22:'CardanoOASIS',23:'PolkadotOASIS',
+    24:'BitcoinOASIS',25:'NEAROASIS',26:'SuiOASIS',27:'AptosOASIS',28:'OptimismOASIS',
+    29:'BNBChainOASIS',30:'FantomOASIS',31:'StarknetOASIS',32:'AztecOASIS',33:'MidenOASIS',
+    34:'ZcashOASIS',35:'RadixOASIS',36:'TelegramOASIS',37:'XRPLOASIS',38:'MonadOASIS',
+    39:'LineaOASIS',40:'ScrollOASIS',41:'ZkSyncOASIS',42:'MoralisOASIS',43:'IPFSOASIS',
+    44:'PinataOASIS',45:'HoloOASIS',46:'MongoDBOASIS',47:'Neo4jOASIS',48:'SQLLiteDBOASIS',
+    49:'SQLServerDBOASIS',50:'OracleDBOASIS',51:'GoogleCloudOASIS',52:'AzureStorageOASIS',
+    53:'AzureCosmosDBOASIS',54:'AWSOASIS',55:'UrbitOASIS',56:'ThreeFoldOASIS',
+    57:'PLANOASIS',58:'HoloWebOASIS',59:'SOLIDOASIS',60:'ActivityPubOASIS',
+    61:'ScuttlebuttOASIS',62:'LocalFileOASIS'
+  };
+
+  var NULL_GUID = '00000000-0000-0000-0000-000000000000';
+
   // HolonType enum number → display name
   var HOLON_TYPE_MAP = {
     0:'Default',1:'All',2:'Player',3:'Avatar',4:'AvatarDetail',5:'Clan',
@@ -63,9 +83,14 @@
   }
 
   function getProviderKey(h) {
-    var raw = h.providerType || h.ProviderType || h.provider || h.Provider || '';
-    if (typeof raw === 'object') return (raw.name || raw.Name || '');
-    return String(raw);
+    var raw = h.providerType || h.ProviderType || h.provider || h.Provider;
+    if (raw == null || raw === '') return '';
+    if (typeof raw === 'object') raw = raw.name || raw.Name || raw.value || '';
+    var s = String(raw).trim();
+    // Normalize numeric enum to canonical string
+    var num = Number(s);
+    if (!isNaN(num) && s !== '' && PROVIDER_TYPE_MAP[num]) return PROVIDER_TYPE_MAP[num];
+    return s;
   }
 
   function getById(id) { return document.getElementById(id); }
@@ -127,6 +152,15 @@
     '</div>';
   }
 
+  function resolveId(rawId, label, rowsEl) {
+    if (!rawId || rawId === NULL_GUID) return '';
+    var profile = readAvatar();
+    var myId = profile && (profile.avatarId || profile.AvatarId || profile.id || profile.Id || '');
+    var myName = profile && (profile.username || profile.Username || profile.email || profile.Email || '');
+    if (myId && rawId === myId) return rawId + (myName ? ' (' + myName + ')' : ' (you)');
+    return rawId; // raw ID — no extra API call needed for now
+  }
+
   function openHolonDetail(h) {
     var panel = getById('data-detail-panel');
     var title = getById('data-detail-title');
@@ -147,16 +181,21 @@
     var createdDate = fmtDate(h.createdDate || h.CreatedDate || h.date || h.Date);
     var modifiedDate = fmtDate(h.modifiedDate || h.ModifiedDate);
     var deletedDate  = fmtDate(h.deletedDate  || h.DeletedDate);
-    var createdBy = h.createdByAvatarId || h.CreatedByAvatarId || '';
-    var modifiedBy = h.modifiedByAvatarId || h.ModifiedByAvatarId || '';
+    var createdByRaw  = h.createdByAvatarId  || h.CreatedByAvatarId  || '';
+    var modifiedByRaw = h.modifiedByAvatarId || h.ModifiedByAvatarId || '';
     var isActive = (h.isActive != null ? h.isActive : (h.IsActive != null ? h.IsActive : null));
+
+    // Skip null GUIDs entirely
+    var createdBy  = (createdByRaw  && createdByRaw  !== NULL_GUID) ? resolveId(createdByRaw,  'Created By',  rows) : '';
+    var modifiedBy = (modifiedByRaw && modifiedByRaw !== NULL_GUID) ? resolveId(modifiedByRaw, 'Modified By', rows) : '';
+    var parentLabel = (parentId && parentId !== NULL_GUID) ? resolveId(parentId, 'Parent ID', rows) : '';
 
     var html = '';
     if (desc) html += detailRow('Description', desc);
     if (typeName) html += detailRow('Holon Type', typeName);
     if (provName) html += detailRow('Provider', provName);
     if (id) html += detailRow('ID', id);
-    if (parentId) html += detailRow('Parent ID', parentId);
+    if (parentLabel) html += detailRow('Parent ID', parentLabel);
     if (karma != null) html += detailRow('Karma', karma);
     if (xp != null) html += detailRow('XP', xp);
     if (level != null) html += detailRow('Level', level);
@@ -195,27 +234,27 @@
     var desc = escapeHtml(h.description || h.Description || '');
     var typeName = escapeHtml(holonTypeName(h.holonType || h.HolonType || h.type || h.Type || ''));
     var provName = escapeHtml(providerDisplayName(getProviderKey(h)));
-    var dateStr = fmtDate(h.createdDate || h.CreatedDate || h.date || h.Date);
+    // Use modifiedDate as fallback when createdDate is missing/default C# zero date
+    var dateStr = fmtDate(h.createdDate || h.CreatedDate || h.date || h.Date)
+               || fmtDate(h.modifiedDate || h.ModifiedDate);
 
     var deleteBtn = showDelete && id
       ? '<button class="data-card-delete" onclick="event.stopPropagation();window._dataDeleteHolon(\'' + escapeHtml(id) + '\')" title="Delete holon">🗑</button>'
       : '';
 
-    // Encode holon data for click-to-detail
     var dataAttr = 'data-holon-idx="' + escapeHtml(id) + '"';
 
     return '<div class="data-holon-card" ' + dataAttr + ' onclick="window._dataOpenCard(this)">' +
-      '<div class="data-holon-card-header">' +
-        '<div class="data-holon-card-name">' + name + '</div>' +
-      '</div>' +
+      '<div class="data-holon-card-name">' + name + '</div>' +
       (desc ? '<div class="data-holon-card-desc">' + desc + '</div>' : '') +
       '<div class="data-holon-card-meta">' +
         (typeName ? '<span class="data-holon-badge">' + typeName + '</span>' : '') +
         (provName ? '<span class="data-holon-badge data-holon-badge--provider">' + provName + '</span>' : '') +
         (dateStr ? '<span class="data-holon-date">' + escapeHtml(dateStr) + '</span>' : '') +
       '</div>' +
-      (id ? '<div class="data-holon-id" title="' + escapeHtml(id) + '">' + escapeHtml(id) + '</div>' : '') +
-      (showDelete ? '<div style="display:flex;justify-content:flex-end;margin-top:4px">' + deleteBtn + '</div>' : '') +
+      '<div class="data-card-footer">' +
+        (showDelete ? deleteBtn : '') +
+      '</div>' +
     '</div>';
   }
 

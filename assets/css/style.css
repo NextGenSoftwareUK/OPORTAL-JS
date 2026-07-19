@@ -4901,10 +4901,11 @@ select option {
 
 .data-holon-date { font-size: 0.72rem; color: var(--color-contrast-medium); margin-left: auto; }
 
-.data-holon-id {
-  font-family: 'Share Tech Mono','Courier New',monospace;
-  font-size: 0.68rem; color: var(--color-contrast-medium); opacity: 0.6;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.data-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 28px;
 }
 
 /* Forms */
