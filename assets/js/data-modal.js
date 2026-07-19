@@ -228,7 +228,7 @@
   }
 
   function formatDetailValue(key, value, onChainProvider) {
-    if (value == null || value === '' || value === 'null') return escapeHtml(String(value == null ? '' : value));
+    if (value == null || value === '' || value === 'null' || value === 'None') return escapeHtml('None');
     var s = String(value);
     // Clickable URL
     if (/^https?:\/\//i.test(s)) {
