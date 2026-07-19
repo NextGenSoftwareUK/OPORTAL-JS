@@ -245,9 +245,13 @@
       var addrUrl = getAddressExplorerUrl(s, onChainProvider);
       if (addrUrl) return '<a href="' + escapeHtml(addrUrl) + '" target="_blank" rel="noopener" class="data-detail-link">' + escapeHtml(s) + '</a>';
     }
-    // Raw date strings (e.g. 07/18/2026 from API metadata) — reformat to "18 Jul 2026"
-    var reformatted = tryReformatDate(s);
-    if (reformatted) return escapeHtml(reformatted);
+    // Null GUID placeholder — show N/A
+    if (s === NULL_GUID) return escapeHtml('N/A');
+    // Raw date strings — only reformat when the key name implies a date
+    if (/date|minted|on$|created|updated|modified|expire|sold|start|end$/i.test(key)) {
+      var reformatted = tryReformatDate(s);
+      if (reformatted) return escapeHtml(reformatted);
+    }
     // Avatar ID fields — resolve to username (matches avatarid at end, or avatar.*id pattern)
     if (/avatar.*id$/i.test(key) && s !== NULL_GUID) {
       return escapeHtml(resolveId(s, key, null));
