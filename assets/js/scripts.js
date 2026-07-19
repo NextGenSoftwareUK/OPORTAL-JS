@@ -738,7 +738,7 @@ function addAuthPopup(login, msg, e) {
       user = avatarProfile;
       window.user = avatarProfile;
       // Inject JWT into SDK clients so authenticated calls work immediately
-      var _loginTok = avatarProfile && (avatarProfile.jwtToken || avatarProfile.token || '');
+      var _loginTok = avatarProfile && (avatarProfile.jwtToken || avatarProfile.JwtToken || avatarProfile.token || avatarProfile.Token || '');
       if (_loginTok) {
         if (window.oasisClient) window.oasisClient.setToken(_loginTok);
         if (window.starClient)  window.starClient.setToken(_loginTok);
