@@ -93,15 +93,6 @@
     return s;
   }
 
-  // Providers that mean "stored in the default provider (MongoDB)" when no explicit provider is tagged
-  var MONGO_ALIASES = { '': true, 'None': true, 'All': true, 'Default': true, 'MongoDBOASIS': true };
-
-  function providerMatches(h, selected) {
-    var key = getProviderKey(h);
-    if (selected === 'MongoDBOASIS') return !!MONGO_ALIASES[key];
-    return key === selected;
-  }
-
   function getById(id) { return document.getElementById(id); }
 
   function escapeHtml(v) {
@@ -317,20 +308,13 @@
 
     try {
       var body = { Id: avatarId, holonType: 'All' };
-      // Always load all from API; filter client-side by provider to ensure correct counts
+      if (currentProvider !== 'all') body.providerType = currentProvider;
       var sdkRes = await window.oasisClient.data.loadHolonsForParent(body);
       hideStatus();
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
       _cachedBrowseList = list || [];
       storeHolons(_cachedBrowseList);
-
-      // Client-side provider filter
-      var filtered = _cachedBrowseList;
-      if (currentProvider !== 'all' && filtered.length) {
-        filtered = filtered.filter(function (h) { return providerMatches(h, currentProvider); });
-      }
-
-      renderBrowseGrid(filtered);
+      renderBrowseGrid(_cachedBrowseList);
       if (!list) showStatus('warn', 'No holons returned from the API.');
     } catch (e) {
       hideStatus();
@@ -623,15 +607,8 @@
       provSel.addEventListener('change', function () {
         currentProvider = provSel.value;
         // Re-filter cached list instead of re-fetching for instant response
-        if (_cachedBrowseList) {
-          var filtered = _cachedBrowseList;
-          if (currentProvider !== 'all') {
-            filtered = _cachedBrowseList.filter(function (h) { return providerMatches(h, currentProvider); });
-          }
-          renderBrowseGrid(filtered);
-        } else {
-          loadAllHolons();
-        }
+        _cachedBrowseList = null;
+        loadAllHolons();
       });
     }
 
