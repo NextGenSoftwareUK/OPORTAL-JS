@@ -4755,10 +4755,14 @@ select option {
 
 .data-modal-shell { width: 100%; padding: 0; }
 
-/* Prevent the outer modal__block from adding a second scrollbar */
-.modal__block[data-type="data"] { overflow: hidden; }
-#data-modal-block { overflow: hidden; }
-#data-modal-block .data-modal-card { max-height: 92vh; overflow: hidden; }
+/* Kill every scrollbar except the tab panel's inner one */
+.modal__block[data-type="data"],
+#data-modal-block,
+#data-modal-block .data-modal-shell,
+#data-modal-block .data-modal-card { overflow: hidden !important; }
+#data-modal-block .data-modal-card { max-height: 92vh; }
+#data-modal-block .data-modal-card::-webkit-scrollbar { display: none !important; }
+#data-modal-block .data-modal-shell::-webkit-scrollbar { display: none !important; }
 
 .data-modal-card {
   width: 100%;
