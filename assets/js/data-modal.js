@@ -206,10 +206,12 @@
     if (modifiedBy) html += detailRow('Modified By', modifiedBy);
     if (deletedDate) html += detailRow('Deleted', deletedDate);
 
-    // MetaData
+    // MetaData — skip keys that duplicate top-level fields already shown above
+    var META_SKIP = /^(id|holonid|parentid|parentholonid|createdbyavatarid|modifiedbyavatarid|isactive|active|createddate|modifieddate|deleteddate|holontype|providertype)$/i;
     var meta = h.metaData || h.MetaData || h.metadata;
     if (meta && typeof meta === 'object') {
       Object.keys(meta).forEach(function (k) {
+        if (META_SKIP.test(k)) return;
         var v = meta[k];
         if (v != null && v !== '') html += detailRow(k, typeof v === 'object' ? JSON.stringify(v) : v);
       });
