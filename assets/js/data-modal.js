@@ -314,6 +314,10 @@
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
       _cachedBrowseList = list || [];
       storeHolons(_cachedBrowseList);
+      if (_cachedBrowseList.length) {
+        var h0 = _cachedBrowseList[0];
+        console.log('[data-modal] first holon providerType raw:', h0.providerType, h0.ProviderType, h0.provider, h0.Provider, '| getProviderKey:', getProviderKey(h0));
+      }
 
       // Client-side provider filter
       var filtered = _cachedBrowseList;
