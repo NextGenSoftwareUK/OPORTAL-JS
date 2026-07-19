@@ -4917,7 +4917,7 @@ select option {
 .data-card-footer {
   margin-top: auto;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 4px;
   min-height: 28px;
