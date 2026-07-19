@@ -4755,6 +4755,9 @@ select option {
 
 .data-modal-shell { width: 100%; padding: 0; }
 
+/* Prevent the outer modal__block from adding a second scrollbar */
+.modal__block[data-type="data"] { overflow: hidden; }
+
 .data-modal-card {
   width: 100%;
   border-radius: 30px;
