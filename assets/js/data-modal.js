@@ -93,6 +93,15 @@
     return s;
   }
 
+  // Providers that mean "stored in the default provider (MongoDB)" when no explicit provider is tagged
+  var MONGO_ALIASES = { '': true, 'None': true, 'All': true, 'Default': true, 'MongoDBOASIS': true };
+
+  function providerMatches(h, selected) {
+    var key = getProviderKey(h);
+    if (selected === 'MongoDBOASIS') return !!MONGO_ALIASES[key];
+    return key === selected;
+  }
+
   function getById(id) { return document.getElementById(id); }
 
   function escapeHtml(v) {
@@ -314,17 +323,11 @@
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
       _cachedBrowseList = list || [];
       storeHolons(_cachedBrowseList);
-      if (_cachedBrowseList.length) {
-        var h0 = _cachedBrowseList[0];
-        console.log('[data-modal] first holon providerType raw:', h0.providerType, h0.ProviderType, h0.provider, h0.Provider, '| getProviderKey:', getProviderKey(h0));
-      }
 
       // Client-side provider filter
       var filtered = _cachedBrowseList;
       if (currentProvider !== 'all' && filtered.length) {
-        filtered = filtered.filter(function (h) {
-          return getProviderKey(h) === currentProvider;
-        });
+        filtered = filtered.filter(function (h) { return providerMatches(h, currentProvider); });
       }
 
       renderBrowseGrid(filtered);
@@ -623,9 +626,7 @@
         if (_cachedBrowseList) {
           var filtered = _cachedBrowseList;
           if (currentProvider !== 'all') {
-            filtered = _cachedBrowseList.filter(function (h) {
-              return getProviderKey(h) === currentProvider;
-            });
+            filtered = _cachedBrowseList.filter(function (h) { return providerMatches(h, currentProvider); });
           }
           renderBrowseGrid(filtered);
         } else {
