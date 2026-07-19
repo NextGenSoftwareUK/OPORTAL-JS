@@ -1,6 +1,6 @@
 <div class="modal__block js-modal-block data-modal-block" data-type="data" id="data-modal-block">
   <section class="data-modal-shell" aria-label="Data / Holons">
-    <div class="data-modal-card">
+    <div class="data-modal-card" style="position:relative">
 
       <div class="data-modal-top">
         <div>
@@ -26,13 +26,77 @@
         <div class="data-browse-bar">
           <div class="data-provider-bar">
             <span class="data-label">Provider:</span>
-            <div class="data-provider-pills" id="data-provider-pills">
-              <button class="data-provider-pill is-active" data-provider="all">All</button>
-              <button class="data-provider-pill" data-provider="HoloOASIS">Holochain</button>
-              <button class="data-provider-pill" data-provider="MongoDBOASIS">MongoDB</button>
-              <button class="data-provider-pill" data-provider="SQLiteOASIS">SQLite</button>
-              <button class="data-provider-pill" data-provider="IPFSOASIS">IPFS</button>
-            </div>
+            <select class="data-form-select data-provider-select" id="data-provider-select" style="min-height:36px;padding:0 10px;font-size:0.82rem;max-width:220px">
+              <option value="all">All Providers</option>
+              <optgroup label="Databases">
+                <option value="MongoDBOASIS">MongoDB</option>
+                <option value="SQLLiteDBOASIS">SQLite</option>
+                <option value="SQLServerDBOASIS">SQL Server</option>
+                <option value="Neo4jOASIS">Neo4j</option>
+                <option value="OracleDBOASIS">Oracle DB</option>
+                <option value="AzureCosmosDBOASIS">Azure CosmosDB</option>
+              </optgroup>
+              <optgroup label="Distributed / Storage">
+                <option value="HoloOASIS">Holochain</option>
+                <option value="IPFSOASIS">IPFS</option>
+                <option value="PinataOASIS">Pinata (IPFS)</option>
+                <option value="LocalFileOASIS">Local File</option>
+                <option value="ThreeFoldOASIS">ThreeFold</option>
+                <option value="UrbitOASIS">Urbit</option>
+                <option value="SOLIDOASIS">SOLID</option>
+                <option value="ActivityPubOASIS">ActivityPub</option>
+                <option value="ScuttlebuttOASIS">Scuttlebutt</option>
+              </optgroup>
+              <optgroup label="Cloud">
+                <option value="GoogleCloudOASIS">Google Cloud</option>
+                <option value="AzureStorageOASIS">Azure Storage</option>
+                <option value="AWSOASIS">AWS</option>
+              </optgroup>
+              <optgroup label="Blockchains — EVM">
+                <option value="EthereumOASIS">Ethereum</option>
+                <option value="PolygonOASIS">Polygon</option>
+                <option value="ArbitrumOASIS">Arbitrum</option>
+                <option value="AvalancheOASIS">Avalanche</option>
+                <option value="BaseOASIS">Base</option>
+                <option value="BNBChainOASIS">BNB Chain</option>
+                <option value="OptimismOASIS">Optimism</option>
+                <option value="LineaOASIS">Linea</option>
+                <option value="ScrollOASIS">Scroll</option>
+                <option value="ZkSyncOASIS">zkSync</option>
+                <option value="FantomOASIS">Fantom</option>
+                <option value="RootstockOASIS">Rootstock</option>
+                <option value="LoomOASIS">Loom</option>
+                <option value="MoralisOASIS">Moralis</option>
+              </optgroup>
+              <optgroup label="Blockchains — Other">
+                <option value="SolanaOASIS">Solana</option>
+                <option value="CardanoOASIS">Cardano</option>
+                <option value="PolkadotOASIS">Polkadot</option>
+                <option value="NEAROASIS">NEAR</option>
+                <option value="SuiOASIS">Sui</option>
+                <option value="AptosOASIS">Aptos</option>
+                <option value="StellarOASIS">Stellar</option>
+                <option value="XRPLOASIS">XRP</option>
+                <option value="EOSIOOASIS">EOSIO</option>
+                <option value="TelosOASIS">Telos</option>
+                <option value="SEEDSOASIS">SEEDS</option>
+                <option value="TONOASIS">TON</option>
+                <option value="TRONOASIS">TRON</option>
+                <option value="CosmosBlockChainOASIS">Cosmos</option>
+                <option value="BitcoinOASIS">Bitcoin</option>
+                <option value="HashgraphOASIS">Hashgraph</option>
+                <option value="ElrondOASIS">Elrond</option>
+                <option value="ChainLinkOASIS">ChainLink</option>
+                <option value="MonadOASIS">Monad</option>
+                <option value="StarknetOASIS">StarkNet</option>
+                <option value="AztecOASIS">Aztec</option>
+                <option value="MidenOASIS">Miden</option>
+                <option value="ZcashOASIS">Zcash</option>
+                <option value="RadixOASIS">Radix</option>
+                <option value="BlockStackOASIS">Blockstack</option>
+                <option value="TelegramOASIS">Telegram</option>
+              </optgroup>
+            </select>
           </div>
           <button id="data-refresh-btn" class="nft-refresh-btn" title="Refresh">&#8635;</button>
         </div>
@@ -55,13 +119,74 @@
             <label class="data-form-label" for="data-load-provider">Provider</label>
             <select class="data-form-select" id="data-load-provider">
               <option value="">Any</option>
-              <option value="HoloOASIS">Holochain</option>
-              <option value="MongoDBOASIS">MongoDB</option>
-              <option value="SQLiteOASIS">SQLite</option>
-              <option value="IPFSOASIS">IPFS</option>
-              <option value="EthereumOASIS">Ethereum</option>
-              <option value="SolanaOASIS">Solana</option>
-              <option value="EOSIOOASIS">EOSIO</option>
+              <optgroup label="Databases">
+                <option value="MongoDBOASIS">MongoDB</option>
+                <option value="SQLLiteDBOASIS">SQLite</option>
+                <option value="SQLServerDBOASIS">SQL Server</option>
+                <option value="Neo4jOASIS">Neo4j</option>
+                <option value="OracleDBOASIS">Oracle DB</option>
+                <option value="AzureCosmosDBOASIS">Azure CosmosDB</option>
+              </optgroup>
+              <optgroup label="Distributed / Storage">
+                <option value="HoloOASIS">Holochain</option>
+                <option value="IPFSOASIS">IPFS</option>
+                <option value="PinataOASIS">Pinata (IPFS)</option>
+                <option value="LocalFileOASIS">Local File</option>
+                <option value="ThreeFoldOASIS">ThreeFold</option>
+                <option value="UrbitOASIS">Urbit</option>
+                <option value="SOLIDOASIS">SOLID</option>
+                <option value="ActivityPubOASIS">ActivityPub</option>
+                <option value="ScuttlebuttOASIS">Scuttlebutt</option>
+              </optgroup>
+              <optgroup label="Cloud">
+                <option value="GoogleCloudOASIS">Google Cloud</option>
+                <option value="AzureStorageOASIS">Azure Storage</option>
+                <option value="AWSOASIS">AWS</option>
+              </optgroup>
+              <optgroup label="Blockchains — EVM">
+                <option value="EthereumOASIS">Ethereum</option>
+                <option value="PolygonOASIS">Polygon</option>
+                <option value="ArbitrumOASIS">Arbitrum</option>
+                <option value="AvalancheOASIS">Avalanche</option>
+                <option value="BaseOASIS">Base</option>
+                <option value="BNBChainOASIS">BNB Chain</option>
+                <option value="OptimismOASIS">Optimism</option>
+                <option value="LineaOASIS">Linea</option>
+                <option value="ScrollOASIS">Scroll</option>
+                <option value="ZkSyncOASIS">zkSync</option>
+                <option value="FantomOASIS">Fantom</option>
+                <option value="RootstockOASIS">Rootstock</option>
+                <option value="LoomOASIS">Loom</option>
+                <option value="MoralisOASIS">Moralis</option>
+              </optgroup>
+              <optgroup label="Blockchains — Other">
+                <option value="SolanaOASIS">Solana</option>
+                <option value="CardanoOASIS">Cardano</option>
+                <option value="PolkadotOASIS">Polkadot</option>
+                <option value="NEAROASIS">NEAR</option>
+                <option value="SuiOASIS">Sui</option>
+                <option value="AptosOASIS">Aptos</option>
+                <option value="StellarOASIS">Stellar</option>
+                <option value="XRPLOASIS">XRP</option>
+                <option value="EOSIOOASIS">EOSIO</option>
+                <option value="TelosOASIS">Telos</option>
+                <option value="SEEDSOASIS">SEEDS</option>
+                <option value="TONOASIS">TON</option>
+                <option value="TRONOASIS">TRON</option>
+                <option value="CosmosBlockChainOASIS">Cosmos</option>
+                <option value="BitcoinOASIS">Bitcoin</option>
+                <option value="HashgraphOASIS">Hashgraph</option>
+                <option value="ElrondOASIS">Elrond</option>
+                <option value="ChainLinkOASIS">ChainLink</option>
+                <option value="MonadOASIS">Monad</option>
+                <option value="StarknetOASIS">StarkNet</option>
+                <option value="AztecOASIS">Aztec</option>
+                <option value="MidenOASIS">Miden</option>
+                <option value="ZcashOASIS">Zcash</option>
+                <option value="RadixOASIS">Radix</option>
+                <option value="BlockStackOASIS">Blockstack</option>
+                <option value="TelegramOASIS">Telegram</option>
+              </optgroup>
             </select>
           </div>
           <button class="button data-submit-btn" type="submit" id="data-load-btn">Load Holon</button>
@@ -83,30 +208,47 @@
           <div class="data-form-row">
             <label class="data-form-label" for="data-save-type">Holon Type</label>
             <select class="data-form-select" id="data-save-type">
-              <option value="0">All</option>
-              <option value="1">Moon</option>
-              <option value="2">Planet</option>
-              <option value="3">Star</option>
-              <option value="4">SuperStar</option>
-              <option value="5">Omniverse</option>
-              <option value="6">Multiverse</option>
-              <option value="7">Universe</option>
-              <option value="8">Galaxy</option>
-              <option value="9">SolarSystem</option>
-              <option value="10">GreatGrandSuperStar</option>
-              <option value="11">GrandSuperStar</option>
+              <option value="0">Default</option>
+              <option value="36">Holon</option>
+              <option value="37">STARHolon</option>
+              <option value="33">Zome</option>
+              <option value="2">Player</option>
+              <option value="3">Avatar</option>
+              <option value="5">Clan</option>
+              <option value="6">Mission</option>
+              <option value="7">Chapter</option>
+              <option value="8">Quest</option>
+              <option value="9">Game</option>
+              <option value="12">InventoryItem</option>
+              <option value="58">Web3NFT</option>
+              <option value="59">Web4NFT</option>
+              <option value="64">Web4GeoNFT</option>
+              <option value="70">GeoHotSpot</option>
+              <option value="72">OAPP</option>
+              <option value="73">OAPPTemplate</option>
+              <option value="27">Planet</option>
+              <option value="26">Star</option>
+              <option value="25">SuperStar</option>
+              <option value="39">Omniverse</option>
+              <option value="42">Universe</option>
+              <option value="44">Galaxy</option>
+              <option value="45">SolarSystem</option>
+              <option value="49">Portal</option>
+              <option value="50">StarGate</option>
             </select>
           </div>
           <div class="data-form-row">
             <label class="data-form-label" for="data-save-provider">Provider</label>
             <select class="data-form-select" id="data-save-provider">
               <option value="">Default</option>
-              <option value="HoloOASIS">Holochain</option>
               <option value="MongoDBOASIS">MongoDB</option>
-              <option value="SQLiteOASIS">SQLite</option>
+              <option value="SQLLiteDBOASIS">SQLite</option>
+              <option value="HoloOASIS">Holochain</option>
               <option value="IPFSOASIS">IPFS</option>
               <option value="EthereumOASIS">Ethereum</option>
               <option value="SolanaOASIS">Solana</option>
+              <option value="PolygonOASIS">Polygon</option>
+              <option value="LocalFileOASIS">Local File</option>
             </select>
           </div>
           <div class="data-form-row data-form-row--check">
@@ -142,7 +284,7 @@
             <select class="data-form-select" id="data-offchain-provider">
               <option value="">Default</option>
               <option value="MongoDBOASIS">MongoDB</option>
-              <option value="SQLiteOASIS">SQLite</option>
+              <option value="SQLLiteDBOASIS">SQLite</option>
             </select>
           </div>
           <button class="button data-submit-btn" type="submit" id="data-offchain-btn">Save Off-Chain</button>
@@ -175,6 +317,13 @@
           <button class="button data-submit-btn" type="submit" id="data-search-btn">Search Holons</button>
         </form>
         <div id="data-search-results" class="data-holon-grid" style="margin-top:18px"></div>
+      </div>
+
+      <!-- Holon Detail Panel (overlays the card) -->
+      <div id="data-detail-panel" class="data-detail-panel" style="display:none;position:absolute;inset:0;border-radius:30px;background:rgba(8,18,29,0.97);padding:24px 34px 34px;overflow-y:auto;z-index:10;animation:nft-detail-in 0.22s ease-out">
+        <button class="nft-detail-back-btn" id="data-detail-back-btn">&#8592; Back</button>
+        <h2 id="data-detail-title" style="margin:0 0 18px;font-size:1.4rem;font-weight:700;color:#fff"></h2>
+        <div id="data-detail-rows"></div>
       </div>
 
     </div>

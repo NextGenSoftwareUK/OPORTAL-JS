@@ -60,7 +60,7 @@
     var el = getById('karma-modal-status');
     if (!el) return;
     el.className = 'karma-status karma-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : '');
     el.hidden = false;
   }
 

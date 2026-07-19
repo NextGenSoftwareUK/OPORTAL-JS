@@ -11,7 +11,7 @@
   function showStatus(type, msg) {
     var el = document.getElementById('oapps-status');
     if (!el) return;
-    el.textContent = msg; el.className = 'oapps-status oapps-status--' + type; el.hidden = false;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : ''); el.className = 'oapps-status oapps-status--' + type; el.hidden = false;
     if (type === 'loading') return;
     setTimeout(function(){ el.hidden = true; }, 4000);
   }

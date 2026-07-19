@@ -24,7 +24,7 @@
     var el = getById('map-modal-status');
     if (!el) return;
     el.className = 'map-status map-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : '');
     el.hidden = false;
   }
 

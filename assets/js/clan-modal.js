@@ -3,7 +3,7 @@
 
   function getById(id) { return document.getElementById(id); }
   function escHtml(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function showStatus(type, msg) { var el = getById('clan-status'); if (!el) return; el.className = 'clan-status clan-status--' + type; el.textContent = msg; el.hidden = false; }
+  function showStatus(type, msg) { var el = getById('clan-status'); if (!el) return; el.className = 'clan-status clan-status--' + type; el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : ''); el.hidden = false; }
   function hideStatus() { var el = getById('clan-status'); if (el) el.hidden = true; }
   function showStatusBrief(type, msg) { showStatus(type, msg); setTimeout(hideStatus, 3500); }
   function setText(id, v) { var el = getById(id); if (el) el.textContent = v; }

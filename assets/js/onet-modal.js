@@ -18,7 +18,7 @@
     var el = getById('onet-modal-status');
     if (!el) return;
     el.className = 'onet-status onet-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : '');
     el.hidden = false;
   }
 

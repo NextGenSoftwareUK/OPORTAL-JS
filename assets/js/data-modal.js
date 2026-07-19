@@ -3,6 +3,71 @@
   var currentProvider = 'all';
   var isFetching = false;
 
+  // HolonType enum number → display name
+  var HOLON_TYPE_MAP = {
+    0:'Default',1:'All',2:'Player',3:'Avatar',4:'AvatarDetail',5:'Clan',
+    6:'Mission',7:'Chapter',8:'Quest',9:'Game',10:'GameSession',11:'GameArea',
+    12:'InventoryItem',13:'Park',14:'Building',15:'Restaurant',16:'Cafe',
+    17:'TrainStation',18:'UndergroundStation',19:'BusStation',
+    20:'STARCelestialBody',21:'CelestialBodyMetaDataDNA',22:'STARCelestialSpace',
+    23:'GreatGrandSuperStar',24:'GrandSuperStar',25:'SuperStar',26:'Star',
+    27:'Planet',28:'Moon',29:'Asteroid',30:'Comet',31:'Meteroid',32:'Nebula',
+    33:'Zome',34:'ZomeMetaDataDNA',35:'STARZome',36:'Holon',37:'STARHolon',
+    38:'HolonMetaDataDNA',39:'Omniverse',40:'SuperVerse',41:'Multiverse',
+    42:'Universe',43:'GalaxyCluster',44:'Galaxy',45:'SolarSystem',
+    46:'Dimension',47:'WormHole',48:'BlackHole',49:'Portal',50:'StarGate',
+    51:'SpaceTimeDistortion',52:'SpaceTimeAbnormally',53:'TemporalRift',
+    54:'StarDust',55:'CosmicWave',56:'CosmicRay',57:'GravitationalWave',
+    58:'Web3NFT',59:'Web4NFT',63:'Web5NFT',64:'Web4GeoNFT',65:'Web5GeoNFT',
+    66:'Web4NFTCollection',67:'Web5NFTCollection',68:'Web4GeoNFTCollection',
+    69:'Web5GeoNFTCollection',70:'GeoHotSpot',71:'STARNETHolon',72:'OAPP',
+    73:'OAPPTemplate',74:'Runtime',75:'Library',76:'Plugin',
+    77:'DownloadedSTARNETHolon',78:'DownloadedOAPP',79:'DownloadedOAPPTemplate',
+    80:'DownloadedRuntime',81:'DownloadedLibrary',82:'DownloadedChapter',
+    83:'DownloadedMission',84:'DownloadedQuest',85:'DownloadedGame',
+    86:'DownloadedNFT',87:'DownloadedNFTCollection',88:'DownloadedGeoNFT',
+    89:'DownloadedGeoNFTCollection',90:'DownloadedGeoHotSpot',
+    91:'DownloadedInventoryItem',92:'DownloadedCelestialSpace',
+    93:'DownloadedCelestialBody',100:'InstalledSTARNETHolon',101:'InstalledOAPP',
+    102:'InstalledOAPPTemplate',103:'InstalledRuntime',104:'InstalledLibrary',
+    105:'InstalledChapter',106:'InstalledMission',107:'InstalledQuest',
+    108:'InstalledGame',109:'InstalledNFT',110:'InstalledNFTCollection',
+    111:'InstalledGeoNFT',112:'InstalledGeoNFTCollection',113:'InstalledGeoHotSpot',
+    114:'InstalledInventoryItem',123:'Proposal',124:'HolonicBraidGraph',
+    125:'HolonicBraidLibrary',126:'ReasoningAgent',127:'ReasoningSession'
+  };
+
+  function holonTypeName(raw) {
+    if (raw == null || raw === '') return '';
+    // Object with .name property
+    if (typeof raw === 'object') {
+      var n = raw.name || raw.Name || raw.value || raw.Value;
+      if (n != null) return holonTypeName(n);
+      return '';
+    }
+    var num = Number(raw);
+    if (!isNaN(num) && HOLON_TYPE_MAP[num]) return HOLON_TYPE_MAP[num];
+    // Already a string name
+    return String(raw);
+  }
+
+  function providerDisplayName(raw) {
+    if (raw == null || raw === '') return '';
+    if (typeof raw === 'object') {
+      var n = raw.name || raw.Name;
+      if (n) return providerDisplayName(n);
+    }
+    var s = String(raw);
+    // Strip trailing OASIS for display
+    return s.replace(/OASIS$/i, '').replace(/OASISdb$/i, ' DB');
+  }
+
+  function getProviderKey(h) {
+    var raw = h.providerType || h.ProviderType || h.provider || h.Provider || '';
+    if (typeof raw === 'object') return (raw.name || raw.Name || '');
+    return String(raw);
+  }
+
   function getById(id) { return document.getElementById(id); }
 
   function escapeHtml(v) {
@@ -16,9 +81,11 @@
     catch (e) { return null; }
   }
 
-  function getToken(p) { return p && (p.jwtToken || p.token || ''); }
+  function getToken(p) { return p && (p.jwtToken || p.JwtToken || p.token || p.Token || ''); }
 
   // ── Status ───────────────────────────────────────────────────────────────────
+
+  var SPINNER_HTML = ' <span class="modal-spinner"></span>';
 
   function isUnauthorized(msg) {
     return msg && /unauthorized|401|authenticate/i.test(msg);
@@ -31,7 +98,7 @@
     var el = getById('data-modal-status');
     if (!el) return;
     el.className = 'data-status data-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = escapeHtml(msg) + (type === 'loading' ? SPINNER_HTML : '');
     el.hidden = false;
   }
 
@@ -40,39 +107,133 @@
     if (el) el.hidden = true;
   }
 
+  // ── Holon detail panel ───────────────────────────────────────────────────────
+
+  function fmtDate(raw) {
+    if (!raw) return '';
+    try {
+      var d = new Date(raw);
+      if (isNaN(d)) return '';
+      if (d.getFullYear() < 2000) return ''; // default/zero C# DateTime
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch (e) { return ''; }
+  }
+
+  function detailRow(label, value) {
+    if (value == null || value === '') return '';
+    return '<div class="data-detail-row">' +
+      '<span class="data-detail-row-label">' + escapeHtml(label) + '</span>' +
+      '<span class="data-detail-row-value">' + escapeHtml(String(value)) + '</span>' +
+    '</div>';
+  }
+
+  function openHolonDetail(h) {
+    var panel = getById('data-detail-panel');
+    var title = getById('data-detail-title');
+    var rows  = getById('data-detail-rows');
+    if (!panel || !title || !rows) return;
+
+    var name = h.name || h.Name || h.title || h.Title || 'Unnamed Holon';
+    title.textContent = name;
+
+    var typeName = holonTypeName(h.holonType || h.HolonType || h.type || h.Type || '');
+    var provName = providerDisplayName(getProviderKey(h));
+    var id = h.id || h.Id || h.holonId || h.HolonId || '';
+    var parentId = h.parentHolonId || h.ParentHolonId || h.parentId || h.ParentId || '';
+    var desc = h.description || h.Description || '';
+    var karma = h.karma || h.Karma;
+    var xp = h.xp || h.XP;
+    var level = h.level || h.Level;
+    var createdDate = fmtDate(h.createdDate || h.CreatedDate || h.date || h.Date);
+    var modifiedDate = fmtDate(h.modifiedDate || h.ModifiedDate);
+    var deletedDate  = fmtDate(h.deletedDate  || h.DeletedDate);
+    var createdBy = h.createdByAvatarId || h.CreatedByAvatarId || '';
+    var modifiedBy = h.modifiedByAvatarId || h.ModifiedByAvatarId || '';
+    var isActive = (h.isActive != null ? h.isActive : (h.IsActive != null ? h.IsActive : null));
+
+    var html = '';
+    if (desc) html += detailRow('Description', desc);
+    if (typeName) html += detailRow('Holon Type', typeName);
+    if (provName) html += detailRow('Provider', provName);
+    if (id) html += detailRow('ID', id);
+    if (parentId) html += detailRow('Parent ID', parentId);
+    if (karma != null) html += detailRow('Karma', karma);
+    if (xp != null) html += detailRow('XP', xp);
+    if (level != null) html += detailRow('Level', level);
+    if (isActive != null) html += detailRow('Active', isActive ? 'Yes' : 'No');
+    if (createdDate) html += detailRow('Created', createdDate);
+    if (createdBy) html += detailRow('Created By', createdBy);
+    if (modifiedDate) html += detailRow('Modified', modifiedDate);
+    if (modifiedBy) html += detailRow('Modified By', modifiedBy);
+    if (deletedDate) html += detailRow('Deleted', deletedDate);
+
+    // MetaData
+    var meta = h.metaData || h.MetaData || h.metadata;
+    if (meta && typeof meta === 'object') {
+      Object.keys(meta).forEach(function (k) {
+        var v = meta[k];
+        if (v != null && v !== '') html += detailRow(k, typeof v === 'object' ? JSON.stringify(v) : v);
+      });
+    }
+
+    if (!html) html = '<p style="color:var(--color-contrast-medium);font-size:0.85rem">No additional details available.</p>';
+
+    rows.innerHTML = html;
+    panel.style.display = 'block';
+  }
+
+  function closeHolonDetail() {
+    var panel = getById('data-detail-panel');
+    if (panel) panel.style.display = 'none';
+  }
+
   // ── Holon card ────────────────────────────────────────────────────────────────
 
   function buildHolonCard(h, showDelete) {
-    var id = escapeHtml(h.id || h.Id || h.holonId || h.HolonId || '');
+    var id = h.id || h.Id || h.holonId || h.HolonId || '';
     var name = escapeHtml(h.name || h.Name || h.title || h.Title || 'Unnamed Holon');
     var desc = escapeHtml(h.description || h.Description || '');
-    var type = escapeHtml(h.holonType || h.HolonType || h.type || h.Type || '');
-    var provider = escapeHtml(h.providerType || h.ProviderType || h.provider || h.Provider || '');
-    var created = h.createdDate || h.CreatedDate || h.date || h.Date || '';
-    var dateStr = '';
-    if (created) {
-      try { dateStr = new Date(created).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }); }
-      catch (e) { dateStr = escapeHtml(String(created)); }
-    }
+    var typeName = escapeHtml(holonTypeName(h.holonType || h.HolonType || h.type || h.Type || ''));
+    var provName = escapeHtml(providerDisplayName(getProviderKey(h)));
+    var dateStr = fmtDate(h.createdDate || h.CreatedDate || h.date || h.Date);
 
     var deleteBtn = showDelete && id
-      ? '<button class="data-card-delete" onclick="window._dataDeleteHolon(\'' + id + '\')" title="Delete">&#x2715;</button>'
+      ? '<button class="data-card-delete" onclick="event.stopPropagation();window._dataDeleteHolon(\'' + escapeHtml(id) + '\')" title="Delete holon">🗑</button>'
       : '';
 
-    return '<div class="data-holon-card">' +
+    // Encode holon data for click-to-detail
+    var dataAttr = 'data-holon-idx="' + escapeHtml(id) + '"';
+
+    return '<div class="data-holon-card" ' + dataAttr + ' onclick="window._dataOpenCard(this)">' +
       '<div class="data-holon-card-header">' +
         '<div class="data-holon-card-name">' + name + '</div>' +
-        deleteBtn +
       '</div>' +
       (desc ? '<div class="data-holon-card-desc">' + desc + '</div>' : '') +
       '<div class="data-holon-card-meta">' +
-        (type ? '<span class="data-holon-badge">' + type + '</span>' : '') +
-        (provider ? '<span class="data-holon-badge data-holon-badge--provider">' + provider + '</span>' : '') +
-        (dateStr ? '<span class="data-holon-date">' + dateStr + '</span>' : '') +
+        (typeName ? '<span class="data-holon-badge">' + typeName + '</span>' : '') +
+        (provName ? '<span class="data-holon-badge data-holon-badge--provider">' + provName + '</span>' : '') +
+        (dateStr ? '<span class="data-holon-date">' + escapeHtml(dateStr) + '</span>' : '') +
       '</div>' +
-      (id ? '<div class="data-holon-id" title="' + id + '">' + id + '</div>' : '') +
+      (id ? '<div class="data-holon-id" title="' + escapeHtml(id) + '">' + escapeHtml(id) + '</div>' : '') +
+      (showDelete ? '<div style="display:flex;justify-content:flex-end;margin-top:4px">' + deleteBtn + '</div>' : '') +
     '</div>';
   }
+
+  // Store holons by id for click-to-detail
+  var _holonStore = {};
+
+  function storeHolons(list) {
+    list.forEach(function (h) {
+      var id = h.id || h.Id || h.holonId || h.HolonId;
+      if (id) _holonStore[id] = h;
+    });
+  }
+
+  window._dataOpenCard = function (el) {
+    var idx = el.getAttribute('data-holon-idx');
+    var h = idx && _holonStore[idx];
+    if (h) openHolonDetail(h);
+  };
 
   function extractList(data) {
     if (!data) return null;
@@ -82,7 +243,6 @@
     if (Array.isArray(data.data)) return data.data;
     if (Array.isArray(data.holons)) return data.holons;
     if (Array.isArray(data.items)) return data.items;
-    // Single holon returned
     if (data.id || data.Id || data.name || data.Name) return [data];
     return null;
   }
@@ -101,14 +261,23 @@
     var avatarId = profile && (profile.avatarId || profile.AvatarId || profile.id || profile.Id || '');
 
     try {
-      // Load holons belonging to this avatar (matches dashboard count)
       var body = { Id: avatarId, holonType: 'All' };
-      if (currentProvider !== 'all') body.providerType = currentProvider;
+      // Always load all from API; filter client-side by provider to ensure correct counts
       var sdkRes = await window.oasisClient.data.loadHolonsForParent(body);
       hideStatus();
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
       _cachedBrowseList = list || [];
-      renderBrowseGrid(list);
+      storeHolons(_cachedBrowseList);
+
+      // Client-side provider filter
+      var filtered = _cachedBrowseList;
+      if (currentProvider !== 'all' && filtered.length) {
+        filtered = filtered.filter(function (h) {
+          return getProviderKey(h) === currentProvider;
+        });
+      }
+
+      renderBrowseGrid(filtered);
       if (!list) showStatus('warn', 'No holons returned from the API.');
     } catch (e) {
       hideStatus();
@@ -127,10 +296,10 @@
     existing.forEach(function (el) { el.parentNode.removeChild(el); });
 
     if (!list || !list.length) {
-      if (empty) empty.hidden = false;
+      if (empty) empty.style.display = '';
       return;
     }
-    if (empty) empty.hidden = true;
+    if (empty) empty.style.display = 'none';
     grid.insertAdjacentHTML('beforeend', list.map(function (h) { return buildHolonCard(h, true); }).join(''));
   }
 
@@ -146,16 +315,11 @@
     if (btn) btn.disabled = true;
 
     try {
-      // SDK: @oasisomniverse/web4-api
       var body = provider ? { id: id, providerType: provider } : { id: id };
       var sdkRes = await window.oasisClient.data.loadHolon(body);
-      /* OLD fetch:
-      var path = provider ? '/api/data/load-holon/' + encodeURIComponent(id) + '/true/true/0/true/0/' + encodeURIComponent(provider) + '/false' : '/api/data/load-holon/' + encodeURIComponent(id);
-      var res = await fetch(API_BASE + path, { headers: { 'Authorization': 'Bearer ' + token } });
-      var data = res.ok ? await res.json() : null;
-      */
       hideStatus();
       var list = sdkRes.isError ? null : extractList(sdkRes.result);
+      if (list) storeHolons(list);
       var resultEl = getById('data-load-result');
       if (resultEl) {
         if (list && list.length) {
@@ -164,7 +328,6 @@
           resultEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon">🔍</div><p>No holon found with that ID.</p></div>';
         }
       }
-      // Only show red error for genuine API failures, not "not found"
       if (sdkRes.isError && list === null) {
         var msg = sdkRes.message || '';
         var isNotFound = /not found|no holon|404/i.test(msg);
@@ -189,7 +352,6 @@
       return;
     }
 
-    // API expects { holon: { ... }, onChainProvider: "..." }
     var payload = {
       holon: { name: name, description: desc, holonType: Number(type) },
       saveChildren: true
@@ -229,12 +391,11 @@
     var token = getToken(profile);
     if (!token) { showStatus('error', 'Please sign in first.'); return; }
 
-    resultsEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon" style="animation:spin 1s linear infinite">⌛</div><p>Searching…</p></div>';
+    resultsEl.innerHTML = '<div class="data-empty"><div class="data-empty-icon" style="animation:spinner-spin 1s linear infinite">⌛</div><p>Searching…</p></div>';
     var btn = getById('data-search-btn');
     if (btn) btn.disabled = true;
 
     try {
-      // Build SearchParams compatible with the OASIS search API
       var searchParams = {
         searchOnlyForCurrentAvatar: true,
         recursive: true,
@@ -265,7 +426,6 @@
       if (list && list.length) {
         renderSearchResults(list, query);
       } else {
-        // Fall back to client-side filter on browse data
         renderSearchResults(clientSideSearch(query, inName, inDesc, inMeta, metaKey, metaVal), query);
       }
     } catch (e) {
@@ -286,8 +446,7 @@
         if (inDesc && (h.description || h.Description || '').toLowerCase().includes(q)) matched = true;
         if (inMeta) {
           var meta = h.metaData || h.MetaData || h.metadata || {};
-          var metaStr = JSON.stringify(meta).toLowerCase();
-          if (metaStr.includes(q)) matched = true;
+          if (JSON.stringify(meta).toLowerCase().includes(q)) matched = true;
         }
         if (!matched) return false;
       }
@@ -308,6 +467,7 @@
       el.innerHTML = '<div class="data-empty"><div class="data-empty-icon">🔍</div><p>No holons found' + (query ? ' matching <em>' + escapeHtml(query) + '</em>' : '') + '.</p></div>';
       return;
     }
+    if (list) storeHolons(list);
     el.innerHTML = '<div class="data-search-count">' + list.length + ' result' + (list.length === 1 ? '' : 's') + '</div>' +
       list.map(function (h) { return buildHolonCard(h, false); }).join('');
   }
@@ -322,13 +482,7 @@
 
     showStatus('loading', 'Deleting holon…');
     try {
-      // SDK: @oasisomniverse/web4-api
       var sdkRes = await window.oasisClient.data.deleteHolon({ id: id });
-      /* OLD fetch:
-      var res = await fetch(API_BASE + '/api/data/delete-holon/' + encodeURIComponent(id), {
-        method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token }
-      });
-      */
       if (!sdkRes.isError) {
         showStatus('success', 'Holon deleted.');
         setTimeout(function () { hideStatus(); loadAllHolons(); }, 1500);
@@ -351,6 +505,7 @@
     block.querySelectorAll('.data-tab-panel').forEach(function (p) {
       p.hidden = p.id !== 'data-tab-' + tab;
     });
+    closeHolonDetail();
   }
 
   // ── Open / close ─────────────────────────────────────────────────────────────
@@ -378,6 +533,7 @@
     var block = getById('data-modal-block');
     if (modal) modal.classList.remove('is-visible');
     if (block) block.classList.remove('is-selected');
+    closeHolonDetail();
   }
 
   // ── Bind ──────────────────────────────────────────────────────────────────────
@@ -393,6 +549,9 @@
     var closeBtn = getById('data-modal-close-btn');
     if (closeBtn) closeBtn.addEventListener('click', function (e) { e.preventDefault(); closeDataModal(); });
 
+    var backBtn = getById('data-detail-back-btn');
+    if (backBtn) backBtn.addEventListener('click', closeHolonDetail);
+
     // Tabs
     var tabBar = block.querySelector('.data-tabs');
     if (tabBar) {
@@ -402,22 +561,32 @@
       });
     }
 
-    // Provider pills
-    var pills = getById('data-provider-pills');
-    if (pills) {
-      pills.addEventListener('click', function (e) {
-        var pill = e.target.closest('.data-provider-pill');
-        if (!pill) return;
-        pills.querySelectorAll('.data-provider-pill').forEach(function (p) { p.classList.remove('is-active'); });
-        pill.classList.add('is-active');
-        currentProvider = pill.dataset.provider;
-        loadAllHolons();
+    // Provider dropdown (replaces pills)
+    var provSel = getById('data-provider-select');
+    if (provSel) {
+      provSel.addEventListener('change', function () {
+        currentProvider = provSel.value;
+        // Re-filter cached list instead of re-fetching for instant response
+        if (_cachedBrowseList) {
+          var filtered = _cachedBrowseList;
+          if (currentProvider !== 'all') {
+            filtered = _cachedBrowseList.filter(function (h) {
+              return getProviderKey(h) === currentProvider;
+            });
+          }
+          renderBrowseGrid(filtered);
+        } else {
+          loadAllHolons();
+        }
       });
     }
 
     // Refresh
     var refreshBtn = getById('data-refresh-btn');
-    if (refreshBtn) refreshBtn.addEventListener('click', loadAllHolons);
+    if (refreshBtn) refreshBtn.addEventListener('click', function () {
+      _cachedBrowseList = null;
+      loadAllHolons();
+    });
 
     // Load by ID form
     var loadForm = getById('data-load-form');

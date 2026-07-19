@@ -76,7 +76,7 @@
     var el = getById('avatar-modal-status');
     if (!el) return;
     el.className = 'avatar-inline-status avatar-inline-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : '');
     el.style.visibility = 'visible';
   }
 

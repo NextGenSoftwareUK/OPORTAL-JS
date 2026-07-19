@@ -24,7 +24,7 @@
     var el = getById('onode-modal-status');
     if (!el) return;
     el.className = 'onode-status onode-status--' + type;
-    el.textContent = msg;
+    el.innerHTML = msg + (type === 'loading' ? ' <span class="modal-spinner"></span>' : '');
     el.hidden = false;
   }
 
