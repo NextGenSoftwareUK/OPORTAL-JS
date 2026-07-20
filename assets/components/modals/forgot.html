@@ -102,15 +102,6 @@
     .forgot-status--success { color: #5de6a0; }
     .forgot-status--error   { color: #ff7070; }
     .forgot-status--loading { color: #6bd0ff; }
-    .forgot-spinner {
-      display: inline-block; width: 12px; height: 12px;
-      border: 2px solid rgba(107,208,255,.25);
-      border-top-color: #6bd0ff;
-      border-radius: 50%;
-      vertical-align: -2px; margin-left: 8px;
-      animation: fspin .75s linear infinite;
-    }
-    @keyframes fspin { to { transform: rotate(360deg); } }
   </style>
 
   <div class="forgot-card">
@@ -132,46 +123,3 @@
     <div id="forgot-msg" class="forgot-status" aria-live="polite"></div>
   </div>
 </div>
-
-<script>
-(function () {
-  var form = document.getElementById('forgot-form');
-  var statusEl = document.getElementById('forgot-msg');
-  if (!form || form.dataset.forgotBound) return;
-  form.dataset.forgotBound = 'true';
-  form.dataset.recoveryBound = 'true'; // prevent account-recovery.js from also binding this form
-
-  function setStatus(type, msg) {
-    statusEl.className = 'forgot-status visible forgot-status--' + type;
-    statusEl.textContent = msg;
-  }
-
-  form.addEventListener('submit', async function () {
-    var email = document.getElementById('forgot-email').value.trim();
-    var btn = document.getElementById('forgot-submit');
-    if (!email) { setStatus('error', 'Please enter your email address.'); return; }
-
-    btn.disabled = true; btn.textContent = 'Sending…';
-    setStatus('loading', 'Sending…');
-
-    try {
-      var res = await fetch(window.apiUrl + '/api/avatar/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-      });
-      var data = await res.json().catch(function () { return {}; });
-      if (res.ok) {
-        setStatus('success', 'Reset link sent — check your inbox.');
-      } else {
-        var msg = data?.result?.message || data?.message || 'Something went wrong.';
-        setStatus('error', msg);
-      }
-    } catch (e) {
-      setStatus('error', 'Could not reach the server.');
-    }
-
-    btn.disabled = false; btn.textContent = 'Send reset link';
-  });
-})();
-</script>

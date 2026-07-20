@@ -76,6 +76,13 @@
     button.disabled = !!disabled;
   }
 
+  function setForgotMsg(type, text) {
+    var el = getById('forgot-msg');
+    if (!el) return;
+    el.className = 'forgot-status visible forgot-status--' + type;
+    el.textContent = text;
+  }
+
   function bindForgotPasswordForm() {
     var form = getById('forgot-form');
     if (!form || form.dataset.recoveryBound === 'true') return;
@@ -86,32 +93,26 @@
 
       var emailInput = getById('forgot-email') || getById('forgotEmail');
       var email = emailInput ? emailInput.value.trim() : '';
-      var statusPanel = getById('forgot-status');
       var button = getButton(form);
 
       if (!email) {
-        setPanel(statusPanel, 'error', 'Email required', 'Enter the email address associated with your account.');
+        setForgotMsg('error', 'Please enter your email address.');
         return;
       }
 
-      setPanel(statusPanel, 'loading', 'Sending link', 'Sending link...');
+      setForgotMsg('loading', 'Sending…');
       setButtonState(button, 'Sending...', true);
 
       var response = await postJson('/api/avatar/forgot-password', { email: email });
       var data = await readResponse(response);
 
       if (response.ok) {
-        setPanel(
-          statusPanel,
-          'success',
-          'Check your inbox',
-          getMessage(data) || 'If the email exists in OASIS, a reset link has been sent.'
-        );
+        setForgotMsg('success', 'Reset link sent — check your inbox.');
       } else {
-        setPanel(statusPanel, 'error', 'Request failed', getMessage(data) || 'Something went wrong.');
+        setForgotMsg('error', getMessage(data) || 'Something went wrong.');
       }
 
-      setButtonState(button, 'Submit', false);
+      setButtonState(button, 'Send reset link', false);
     });
   }
 
