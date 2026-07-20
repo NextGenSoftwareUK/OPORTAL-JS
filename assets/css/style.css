@@ -4745,7 +4745,7 @@ select option {
 .modal__block.data-modal-block {
   width: min(960px, calc(100vw - 24px));
   max-height: calc(100vh - 24px);
-  overflow-y: auto; overflow-x: hidden;
+  overflow: hidden;
   left: 50%; top: 50%;
   padding: 0; background: transparent; box-shadow: none; border-radius: 0; backdrop-filter: none;
   -webkit-transform: translate(-50%, -50%);
