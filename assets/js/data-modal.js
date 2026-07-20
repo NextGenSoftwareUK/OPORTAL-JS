@@ -564,8 +564,7 @@
       var sdkRes = await window.oasisClient.data.saveHolon(payload);
       if (!sdkRes.isError) {
         showStatus('success', sdkRes.message || 'Holon saved successfully.');
-        setTimeout(hideStatus, 3500);
-        loadAllHolons();
+        setTimeout(function () { hideStatus(); loadAllHolons(); }, 2000);
       } else {
         showStatus('error', sdkRes.message || 'Save failed.');
       }
