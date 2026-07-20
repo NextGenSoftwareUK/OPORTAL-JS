@@ -649,7 +649,7 @@ function isJwtValid() {
     var parts = token.split('.');
     if (parts.length !== 3) {
       // Not a standard JWT — treat as opaque bearer token, assume valid if non-empty
-      console.log('[JWT] token is not a 3-part JWT (parts=' + parts.length + ', len=' + token.length + ') — treating as valid opaque token');
+      //console.log('[JWT] token is not a 3-part JWT (parts=' + parts.length + ', len=' + token.length + ') — treating as valid opaque token');
       return true;
     }
     // base64url → base64: replace - with + and _ with /, then pad to multiple of 4
@@ -660,16 +660,16 @@ function isJwtValid() {
     // Allow 6-hour clock-skew grace so a misconfigured system clock doesn't break auth
     var SKEW_MS = 6 * 60 * 60 * 1000;
     var valid = payload.exp * 1000 + SKEW_MS > Date.now();
-    console.log('[JWT] exp=' + payload.exp + ', now=' + Math.floor(Date.now()/1000) + ', valid=' + valid);
+    //console.log('[JWT] exp=' + payload.exp + ', now=' + Math.floor(Date.now()/1000) + ', valid=' + valid);
     return valid;
   } catch (e) {
-    console.log('[JWT] isJwtValid error:', e.message);
+    //console.log('[JWT] isJwtValid error:', e.message);
     return false;
   }
 }
 
 function setup() {
-console.log('[SETUP] setup() called');
+//console.log('[SETUP] setup() called');
 const avatarRaw = localStorage.getItem('avatar');
 if (avatarRaw && avatarRaw !== 'undefined') {
     user = JSON.parse(avatarRaw);
@@ -678,7 +678,7 @@ if (avatarRaw && avatarRaw !== 'undefined') {
   var loginDiv = document.querySelector('[data-display="loggedIn"]')
   var avatarDiv = document.querySelector('.nav__item--account')
   var icon = document.getElementsByClassName('avatar')[0]
-  console.log('[SETUP] loggedIn=', localStorage.getItem('loggedIn'), '| avatarDiv=', !!avatarDiv, '| icon=', !!icon);
+  //console.log('[SETUP] loggedIn=', localStorage.getItem('loggedIn'), '| avatarDiv=', !!avatarDiv, '| icon=', !!icon);
 
   /*if logged in, hide guest links*/
   if (localStorage.getItem('loggedIn') === "true"){
@@ -694,19 +694,18 @@ if (avatarRaw && avatarRaw !== 'undefined') {
 
     // If the stored JWT is already locally expired, trigger refresh/re-login
     // before firing dashboard API calls (avoids mass 401s on page load).
-    console.log('[SETUP] isJwtValid()=', typeof isJwtValid === 'function' ? isJwtValid() : 'fn missing');
+    //console.log('[SETUP] isJwtValid()=', typeof isJwtValid === 'function' ? isJwtValid() : 'fn missing');
     if (typeof isJwtValid === 'function' && !isJwtValid()) {
-      console.log('[SETUP] JWT invalid — calling handleUnauthorized and returning early');
+      //console.log('[SETUP] JWT invalid — calling handleUnauthorized and returning early');
       if (typeof window.handleUnauthorized === 'function') {
         window.handleUnauthorized();
         return;
       }
     }
 
-    console.log('[SETUP] showDashboard available?', typeof window.showDashboard === 'function');
-    console.log('[SETUP] #dashboard element exists?', !!document.getElementById('dashboard'));
+    //console.log('[SETUP] showDashboard available?', typeof window.showDashboard === 'function');
+    //console.log('[SETUP] #dashboard element exists?', !!document.getElementById('dashboard'));
     if (typeof window.showDashboard === 'function') window.showDashboard();
-    console.log('[SETUP] showDashboard() called');
   }
 
   /* Do not show drop down*/
@@ -757,15 +756,9 @@ function addAuthPopup(login, msg, e) {
         avatarProfile.avatarId = _canonicalId;
         avatarProfile.AvatarId = _canonicalId;
       }
-      // Check for fresh JWT at wrapper level (msg.result) vs stale stored JWT in avatar profile (msg.result.result)
-      var _wrapperTok = msg.result && (msg.result.jwtToken || msg.result.JwtToken || msg.result.token || msg.result.Token || '');
-      console.log('[AUTH] wrapper-level JWT (msg.result.jwtToken etc)? len=', _wrapperTok ? _wrapperTok.length : 0, '| val=', _wrapperTok ? _wrapperTok.slice(0,40) : 'none');
-      console.log('[AUTH] avatarProfile keys:', avatarProfile ? Object.keys(avatarProfile) : 'null');
       var _loginTok = avatarProfile && (avatarProfile.jwtToken || avatarProfile.JwtToken || avatarProfile.token || avatarProfile.Token || '');
-      console.log('[AUTH] JWT token found in login response?', !!_loginTok, '| length:', _loginTok ? _loginTok.length : 0);
       localStorage.setItem('avatar', JSON.stringify(avatarProfile));
       localStorage.setItem('loggedIn', true)
-      console.log('[AUTH] Saved to localStorage. loggedIn=', localStorage.getItem('loggedIn'));
       user = avatarProfile;
       window.user = avatarProfile;
       // Inject JWT into SDK clients so authenticated calls work immediately
@@ -929,7 +922,7 @@ function onLogin() {
 	};
 	(async () =>
   {
-    console.log('[LOGIN] Sending authenticate request to', `${API_BASE}/api/avatar/authenticate`);
+    //console.log('[LOGIN] Sending authenticate request to', `${API_BASE}/api/avatar/authenticate`);
 		const e = await fetch(
 			`${API_BASE}/api/avatar/authenticate`,
 			{
@@ -941,24 +934,12 @@ function onLogin() {
 		// Re-enable button after request
 		submitBtn.innerHTML = 'Submit'
 		submitBtn.disabled = false
-    console.log('[LOGIN] authenticate response status:', e.status);
 		var t;
 		if (200 === e.status) {
       t = await e.json();
-      console.log('[LOGIN] authenticate response body:', JSON.stringify(t).slice(0, 500));
       addAuthPopup(true, t, e);
-      var extracted = extractAvatarData(t);
-      console.log('[LOGIN] extractAvatarData result:', extracted ? JSON.stringify(extracted).slice(0, 300) : 'null');
-      var hydrated = await hydrateLoggedInAvatar(extracted);
-      console.log('[LOGIN] hydrateLoggedInAvatar result:', hydrated ? JSON.stringify(hydrated).slice(0, 300) : 'null');
-      console.log('[LOGIN] localStorage.loggedIn after hydrate:', localStorage.getItem('loggedIn'));
-      var savedAvatar = localStorage.getItem('avatar');
-      var parsed = savedAvatar ? JSON.parse(savedAvatar) : null;
-      console.log('[LOGIN] avatar in localStorage after hydrate — jwtToken present?', !!(parsed && (parsed.jwtToken || parsed.JwtToken || parsed.token || parsed.Token)));
-      console.log('[LOGIN] isJwtValid():', typeof isJwtValid === 'function' ? isJwtValid() : 'n/a');
-      console.log('[LOGIN] calling setup()...');
+      await hydrateLoggedInAvatar(extractAvatarData(t));
       if (typeof setup === 'function') setup();
-      console.log('[LOGIN] setup() returned');
     } else {
       t = await e.json();
       submitBtn.classList.add('error');
