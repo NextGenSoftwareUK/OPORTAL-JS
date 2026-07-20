@@ -4764,8 +4764,9 @@ select option {
 #data-modal-block,
 #data-modal-block .data-modal-shell,
 #data-modal-block .data-modal-card { overflow: hidden; }
-#data-modal-block .data-modal-card::-webkit-scrollbar { display: none; }
-#data-modal-block .data-modal-shell::-webkit-scrollbar { display: none; }
+/* Hide every scrollbar inside the modal EXCEPT the inner tab panel one */
+#data-modal-block *:not(.data-tab-panel)::-webkit-scrollbar { display: none !important; }
+#data-modal-block *:not(.data-tab-panel) { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 
 .data-modal-card {
   width: 100%;
