@@ -10,10 +10,13 @@
   height: calc(100vh - var(--header-height, 70px));
   overflow-y: auto;
   overflow-x: hidden;
+  /* !! DO NOT REMOVE !! The dashboard content-wrapper scrollbar is visible
+     through the semi-transparent modal backdrop. These rules hide it.
+     Scroll still works via mouse wheel — there's just no visible track. */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.content-wrapper::-webkit-scrollbar { display: none; }
+.content-wrapper::-webkit-scrollbar { display: none; } /* !! see above */
 
 .dashboard {
   padding: 1.5rem 1.75rem 3rem;

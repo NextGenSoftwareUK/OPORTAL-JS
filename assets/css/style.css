@@ -34,12 +34,16 @@ nav {
 
 html {
   box-sizing: border-box;
+  /* !! DO NOT REMOVE !! OPORTAL is a SPA — the page itself never scrolls.
+     overflow:hidden stops the browser scrollbar appearing behind modals. */
   overflow: hidden;
   height: 100%;
 }
 
 body {
   background-color: var(--color-bg);
+  /* !! DO NOT REMOVE !! Same as html — kills the body scrollbar that bleeds
+     through the semi-transparent modal backdrop. */
   overflow: hidden;
   height: 100%;
 }
@@ -1207,6 +1211,9 @@ body {
   left: 0;
   top: 0;
   z-index: var(--zindex-overlay);
+  /* !! DO NOT REMOVE !! overflow:hidden on the backdrop prevents the body
+     scrollbar showing through. overflow-x:hidden alone causes overflow-y:auto
+     which creates its own scrollbar — must be overflow:hidden (both axes). */
   overflow: hidden;
   background-color: hsla(var(--color-contrast-lower-h), var(--color-contrast-lower-s), var(--color-contrast-lower-l), 0.2);
   -webkit-backdrop-filter: blur(5px);
@@ -4745,13 +4752,33 @@ select option {
 }
 
 /* ── DATA MODAL ── */
+/*
+ * !! DO NOT TOUCH THIS BLOCK !!
+ * Took a very long debugging session to get right. Summary of what's here and WHY:
+ *
+ * 1. display:flex !important on BOTH selectors — the base .modal__block.is-selected rule
+ *    forces display:block which breaks the flex column layout. Must override with !important.
+ *
+ * 2. height:calc(100vh - 48px) FIXED height — without this the modal grows when holons
+ *    load and shrinks when the grid clears. Fixed height = stable size always.
+ *
+ * 3. overflow:hidden on block/shell/card — the flex children (.data-tab-panel) handle
+ *    their own scroll. All parent containers must be overflow:hidden to prevent rogue
+ *    outer scrollbars appearing.
+ *
+ * 4. scrollbar-width:none on all children except .data-tab-panel — kills any remaining
+ *    hidden scrollbar tracks bleeding through (the dark thin bar next to the cyan one).
+ *
+ * 5. Wheel events are intercepted in data-modal.js and routed to the active .data-tab-panel
+ *    so the scrollbar thumb stays in sync with the content position.
+ */
 
 .modal__block.data-modal-block,
 .modal__block.data-modal-block.is-selected {
-  display: flex !important; flex-direction: column;
+  display: flex !important; flex-direction: column; /* !! see note 1 above */
   width: min(960px, calc(100vw - 24px));
-  height: calc(100vh - 48px);
-  overflow: hidden;
+  height: calc(100vh - 48px); /* !! fixed height — see note 2 */
+  overflow: hidden; /* !! see note 3 */
   left: 50%; top: 50%;
   padding: 0; background: transparent; box-shadow: none; border-radius: 0; backdrop-filter: none;
   -webkit-transform: translate(-50%, -50%);
@@ -4764,7 +4791,10 @@ select option {
 #data-modal-block,
 #data-modal-block .data-modal-shell,
 #data-modal-block .data-modal-card { overflow: hidden; }
-/* Hide every scrollbar inside the modal EXCEPT the inner tab panel one */
+/* !! DO NOT REMOVE !! Hides every scrollbar inside the modal EXCEPT .data-tab-panel.
+   There is a thin dark outer scrollbar that appears next to the cyan inner one —
+   this rule kills it. The :not(.data-tab-panel) ensures the inner holon-list
+   scrollbar (cyan) is preserved. See note 4 in the block comment above. */
 #data-modal-block *:not(.data-tab-panel)::-webkit-scrollbar { display: none !important; }
 #data-modal-block *:not(.data-tab-panel) { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 

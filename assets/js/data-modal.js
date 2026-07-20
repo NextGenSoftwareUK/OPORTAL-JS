@@ -733,7 +733,10 @@
     var closeBtn = getById('data-modal-close-btn');
     if (closeBtn) closeBtn.addEventListener('click', function (e) { e.preventDefault(); closeDataModal(); });
 
-    // Route all wheel events inside the modal to the active tab panel
+    // !! DO NOT REMOVE !! Wheel events fire on parent containers (overflow:hidden)
+    // and don't naturally reach .data-tab-panel, causing content to scroll but
+    // the scrollbar thumb to stay frozen. This intercepts all wheel events on the
+    // modal and explicitly scrolls the active tab panel so they stay in sync.
     block.addEventListener('wheel', function (e) {
       var panel = block.querySelector('.data-tab-panel:not([hidden])');
       if (panel) { panel.scrollTop += e.deltaY; e.preventDefault(); }
