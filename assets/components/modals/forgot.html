@@ -129,16 +129,17 @@
       </div>
     </form>
 
-    <div id="forgot-status" class="forgot-status" aria-live="polite"></div>
+    <div id="forgot-msg" class="forgot-status" aria-live="polite"></div>
   </div>
 </div>
 
 <script>
 (function () {
   var form = document.getElementById('forgot-form');
-  var statusEl = document.getElementById('forgot-status');
+  var statusEl = document.getElementById('forgot-msg');
   if (!form || form.dataset.forgotBound) return;
   form.dataset.forgotBound = 'true';
+  form.dataset.recoveryBound = 'true'; // prevent account-recovery.js from also binding this form
 
   function setStatus(type, msg) {
     statusEl.className = 'forgot-status visible forgot-status--' + type;
