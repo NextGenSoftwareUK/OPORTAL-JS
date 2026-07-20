@@ -1,19 +1,193 @@
 <div class="modal__block js-modal-block" data-type="forgot">
-  <form id="forgot-form" class="margin-bottom-sm" role="alertdialog" method="POST" onsubmit="return false">
-    <div class="text-component text-center margin-bottom-lg">
-      <h1 class="font-normal">Forgot Password?</h1>
-      <p class="color-contrast-medium">Enter the email address associated with your OASIS account and we will send a reset link if the account exists.</p>
+  <style>
+    .forgot-card {
+      padding: 8px 4px 4px;
+    }
+    .forgot-eyebrow {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #6bd0ff;
+      margin: 0 0 6px;
+    }
+    .forgot-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: #edf6ff;
+      margin: 0 0 8px;
+      line-height: 1.15;
+    }
+    .forgot-lead {
+      font-size: .88rem;
+      color: #a8bfd8;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .forgot-field label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: #a8bfd8;
+      margin-bottom: 7px;
+    }
+    .forgot-field input[type="email"] {
+      width: 100%;
+      background: #0a1428;
+      border: 1px solid rgba(0,229,255,.2);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #edf6ff;
+      font-family: inherit;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .forgot-field input[type="email"]:focus {
+      border-color: rgba(0,229,255,.5);
+    }
+    .forgot-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .forgot-btn-primary {
+      flex: 1;
+      min-height: 44px;
+      padding: 0 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,229,255,.35);
+      background: rgba(0,229,255,.08);
+      color: #00e5ff;
+      font-family: inherit;
+      font-size: .88rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .forgot-btn-primary:hover:not(:disabled) {
+      background: rgba(0,229,255,.15);
+      border-color: rgba(0,229,255,.6);
+    }
+    .forgot-btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .forgot-btn-ghost {
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: transparent;
+      color: #a8bfd8;
+      font-family: inherit;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: border-color .2s, color .2s;
+    }
+    .forgot-btn-ghost:hover { border-color: rgba(255,255,255,.28); color: #edf6ff; }
+    .forgot-status {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      font-size: .84rem;
+      line-height: 1.55;
+      display: none;
+    }
+    .forgot-status.visible { display: block; }
+    .forgot-status__title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: .88rem;
+    }
+    .forgot-status__msg { color: #a8bfd8; margin: 0; }
+    .forgot-status--success { border-color: rgba(103,211,154,.32); }
+    .forgot-status--success .forgot-status__title { color: #5de6a0; }
+    .forgot-status--error   { border-color: rgba(255,100,100,.28); }
+    .forgot-status--error   .forgot-status__title { color: #ff7070; }
+    .forgot-status--loading { border-color: rgba(107,208,255,.25); }
+    .forgot-status--loading .forgot-status__title { color: #6bd0ff; }
+    .forgot-spinner {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid rgba(107,208,255,.25);
+      border-top-color: #6bd0ff;
+      border-radius: 50%;
+      vertical-align: -2px; margin-left: 8px;
+      animation: fspin .75s linear infinite;
+    }
+    @keyframes fspin { to { transform: rotate(360deg); } }
+  </style>
+
+  <div class="forgot-card">
+    <p class="forgot-eyebrow">Account recovery</p>
+    <h2 class="forgot-title">Forgot your password?</h2>
+    <p class="forgot-lead">Enter the email on your OASIS account and we'll send a reset link if the account exists.</p>
+
+    <form id="forgot-form" onsubmit="return false">
+      <div class="forgot-field">
+        <label for="forgot-email">Email address</label>
+        <input id="forgot-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required />
+      </div>
+      <div class="forgot-actions">
+        <button id="forgot-submit" class="forgot-btn-primary" type="submit">Send reset link</button>
+        <a class="forgot-btn-ghost js-modal-trigger" data-signin="login" href="#0">Back to login</a>
+      </div>
+    </form>
+
+    <div id="forgot-status" class="forgot-status" aria-live="polite">
+      <div class="forgot-status__title"></div>
+      <p class="forgot-status__msg"></p>
     </div>
-    <div class="margin-bottom-lg">
-      <label class="form-label" for="forgot-email">Email</label>
-      <input aria-label="Email" class="form-control width-100%" type="email" name="email" id="forgot-email" placeholder="name@example.com" autocomplete="email" required>
-    </div>
-    <div class="flex flex-center margin-y-md">
-      <button aria-label="Submit" id="forgot-submit" class="btn btn--md btn--primary width-50%" type="submit" form="forgot-form">Submit</button>
-    </div>
-  </form>
-  <div id="forgot-status" class="status-card" aria-live="polite">
-    <h2>Ready to send</h2>
-    <p>We will let you know once the reset request is processed.</p>
   </div>
 </div>
+
+<script>
+(function () {
+  var form = document.getElementById('forgot-form');
+  var statusEl = document.getElementById('forgot-status');
+  if (!form || form.dataset.forgotBound) return;
+  form.dataset.forgotBound = 'true';
+
+  function setStatus(type, title, msg) {
+    statusEl.className = 'forgot-status visible forgot-status--' + type;
+    statusEl.querySelector('.forgot-status__title').innerHTML =
+      title + (type === 'loading' ? '<span class="forgot-spinner"></span>' : '');
+    statusEl.querySelector('.forgot-status__msg').textContent = msg;
+  }
+
+  form.addEventListener('submit', async function () {
+    var email = document.getElementById('forgot-email').value.trim();
+    var btn = document.getElementById('forgot-submit');
+    if (!email) { setStatus('error', 'Email required', 'Please enter your email address.'); return; }
+
+    btn.disabled = true; btn.textContent = 'Sending…';
+    setStatus('loading', 'Sending link', 'Please wait…');
+
+    try {
+      var res = await fetch(window.apiUrl + '/api/avatar/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+      var data = await res.json().catch(function () { return {}; });
+      var msg = data?.result?.message || data?.message || '';
+      if (res.ok) {
+        setStatus('success', 'Check your inbox', msg || 'If the account exists, a reset link has been sent.');
+      } else {
+        setStatus('error', 'Request failed', msg || 'Something went wrong. Please try again.');
+      }
+    } catch (e) {
+      setStatus('error', 'Network error', 'Could not reach the server. Please check your connection.');
+    }
+
+    btn.disabled = false; btn.textContent = 'Send reset link';
+  });
+})();
+</script>

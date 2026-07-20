@@ -1,218 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify Email | OASIS</title>
-    <link rel="stylesheet" href="../../assets/css/style.css" />
-    <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        color-scheme: dark;
-        --page-bg: radial-gradient(circle at top, rgba(66, 179, 255, 0.26), transparent 34%),
-          linear-gradient(180deg, #07131f 0%, #061018 100%);
-        --card-bg: rgba(8, 18, 29, 0.88);
-        --card-border: rgba(134, 215, 255, 0.16);
-        --text-main: #edf6ff;
-        --text-muted: #a9bac9;
-        --accent: #6bd0ff;
-        --success: #67d39a;
-        --error: #ff8d8d;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Email — OASIS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background:
+        radial-gradient(circle at top, rgba(66, 179, 255, 0.26), transparent 34%),
+        linear-gradient(180deg, #07131f 0%, #061018 100%);
+      color: #e0e0e0;
+      font-family: 'Titillium Web', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #060d1f;
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .logo {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      color: #a8bfd8;
+      opacity: .7;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #6bd0ff;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      color: #00e5ff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #a8bfd8;
+      font-size: .875rem;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .status {
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: .85rem;
+      line-height: 1.5;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      margin-bottom: 24px;
+    }
+    .status__title {
+      font-weight: 700;
+      font-size: .88rem;
+      margin-bottom: 4px;
+    }
+    .status__msg { color: #a8bfd8; margin: 0; }
+
+    .status--loading { border-color: rgba(107,208,255,.25); }
+    .status--loading .status__title { color: #6bd0ff; }
+    .status--success { border-color: rgba(103,211,154,.32); background: rgba(103,211,154,.04); }
+    .status--success .status__title { color: #5de6a0; }
+    .status--error   { border-color: rgba(255,100,100,.28); background: rgba(255,60,60,.05); }
+    .status--error   .status__title { color: #ff7070; }
+
+    .spinner {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid rgba(107,208,255,.25);
+      border-top-color: #6bd0ff;
+      border-radius: 50%;
+      vertical-align: -2px; margin-left: 8px;
+      animation: spin .75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,229,255,.35);
+      background: rgba(0,229,255,.08);
+      color: #00e5ff;
+      font-family: inherit;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .btn:hover {
+      background: rgba(0,229,255,.15);
+      border-color: rgba(0,229,255,.6);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.07);
+      margin: 28px 0 20px;
+    }
+
+    .footer-note {
+      color: #a8bfd8;
+      font-size: .75rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="logo" href="https://oportal.oasisomniverse.one">OPORTAL HOME</a>
+
+    <p class="eyebrow">Account verification</p>
+    <h1>Verify your email</h1>
+    <p class="subtitle">We're checking the verification token from your email link. Once confirmed you can return to the portal and sign in.</p>
+
+    <div class="status status--loading" id="status-box">
+      <div class="status__title">Verifying<span class="spinner"></span></div>
+      <p class="status__msg">Contacting the OASIS API…</p>
+    </div>
+
+    <a class="btn" href="https://oportal.oasisomniverse.one/">Return to portal</a>
+
+    <hr class="divider">
+    <p class="footer-note">Questions? Join us on <a href="https://t.me/oasisweb4chat" style="color:#00e5ff88;text-decoration:none">Telegram</a></p>
+  </div>
+
+  <script src="../../assets/js/config.js?v=20260528"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var token = params.get('token') || '';
+      var box = document.getElementById('status-box');
+
+      function setStatus(type, title, msg) {
+        box.className = 'status status--' + type;
+        box.querySelector('.status__title').innerHTML =
+          title + (type === 'loading' ? '<span class="spinner"></span>' : '');
+        box.querySelector('.status__msg').textContent = msg;
       }
 
-      * {
-        box-sizing: border-box;
+      if (!token) {
+        setStatus('error', 'Missing token', 'The verification link is missing its token. Please use the link from your email.');
+        return;
       }
 
-      body.recovery-page {
-        margin: 0;
-        min-height: 100vh;
-        font-family: 'Titillium Web', system-ui, sans-serif;
-        background: var(--page-bg);
-        color: var(--text-main);
-      }
-
-      .recovery-shell {
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 32px 20px;
-      }
-
-      .recovery-card {
-        width: min(100%, 640px);
-        padding: 36px;
-        border-radius: 28px;
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        box-shadow: 0 24px 90px rgba(0, 0, 0, 0.38);
-        backdrop-filter: blur(14px);
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 22px;
-      }
-
-      .brand img {
-        width: 84px;
-        height: 84px;
-        padding: 8px;
-        border-radius: 20px;
-        object-fit: contain;
-        background: rgba(255, 255, 255, 0.02);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-      }
-
-      .eyebrow {
-        margin: 0 0 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--accent);
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      h1 {
-        margin: 0;
-        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-        font-weight: 600;
-        font-size: clamp(2rem, 4vw, 3.25rem);
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-        text-rendering: optimizeLegibility;
-      }
-
-      .lead {
-        margin: 16px 0 0;
-        color: var(--text-muted);
-        font-size: 1.05rem;
-        line-height: 1.6;
-      }
-
-      .status-card {
-        margin-top: 28px;
-        padding: 20px;
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .status-card h2 {
-        margin: 0 0 8px;
-        font-size: 1.25rem;
-      }
-
-      .status-card p {
-        margin: 0;
-        color: var(--text-muted);
-        line-height: 1.65;
-      }
-
-      .status-spinner {
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        margin-left: 10px;
-        border-radius: 50%;
-        border: 2px solid rgba(155, 226, 255, 0.28);
-        border-top-color: var(--accent);
-        vertical-align: -2px;
-        animation: spinner-spin 0.8s linear infinite;
-      }
-
-      @keyframes spinner-spin {
-        to {
-          transform: rotate(360deg);
+      fetch((window.apiUrl || 'https://api.web4.oasisomniverse.one') + '/api/avatar/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token })
+      })
+      .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, data: d }; }); })
+      .then(function (r) {
+        var msg = r.data?.result?.message || r.data?.message || '';
+        if (r.ok) {
+          setStatus('success', 'Email verified', msg || 'Email verified successfully. Click Return to portal when you are ready.');
+        } else {
+          setStatus('error', 'Verification failed', msg || 'The link may have expired. Please request a new verification email from your account settings.');
         }
-      }
-
-      .status-card--loading {
-        border-color: rgba(107, 208, 255, 0.28);
-      }
-
-      .status-card--success {
-        border-color: rgba(103, 211, 154, 0.35);
-      }
-
-      .status-card--error {
-        border-color: rgba(255, 141, 141, 0.35);
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        margin-top: 24px;
-      }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 48px;
-        padding: 0 18px;
-        border-radius: 999px;
-        text-decoration: none;
-        font-weight: 700;
-        color: #04111a;
-        background: linear-gradient(135deg, #9be2ff 0%, #63cdf8 100%);
-        box-shadow: 0 18px 34px rgba(54, 164, 218, 0.24);
-        transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
-      }
-
-      .button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 0 0 1px rgba(155, 226, 255, 0.35), 0 22px 42px rgba(99, 205, 248, 0.34),
-          0 0 26px rgba(107, 208, 255, 0.22);
-        filter: brightness(1.05);
-      }
-
-      .button:focus-visible {
-        outline: 2px solid rgba(155, 226, 255, 0.65);
-        outline-offset: 3px;
-      }
-
-      .button--ghost {
-        color: var(--text-main);
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: none;
-      }
-    </style>
-  </head>
-  <body class="recovery-page">
-    <main class="recovery-shell">
-      <section class="recovery-card">
-        <div class="brand">
-          <img src="../../assets/img/OASISLogoEmail.jpg" alt="OASIS" />
-          <div>
-            <p class="eyebrow">Account verification</p>
-            <h1>Verify your email</h1>
-          </div>
-        </div>
-        <p class="lead">
-          We are checking the verification token from your email link. Once it is confirmed, you can return to the
-          portal and sign in.
-        </p>
-        <div id="verify-status" class="status-card" aria-live="polite">
-          <h2>Checking token</h2>
-          <p>Please wait while we contact the OASIS API.</p>
-        </div>
-        <div class="actions">
-          <a class="button" href="/">Return to portal</a>
-        </div>
-      </section>
-    </main>
-    <script src="../../assets/js/config.js?v=20260528"></script>
-    <script src="../../assets/js/account-recovery.js?v=20260528"></script>
-  </body>
+      })
+      .catch(function () {
+        setStatus('error', 'Network error', 'Could not reach the server. Please check your connection and try again.');
+      });
+    })();
+  </script>
+</body>
 </html>
