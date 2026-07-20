@@ -647,11 +647,23 @@ function isJwtValid() {
     var token = avatar && (avatar.jwtToken || avatar.JwtToken || avatar.token || avatar.Token);
     if (!token) return false;
     var parts = token.split('.');
-    if (parts.length !== 3) return false;
-    var payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (parts.length !== 3) {
+      // Not a standard JWT — treat as opaque bearer token, assume valid if non-empty
+      console.log('[JWT] token is not a 3-part JWT (parts=' + parts.length + ', len=' + token.length + ') — treating as valid opaque token');
+      return true;
+    }
+    // base64url → base64: replace - with + and _ with /, then pad to multiple of 4
+    var b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    var payload = JSON.parse(atob(b64));
     if (!payload.exp) return true; // no expiry claim — assume valid
-    return payload.exp * 1000 > Date.now();
-  } catch (e) { return false; }
+    var valid = payload.exp * 1000 > Date.now();
+    console.log('[JWT] exp=' + payload.exp + ', now=' + Math.floor(Date.now()/1000) + ', valid=' + valid);
+    return valid;
+  } catch (e) {
+    console.log('[JWT] isJwtValid error:', e.message);
+    return false;
+  }
 }
 
 function setup() {
