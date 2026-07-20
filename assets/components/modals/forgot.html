@@ -92,38 +92,16 @@
     }
     .forgot-btn-ghost:hover { border-color: rgba(255,255,255,.28); color: #edf6ff; }
     .forgot-status {
-      margin-top: 0;
-      padding: 0;
-      border-radius: 10px;
-      border: 1px solid transparent;
-      background: transparent;
-      font-size: .84rem;
-      line-height: 1.55;
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height .25s ease, opacity .2s ease, margin-top .25s ease, padding .25s ease;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-top: 10px;
+      min-height: 1.2em;
+      visibility: hidden;
     }
-    .forgot-status.visible {
-      max-height: 120px;
-      opacity: 1;
-      margin-top: 18px;
-      padding: 14px 16px;
-      border-color: rgba(255,255,255,.07);
-      background: rgba(255,255,255,.03);
-    }
-    .forgot-status__title {
-      font-weight: 700;
-      margin-bottom: 4px;
-      font-size: .88rem;
-    }
-    .forgot-status__msg { color: #a8bfd8; margin: 0; }
-    .forgot-status.visible.forgot-status--success { border-color: rgba(103,211,154,.32); background: rgba(103,211,154,.04); }
-    .forgot-status--success .forgot-status__title { color: #5de6a0; }
-    .forgot-status.visible.forgot-status--error   { border-color: rgba(255,100,100,.28); background: rgba(255,60,60,.05); }
-    .forgot-status--error   .forgot-status__title { color: #ff7070; }
-    .forgot-status.visible.forgot-status--loading { border-color: rgba(107,208,255,.25); }
-    .forgot-status--loading .forgot-status__title { color: #6bd0ff; }
+    .forgot-status.visible { visibility: visible; }
+    .forgot-status--success { color: #5de6a0; }
+    .forgot-status--error   { color: #ff7070; }
+    .forgot-status--loading { color: #6bd0ff; }
     .forgot-spinner {
       display: inline-block; width: 12px; height: 12px;
       border: 2px solid rgba(107,208,255,.25);
@@ -151,10 +129,7 @@
       </div>
     </form>
 
-    <div id="forgot-status" class="forgot-status" aria-live="polite">
-      <div class="forgot-status__title"></div>
-      <p class="forgot-status__msg"></p>
-    </div>
+    <div id="forgot-status" class="forgot-status" aria-live="polite"></div>
   </div>
 </div>
 
@@ -165,20 +140,18 @@
   if (!form || form.dataset.forgotBound) return;
   form.dataset.forgotBound = 'true';
 
-  function setStatus(type, title, msg) {
+  function setStatus(type, msg) {
     statusEl.className = 'forgot-status visible forgot-status--' + type;
-    statusEl.querySelector('.forgot-status__title').innerHTML =
-      title + (type === 'loading' ? '<span class="forgot-spinner"></span>' : '');
-    statusEl.querySelector('.forgot-status__msg').textContent = msg;
+    statusEl.textContent = msg;
   }
 
   form.addEventListener('submit', async function () {
     var email = document.getElementById('forgot-email').value.trim();
     var btn = document.getElementById('forgot-submit');
-    if (!email) { setStatus('error', 'Email required', 'Enter your email address.'); return; }
+    if (!email) { setStatus('error', 'Please enter your email address.'); return; }
 
     btn.disabled = true; btn.textContent = 'Sending…';
-    setStatus('loading', 'Sending…', 'Please wait.');
+    setStatus('loading', 'Sending…');
 
     try {
       var res = await fetch(window.apiUrl + '/api/avatar/forgot-password', {
@@ -188,13 +161,13 @@
       });
       var data = await res.json().catch(function () { return {}; });
       if (res.ok) {
-        setStatus('success', 'Check your inbox', 'A reset link has been sent if the account exists.');
+        setStatus('success', 'Reset link sent — check your inbox.');
       } else {
         var msg = data?.result?.message || data?.message || 'Something went wrong.';
-        setStatus('error', 'Failed', msg);
+        setStatus('error', msg);
       }
     } catch (e) {
-      setStatus('error', 'Network error', 'Could not reach the server.');
+      setStatus('error', 'Could not reach the server.');
     }
 
     btn.disabled = false; btn.textContent = 'Send reset link';
