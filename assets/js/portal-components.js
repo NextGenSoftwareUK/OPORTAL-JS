@@ -54,7 +54,13 @@
     // Load dashboard HTML into .content-wrapper (hidden by default; setup() reveals it after login)
     fetchFragment('assets/components/dashboard.html').then(function (html) {
       var wrapper = document.querySelector('.content-wrapper');
-      if (wrapper && html) wrapper.innerHTML = html;
+      if (wrapper && html) {
+        wrapper.innerHTML = html;
+        // If setup() already ran (page refresh / slow dashboard fetch), show it now
+        if (localStorage.getItem('loggedIn') === 'true' && typeof window.showDashboard === 'function') {
+          window.showDashboard();
+        }
+      }
     }).catch(function (e) { console.error('dashboard load failed', e); });
 
     // Fetch shell and modals in parallel
