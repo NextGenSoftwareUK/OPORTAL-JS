@@ -5,6 +5,28 @@ window.apiUrl = 'https://api.web4.oasisomniverse.one';
 window.API_BASE = window.apiUrl;
 window.web5ApiUrl = 'https://api.starnet.oasisomniverse.one';
 window.web6ApiUrl = 'https://api.web6.oasisomniverse.one';
+window.web7ApiUrl = 'https://api.web7.oasisomniverse.one';
+window.web8ApiUrl = 'https://api.web8.oasisomniverse.one';
+window.web9ApiUrl = 'https://api.web9.oasisomniverse.one';
+window.web10ApiUrl = 'https://api.web10.oasisomniverse.one';
+
+// GraphQL endpoints (Hot Chocolate — /graphql on each API host)
+window.graphqlWeb4Url  = window.apiUrl    + '/graphql';
+window.graphqlWeb5Url  = window.web5ApiUrl + '/graphql';
+window.graphqlWeb6Url  = window.web6ApiUrl + '/graphql';
+window.graphqlWeb7Url  = window.web7ApiUrl + '/graphql';
+window.graphqlWeb8Url  = window.web8ApiUrl + '/graphql';
+window.graphqlWeb9Url  = window.web9ApiUrl + '/graphql';
+window.graphqlWeb10Url = window.web10ApiUrl + '/graphql';
+
+// gRPC endpoints (HTTP/2, same host as REST, port 443)
+window.grpcWeb4Host  = 'api.web4.oasisomniverse.one:443';
+window.grpcWeb5Host  = 'api.starnet.oasisomniverse.one:443';
+window.grpcWeb6Host  = 'api.web6.oasisomniverse.one:443';
+window.grpcWeb7Host  = 'api.web7.oasisomniverse.one:443';
+window.grpcWeb8Host  = 'api.web8.oasisomniverse.one:443';
+window.grpcWeb9Host  = 'api.web9.oasisomniverse.one:443';
+window.grpcWeb10Host = 'api.web10.oasisomniverse.one:443';
 
 // ── OASIS SDK clients (@oasisomniverse/web4-api + web5-api) ──────────────────
 // OASISClient and STARClient are loaded by the SDK bundle scripts that appear
