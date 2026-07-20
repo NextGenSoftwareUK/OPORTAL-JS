@@ -442,6 +442,16 @@
 
   async function loadAllHolons() {
     if (isFetching) return;
+
+    // Holons are currently only stored on MongoDB — other providers return nothing
+    if (currentProvider !== 'all' && currentProvider !== 'MongoDBOASIS') {
+      _cachedBrowseList = [];
+      renderBrowseGrid([]);
+      var emptyEl = getById('data-browse-empty');
+      if (emptyEl) emptyEl.querySelector('p').textContent = 'Holons are currently only stored on MongoDB. Select "All" or "MongoDB" to view your data.';
+      return;
+    }
+
     isFetching = true;
     showStatus('loading', 'Loading holons…');
 
@@ -450,6 +460,10 @@
     if (!token) { showStatus('error', 'Please sign in to load holons.'); isFetching = false; return; }
 
     var avatarId = profile && (profile.avatarId || profile.AvatarId || profile.id || profile.Id || '');
+
+    // Reset empty message to default in case it was changed
+    var emptyEl2 = getById('data-browse-empty');
+    if (emptyEl2) { var p2 = emptyEl2.querySelector('p'); if (p2) p2.textContent = 'No holons found. Your OASIS data objects will appear here.'; }
 
     try {
       var body = { Id: avatarId, holonType: 'All' };
