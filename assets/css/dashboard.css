@@ -10,7 +10,10 @@
   height: calc(100vh - var(--header-height, 70px));
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.content-wrapper::-webkit-scrollbar { display: none; }
 
 .dashboard {
   padding: 1.5rem 1.75rem 3rem;
