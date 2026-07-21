@@ -392,8 +392,13 @@
 
     renderStatus('loading', 'Creating wallet…');
     try {
-      // SDK: @oasisomniverse/web4-api
-      var sdkRes = await window.oasisClient.wallet.createWalletForAvatarByIdAsync({ avatarId: id });
+      // avatarId goes into the URL; the remaining fields become the [FromBody] CreateWalletRequest.
+      // Without extra fields the SDK sends no body at all, causing a 400 validation error.
+      var sdkRes = await window.oasisClient.wallet.createWalletForAvatarByIdAsync({
+        avatarId: id,
+        generateKeyPair: true,
+        isDefaultWallet: false
+      });
       /* OLD fetch:
       var res = await fetch(API_BASE + '/api/Wallet/avatar/' + encodeURIComponent(id) + '/create-wallet', {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({})
