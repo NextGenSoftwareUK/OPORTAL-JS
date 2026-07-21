@@ -375,6 +375,19 @@
         <div id="data-search-results" class="data-holon-grid" style="margin-top:18px"></div>
       </div>
 
+      <!-- Delete confirm overlay -->
+      <div id="data-confirm-overlay" class="data-confirm-overlay" style="display:none">
+        <div class="data-confirm-box">
+          <div class="data-confirm-icon">🗑</div>
+          <div class="data-confirm-title">Delete Holon?</div>
+          <div class="data-confirm-msg">This holon will be permanently removed. This cannot be undone.</div>
+          <div class="data-confirm-btns">
+            <button class="data-confirm-cancel" id="data-confirm-cancel-btn" type="button">Cancel</button>
+            <button class="data-confirm-delete" id="data-confirm-delete-btn" type="button">Delete</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Holon Detail Panel (overlays the card) -->
       <div id="data-detail-panel" class="data-detail-panel" style="display:none;position:absolute;inset:0;border-radius:30px;background:rgba(8,18,29,0.97);padding:24px 34px 34px;overflow-y:auto;z-index:10;animation:nft-detail-in 0.22s ease-out">
         <button class="nft-detail-back-btn" id="data-detail-back-btn">&#8592; Back</button>

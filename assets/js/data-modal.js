@@ -657,15 +657,33 @@
 
   // ── Delete ────────────────────────────────────────────────────────────────────
 
-  window._dataDeleteHolon = async function (id) {
-    if (!confirm('Delete this holon? This cannot be undone.')) return;
+  function showDeleteConfirm(id) {
+    var overlay = getById('data-confirm-overlay');
+    var cancelBtn = getById('data-confirm-cancel-btn');
+    var deleteBtn = getById('data-confirm-delete-btn');
+    if (!overlay) { doDeleteHolon(id); return; }
+
+    overlay.style.display = 'flex';
+
+    function cleanup() {
+      overlay.style.display = 'none';
+      cancelBtn.removeEventListener('click', onCancel);
+      deleteBtn.removeEventListener('click', onDelete);
+    }
+    function onCancel() { cleanup(); }
+    function onDelete() { cleanup(); doDeleteHolon(id); }
+
+    cancelBtn.addEventListener('click', onCancel);
+    deleteBtn.addEventListener('click', onDelete);
+  }
+
+  async function doDeleteHolon(id) {
     var profile = readAvatar();
     var token = getToken(profile);
     if (!token) return;
 
     showStatus('loading', 'Deleting holon…');
     try {
-      // Use route-based DELETE so the ID is in the URL (body-only endpoint ignores payload without [FromBody])
       var sdkRes = await window.oasisClient.http.request('DELETE', 'api/data/delete-holon/' + encodeURIComponent(id) + '/false');
       if (!sdkRes.isError) {
         showStatus('success', 'Holon deleted.');
@@ -676,7 +694,9 @@
     } catch (e) {
       showStatus('error', 'Network error deleting holon.');
     }
-  };
+  }
+
+  window._dataDeleteHolon = function (id) { showDeleteConfirm(id); };
 
   // ── Tabs ──────────────────────────────────────────────────────────────────────
 
@@ -732,6 +752,12 @@
 
     var closeBtn = getById('data-modal-close-btn');
     if (closeBtn) closeBtn.addEventListener('click', function (e) { e.preventDefault(); closeDataModal(); });
+
+    var confirmOverlay = getById('data-confirm-overlay');
+    var confirmCancel = getById('data-confirm-cancel-btn');
+    if (confirmOverlay) confirmOverlay.addEventListener('click', function (e) {
+      if (e.target === confirmOverlay && confirmCancel) confirmCancel.click();
+    });
 
     // !! DO NOT REMOVE !! Wheel events fire on parent containers (overflow:hidden)
     // and don't naturally reach .data-tab-panel, causing content to scroll but
