@@ -656,6 +656,7 @@ a {
   width: 0px;
   background: transparent
 }
+.content-wrapper::-webkit-scrollbar { width: 8px; background: transparent; }
 
 :root {
   --font-primary: 'Titillium Web', sans-serif;
