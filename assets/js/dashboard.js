@@ -195,6 +195,7 @@
         if (net !== undefined) { set('dash-karma-net', fmtNum(net)); set('dash-karma-hero', fmtNum(net)); set('dash-card-karma', fmtNum(net)); }
       } else {
         set('dash-karma-pos', '—'); set('dash-karma-neg', '—');
+        set('dash-karma-net', fmtNum(karma)); set('dash-card-karma', fmtNum(karma));
       }
     });
 
@@ -254,9 +255,9 @@
       set('dash-card-files', fmtNum(extractList(sdkVal(res)).length) || '0');
     });
 
-    // [7] Competition rank
-    (token
-      ? safe(window.oasisClient.competition.getMyRank({ competitionType: 'Karma', seasonType: 'AllTime' }))
+    // [7] Competition rank — lives in the STAR API (Web4 CompetitionController is disabled)
+    (token && window.starClient
+      ? safe(window.starClient.competition.getMyRank({ competitionType: 'Karma', seasonType: 'AllTime' }))
       : Promise.resolve(null)
     ).then(function (res) {
       var rank = sdkVal(res); rank = rank && (rank.result || rank);
@@ -299,7 +300,11 @@
       ? safe(window.oasisClient.wallet.loadProviderWalletsForAvatarByIdAsync({ id: avatarId, showOnlyDefault: false, decryptPrivateKeys: false }))
       : Promise.resolve(null)
     ).then(function (res) {
-      set('dash-card-wallets', fmtNum(extractList(sdkVal(res)).length) || '0');
+      var wallets = extractList(sdkVal(res));
+      set('dash-card-wallets', fmtNum(wallets.length) || '0');
+      var defaultWallet = wallets.find(function (w) { return w.isDefault || w.IsDefault; }) || wallets[0];
+      var bal = defaultWallet && (defaultWallet.balance || defaultWallet.Balance);
+      set('dash-wallet-balance', bal != null ? String(bal) : '—');
     });
 
     // [12] Messages
