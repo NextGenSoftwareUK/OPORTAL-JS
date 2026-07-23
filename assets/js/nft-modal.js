@@ -18,7 +18,9 @@
   function exposeGlobals() {
     window.openNftModal = openNftModal;
     window.closeNftModal = closeNftModal;
-    window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
+    // TEMP GATE: mint requires an active subscription — re-enable by restoring the line below.
+    // window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
+    window.nftShowMintForm = function () { showStatus('warn', 'NFT minting requires an active subscription. This feature is coming soon — stay tuned!'); };
     window.nftShowSendForm = function () { closeActionPanel(); showActionPanel('nft-form-send'); };
     window.nftShowPlaceForm = function () { populateNftSelect(); closeActionPanel(); showActionPanel('nft-form-place'); };
     window.nftCloseActionPanel = closeActionPanel;
