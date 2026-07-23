@@ -18,15 +18,15 @@
   function exposeGlobals() {
     window.openNftModal = openNftModal;
     window.closeNftModal = closeNftModal;
-    // TEMP GATE: mint requires an active subscription — re-enable by restoring the line below.
-    // window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
-    window.nftShowMintForm = function () { showStatus('warn', 'NFT minting requires an active subscription. This feature is coming soon — stay tuned!'); };
+    window.nftShowMintForm = function () { closeActionPanel(); showActionPanel('nft-form-mint'); };
     // TEMP GATE: re-enable by restoring the line below.
     // window.nftShowSendForm = function () { closeActionPanel(); showActionPanel('nft-form-send'); };
     window.nftShowSendForm = function () { showStatus('warn', 'NFT sending requires an active subscription. This feature is coming soon — stay tuned!'); };
     window.nftShowPlaceForm = function () { populateNftSelect(); closeActionPanel(); showActionPanel('nft-form-place'); };
     window.nftCloseActionPanel = closeActionPanel;
-    window.nftSubmitMint = function () { apiMintNft(readAvatar()); };
+    // TEMP GATE: re-enable by restoring the line below.
+    // window.nftSubmitMint = function () { apiMintNft(readAvatar()); };
+    window.nftSubmitMint = function () { showStatus('warn', 'NFT minting requires an active subscription. This feature is coming soon — stay tuned!'); };
     window.nftSubmitSend = function () { apiSendNft(readAvatar()); };
     window.nftSubmitPlace = function () { apiPlaceGeoNft(readAvatar()); };
   }
